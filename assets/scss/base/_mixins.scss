@@ -1,0 +1,8 @@
+@mixin grid-container {
+  max-width: calc(#{$grid-container} + (#{$grid-gutter} * 2));
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: $grid-gutter;
+  padding-left: $grid-gutter;
+}

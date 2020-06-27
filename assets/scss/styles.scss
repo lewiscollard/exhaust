@@ -1,1 +1,6 @@
-@import 'base/_reset';
+@import 'base/mixins';
+@import 'base/variables';
+@import 'base/reset';
+@import 'base/define';
+@import 'base/layout';
+@import 'components/post';
