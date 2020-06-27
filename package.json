@@ -1,0 +1,7 @@
+{
+  "name": "exhaust",
+  "private": true,
+  "scripts": {
+    "lint:python": "pylint exhaust/ && flake8 exhaust/ && isort --check-only"
+  }
+}
