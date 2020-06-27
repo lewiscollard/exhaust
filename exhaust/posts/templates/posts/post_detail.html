@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block meta %}
+  <link rel="canonical" href="{{ object.get_absolute_url }}">
+{% endblock %}
+
 {% block title %}{{ object }}{% endblock %}
 
 {% block main %}
