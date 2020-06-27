@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-# Create your views here.
+from .models import Post
+
+class PostMixin:
+    def get_queryset(self):
+        return super().get_queryset().select_published()
+
+
+class PostListView(PostMixin, ListView):
+    model = Post

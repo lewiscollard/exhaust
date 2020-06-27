@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block main %}
+  {% for object in object_list %}
+    {{ object }}
+    <br>
+    posted on <a href="{{ object.get_absolute_url }}">{{ object.date|date }}</a>
+  {% endfor %}
+{% endblock %}

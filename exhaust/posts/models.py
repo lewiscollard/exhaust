@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
@@ -19,10 +20,10 @@ class Post(models.Model):
     '''
     A post on the site.
 
-    The only required field here is the date and the user who added it (set
-    automatically). That's to allow any kind of post (image-only, text-only,
-    title-only). Of course, it would not make sense to have a post with no
-    title, text or image set, but that can be enforced in the admin.
+    The only required field here is the date. That's to allow any kind of post
+    (image-only, text-only, title-only). Of course, it would not make sense to
+    have a post with no title, text or image set, but that can be enforced in
+    the admin.
     '''
 
     objects = models.Manager.from_queryset(PostQuerySet)()
@@ -44,6 +45,7 @@ class Post(models.Model):
 
     online = models.BooleanField(
         default=True,
+        help_text='Uncheck this to hide this post on the frontend.'
     )
 
     image = models.ImageField(
@@ -55,6 +57,7 @@ class Post(models.Model):
     # This will only be me, but for the future who knows?! (foreveralone.png)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT
     )
 
     class Meta:
