@@ -8,4 +8,5 @@ app_name = 'posts'
 urlpatterns = [
     url(r'^$', PostListView.as_view(), name='post_list'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
+    path('post/<int:pk>-<slug:slug>/', PostDetailView.as_view(), name='post_detail'),
 ]

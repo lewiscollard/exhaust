@@ -85,4 +85,6 @@ class Post(models.Model):
         return '(Broken post)'
 
     def get_absolute_url(self):
+        if self.slug:
+            return reverse('posts:post_detail', kwargs={'pk': self.pk, 'slug': self.slug})
         return reverse('posts:post_detail', kwargs={'pk': self.pk})
