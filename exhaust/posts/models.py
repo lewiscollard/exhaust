@@ -62,6 +62,13 @@ class Post(models.Model):
         upload_to='post_images',
     )
 
+    alt_text = models.CharField(
+        max_length=1000,
+        help_text='This is assistive text for screen readers. This is very important to fill out on image-only posts.',
+        null=True,
+        blank=True,
+    )
+
     # This will only be me, but for the future who knows?! (foreveralone.png)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
