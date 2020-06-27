@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block main %}
-  {% for object in object_list %}
-    {{ object }}
-    <br>
-    posted on <a href="{{ object.get_absolute_url }}">{{ object.date|date }}</a>
-  {% endfor %}
+  <div class="article-list">
+    {% for object in object_list %}
+      <div class="article-list__item">
+        {% include object.body_template with detail_page=False %}
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}

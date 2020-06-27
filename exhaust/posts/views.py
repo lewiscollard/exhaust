@@ -33,3 +33,8 @@ class PostDetailView(PostMixin, DetailView):
         if not request.path == obj.get_absolute_url():
             return redirect(obj.get_absolute_url(), permanent=True)
         return super().get(request, args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['detail_page'] = True
+        return context

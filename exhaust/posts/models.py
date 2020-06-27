@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.functional import cached_property
 
 
 class PostQuerySet(models.QuerySet):
@@ -83,6 +84,12 @@ class Post(models.Model):
 
         # Should never happen, but make pylint happy
         return '(Broken post)'
+
+    @cached_property
+    def body_template(self):
+        # upgrade this later to handle various different kinds of post
+        # layouts
+        return 'posts/layouts/post_body.html'
 
     def get_absolute_url(self):
         if self.slug:

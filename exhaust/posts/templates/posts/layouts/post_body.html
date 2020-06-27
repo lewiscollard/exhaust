@@ -1,0 +1,29 @@
+<article class="post">
+  {% if object.title %}
+    <header class="post__header">
+      {% if detail_page %}
+        <h1 class="post__title">
+          {{ object.title }}
+        </h1>
+      {% else %}
+        <h2 class="post__title">
+          <a href="{{ object.get_absolute_url }}" class="post__title-link">
+            {{ object.title }}
+          </a>
+        </h2>
+      {% endif %}
+    </header>
+  {% endif %}
+
+  {% if object.image %}
+    <div class="post__image-wrapper">
+      <img src="{{ object.image.url }}">
+    </div>
+  {% endif %}
+
+  {% if object.text %}
+    <div class="post__text">
+      {{ object.text|linebreaksbr }}
+    </div>
+  {% endif %}
+</article>

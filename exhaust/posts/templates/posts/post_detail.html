@@ -7,15 +7,5 @@
 {% block title %}{{ object }}{% endblock %}
 
 {% block main %}
-  {% if post.title %}
-    <h1>{{ post.title }}</h1>
-  {% endif %}
-
-  {% if post.image %}
-    <img src="{{ post.image.url }}" loading="lazy">
-  {% endif %}
-
-  {% if post.text %}
-    {{ post.text|linebreaksbr }}
-  {% endif %}
+  {% include post.body_template %}
 {% endblock %}
