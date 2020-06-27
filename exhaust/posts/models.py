@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.urls import reverse
 from django.db import models
 from django.utils import timezone
 
@@ -73,3 +74,6 @@ class Post(models.Model):
 
         if self.image:
             return 'Image post: {self.image.file.name}'
+
+    def get_absolute_url(self):
+        return reverse('posts:post_detail', kwargs={'pk': self.pk})
