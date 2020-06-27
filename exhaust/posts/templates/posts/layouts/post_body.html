@@ -1,4 +1,4 @@
-{% load assets %}
+{% load assets markdown %}
 
 <article class="post">
   {% if object.title %}
@@ -24,8 +24,10 @@
   {% endif %}
 
   {% if object.text %}
-    <div class="post__text">
-      {{ object.text|linebreaksbr }}
+    <div class="markdown">
+      <div class="post__text">
+        {{ object.text|markdown }}
+      </div>
     </div>
   {% endif %}
 </article>
