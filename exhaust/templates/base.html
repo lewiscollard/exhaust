@@ -21,6 +21,9 @@
       {% block main %}{% endblock %}
     </div>
 
-    <script src="{% static 'build/webpack/main.js' %}"></script>
+    {% if settings.DEBUG %}
+      {# we don't need JS in prod, but it's nice to have for Webpack reloading #}
+      <script src="{% static 'build/webpack/main.js' %}"></script>
+    {% endif %}
   </body>
 </html>
