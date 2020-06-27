@@ -75,5 +75,8 @@ class Post(models.Model):
         if self.image:
             return 'Image post: {self.image.file.name}'
 
+        # Should never happen, but make pylint happy
+        return '(Broken post)'
+
     def get_absolute_url(self):
         return reverse('posts:post_detail', kwargs={'pk': self.pk})

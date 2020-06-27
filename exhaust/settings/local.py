@@ -1,6 +1,6 @@
 import os
 
-from .base import *
+from .base import *  # pylint: disable=unused-wildcard-import,wildcard-import
 
 DEBUG = True
 

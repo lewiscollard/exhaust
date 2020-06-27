@@ -5,6 +5,7 @@ from .models import Post
 
 class PostMixin:
     model = Post
+
     def get_queryset(self):
         return super().get_queryset().select_published()
 
