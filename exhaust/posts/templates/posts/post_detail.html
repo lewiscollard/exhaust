@@ -14,4 +14,8 @@
   {% if post.image %}
     <img src="{{ post.image.url }}" loading="lazy">
   {% endif %}
+
+  {% if post.text %}
+    {{ post.text|linebreaksbr }}
+  {% endif %}
 {% endblock %}
