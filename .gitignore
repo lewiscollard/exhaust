@@ -1,3 +1,4 @@
 node_modules
 .venv
 *.pyc
+yarn-error.log
