@@ -16,6 +16,11 @@
   </head>
 
   <body class="layout__body">
-    {% block main %}{% endblock %}
+    {% include 'layout/header.html' %}
+    <div class="layout__main">
+      {% block main %}{% endblock %}
+    </div>
+
+    <script src="{% static 'build/webpack/main.js' %}"></script>
   </body>
 </html>
