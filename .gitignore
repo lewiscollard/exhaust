@@ -4,3 +4,4 @@ node_modules
 yarn-error.log
 # My local manage.py script, with secret key in environment
 /m
+static/build
