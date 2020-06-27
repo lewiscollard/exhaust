@@ -39,6 +39,12 @@ class Post(models.Model):
         blank=True,
     )
 
+    # Optional slug, for nicer URLs.
+    slug = models.SlugField(
+        null=True,
+        blank=True,
+    )
+
     text = models.TextField(
         null=True,
         blank=True,

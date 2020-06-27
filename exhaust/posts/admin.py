@@ -7,6 +7,8 @@ from .models import Post
 class PostAdmin(admin.ModelAdmin):
     exclude = ['author']
 
+    prepopulated_fields = {'slug': ['title', 'text']}
+
     def save_model(self, request, obj, form, change):
         if not change:
             # Set the author on original creation only.
