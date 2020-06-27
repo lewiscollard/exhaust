@@ -2,6 +2,7 @@ from django.views.generic import DetailView, ListView
 
 from .models import Post
 
+
 class PostMixin:
     model = Post
     def get_queryset(self):
