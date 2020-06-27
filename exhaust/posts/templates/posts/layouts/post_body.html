@@ -1,3 +1,5 @@
+{% load assets %}
+
 <article class="post">
   {% if object.title %}
     <header class="post__header">
@@ -17,9 +19,9 @@
 
   {% if object.image %}
     <div class="post__image-wrapper">
-      <img src="{{ object.image.url }}">
+      {% render_image object.image alt_text=object.alt_text %}
     </div>
-  {% endif %}
+  {% endif %}ssssss
 
   {% if object.text %}
     <div class="post__text">

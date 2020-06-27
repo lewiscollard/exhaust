@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third-party
+    'sorl.thumbnail',
+
     # Project-local things.
     'exhaust.common',
     'exhaust.posts',
