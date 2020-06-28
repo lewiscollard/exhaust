@@ -1,0 +1,54 @@
+/* stylelint-disable selector-max-universal, selector-max-type, selector-no-qualifying-type */
+.markdown {
+  > * {
+    margin-top: $vr;
+    margin-bottom: $vr;
+
+    line-height: 1.5;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+
+  > *:first-child,
+  .floater + * {
+    margin-top: 0;
+  }
+
+  a {
+    font-weight: 800;
+    text-decoration: underline;
+
+    &.button {
+      text-decoration: none;
+
+      color: #fff;
+    }
+  }
+
+  ul li {
+    position: relative;
+
+    padding-left: $vr;
+
+    &::before {
+      content: '';
+
+      position: absolute;
+      top: calc(0.75em - 2px);
+      left: 0;
+
+      display: block;
+      width: 5px;
+      height: 5px;
+
+      background-color: #000;
+    }
+  }
+
+  li + li {
+    margin-top: $vr / 2;
+  }
+}
+/* stylelint-enable */
