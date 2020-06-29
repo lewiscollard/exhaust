@@ -1,6 +1,7 @@
 /* stylelint-disable selector-max-universal, selector-max-type, selector-no-qualifying-type */
 .markdown {
-  > * {
+  > *,
+  blockquote p {
     margin-top: $vr;
     margin-bottom: $vr;
 
@@ -53,6 +54,25 @@
 
   li + li {
     margin-top: $vr / 2;
+  }
+
+  blockquote {
+    position: relative;
+
+    padding-left: 20px;
+
+    &::before {
+      content: '';
+
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+
+      width: 4px;
+
+      background-color: currentColor;
+    }
   }
 }
 /* stylelint-enable */
