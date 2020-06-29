@@ -1,0 +1,13 @@
+.article-list__item {
+  margin-bottom: $vr;
+  padding-bottom: $vr;
+
+  border-bottom: 1px solid $color-border;
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+
+    border-bottom: none;
+  }
+}
