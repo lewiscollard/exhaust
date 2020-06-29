@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'build/webpack/style.css' %}">
 
     {% block meta %}{% endblock %}
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}{{ settings.SITE_NAME }} - {{ settings.SITE_DESCRIPTION }}{% endblock %}</title>
 
     {% block extra_head %}{% endblock %}
   </head>
