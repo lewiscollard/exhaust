@@ -1,13 +1,40 @@
+.header {
+}
+
 .header__inner {
   @include grid-container;
 
-  display: flex;
+  margin-bottom: $vr;
+  padding-top: $vr;
+  padding-bottom: $vr;
+
+  border-bottom: 1px solid $color-border;
 }
 
-.header__logo {
-  width: 100px;
-  height: 100px;
+.header__masthead {
   margin: 0 auto;
+}
 
-  background-color: #c00;
+.header__masthead-link {
+  text-align: center;
+  text-decoration: none;
+
+  color: inherit;
+
+  @media (screen and min-width: 600px) {
+    align-items: center;
+    justify-content: space-between;
+
+    display: flex;
+
+    text-align: initial;
+  }
+}
+
+.header__title {
+  font-size: 28px;
+}
+
+.header__subtitle {
+  margin-top: 0.5 * $vr;
 }
