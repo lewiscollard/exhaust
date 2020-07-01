@@ -1,0 +1,24 @@
+.footer {
+  @include grid-container;
+
+  margin-top: $vr;
+}
+
+.footer__inner {
+  padding-top: $vr;
+  padding-bottom: $vr;
+
+  text-align: center;
+
+  border-top: 1px solid $color-border;
+}
+
+.footer__block {
+  margin-top: $vr;
+
+  line-height: 1.5;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}

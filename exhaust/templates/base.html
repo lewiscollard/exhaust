@@ -36,6 +36,31 @@
       {% block main %}{% endblock %}
     </div>
 
+
+    <footer class="layout__footer">
+      <div class="footer">
+        <div class="footer__inner">
+          <p class="footer__block">
+            I'm Lewis, a web developer by day, total idiot all the time.
+          </p>
+
+          <p class="footer__block">
+            You can <a href="/post/9-hello-world/">read what this blog is about</a>.
+            Or you can go visit <a href="https://lewiscollard.com">my other site</a>,
+            or you can go see some <a href="https://hp.lewiscollard.com/">photos I took at drift racing</a>.
+          </p>
+
+          <p class="footer__block">
+            Or maybe you've found what you've looking for! That's fine too. ❤️
+          </p>
+
+          <p class="footer__block">
+            I don't do social media, but email is <a href="mailto:lewis@lewiscollard.com">warmly welcomed</a>.
+          </p>
+        </div>
+      </div>
+    </footer>
+
     {% if settings.DEBUG %}
       {# we don't need JS in prod, but it's nice to have for Webpack reloading #}
       <script src="{% static 'build/webpack/main.js' %}"></script>
