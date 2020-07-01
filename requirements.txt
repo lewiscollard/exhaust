@@ -7,5 +7,6 @@ Pillow==7.1.2
 psycopg2==2.8.5
 pylint==2.5.3
 pylint-django==2.0.15
+python-memcached==1.59
 sorl-thumbnail==12.6.3
 -e git+git@github.com:lewiscollard/django-markdownx.git@master#egg=django-markdownx
