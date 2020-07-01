@@ -8,6 +8,11 @@
     line-height: 1.5;
   }
 
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
   > *:last-child {
     margin-bottom: 0;
   }
@@ -15,6 +20,10 @@
   > *:first-child,
   .floater + * {
     margin-top: 0;
+  }
+
+  strong, b {
+    font-weight: 700;
   }
 
   em, i {
@@ -73,6 +82,13 @@
 
       background-color: currentColor;
     }
+  }
+
+  code {
+    font-family: monospace;
+
+    background-color: #eee;
+    color: #000;
   }
 }
 /* stylelint-enable */

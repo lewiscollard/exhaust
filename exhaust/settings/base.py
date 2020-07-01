@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third-party
+    'markdownx',
     'sorl.thumbnail',
 
     # Project-local things.
@@ -118,3 +119,9 @@ STATICFILES_DIRS = [os.path.join(ROOT_DIR, 'static')]
 
 # Current git HEAD hash, useful for cache invalidation.
 GIT_COMMIT_HASH = os.popen('git rev-parse --short HEAD').read().strip()
+
+# MarkdownX things
+MARKDOWNX_IMAGE_MAX_SIZE = {
+    'size': (1920, 1920),
+    'quality': 90
+}

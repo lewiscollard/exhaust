@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
+from markdownx.models import MarkdownxField
 
 
 class PostQuerySet(models.QuerySet):
@@ -46,7 +47,7 @@ class Post(models.Model):
         blank=True,
     )
 
-    text = models.TextField(
+    text = MarkdownxField(
         null=True,
         blank=True,
     )

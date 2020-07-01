@@ -1,10 +1,12 @@
 from django.contrib import admin
+from markdownx.admin import MarkdownxModelAdmin
+from markdownx.fields import MarkdownxFormField
 
 from .models import Post
 
 
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(MarkdownxModelAdmin):
     exclude = ['author']
 
     prepopulated_fields = {'slug': ['title', 'text']}
