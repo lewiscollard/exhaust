@@ -1,0 +1,30 @@
+{% extends 'admin/base_site.html' %}
+
+{% block responsive %}
+  {{ block.super }}
+
+  <style>
+    .markdownx {
+      display: flex;
+      justify-content: space-between;
+
+      border: 1px solid #ccc;
+    }
+
+    .markdownx .markdownx-editor,
+    .markdownx .markdownx-preview {
+      width: calc(50% - 12px) !important;
+      padding: 10px;
+    }
+
+    .markdownx .markdownx-editor {
+      border: none;
+      border-right: 1px solid #ccc;
+    }
+
+    .markdownx .markdownx-preview > *:first-child {
+      margin-top: 0;
+    }
+  </style>
+
+{% endblock %}
