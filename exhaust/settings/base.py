@@ -19,7 +19,7 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 
 SITE_DOMAIN = 'exhaust.lewiscollard.com'
 SITE_NAME = 'Exhaust'
-SITE_DESCRIPTION = 'a thought dumping ground'
+SITE_DESCRIPTION = 'thoughts on the passing scene'
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
