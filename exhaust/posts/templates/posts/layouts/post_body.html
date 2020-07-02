@@ -30,4 +30,13 @@
       </div>
     </div>
   {% endif %}
+
+  <footer class="post__footer">
+    <p class="post__date">
+      posted {{ object.date|date }}
+      {% if not detail_page %}
+        - <a href="{{ object.get_absolute_url }}">permalink</a>
+      {% endif %}
+    </p>
+  </footer>
 </article>

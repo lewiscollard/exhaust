@@ -1,5 +1,18 @@
-.post__title {
+.post__header {
   margin-bottom: $vr;
+}
 
+.post__title {
   font-weight: 700;
+}
+
+.post__image-wrapper {
+  margin-bottom: $vr;
+}
+
+.post__footer {
+  font-size: 0.75rem;
+  font-style: italic;
+
+  margin-top: $vr;
 }
