@@ -84,8 +84,8 @@ class Post(models.Model):
             return self.title
 
         if self.text:
-            if len(self.text) > 20:
-                return f'{self.text[:18]}...'
+            if len(self.text) > 40:
+                return f'{self.text[:38]}...'
 
         if self.image:
             return 'Image post: {self.image.file.name}'
