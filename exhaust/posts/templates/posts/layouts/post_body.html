@@ -33,7 +33,7 @@
 
   <footer class="post__footer">
     <p class="post__date">
-      posted {{ object.date|date }}
+      posted {{ object.date|date:"Y-m-d" }}
       {% if not detail_page %}
         - <a href="{{ object.get_absolute_url }}">permalink</a>
       {% endif %}
