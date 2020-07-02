@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'markdownx',
     'sorl.thumbnail',
     'reversion',
+    'cachalot',
 
     # Project-local things.
     'exhaust.common',
