@@ -1,12 +1,13 @@
 from django.contrib import admin
 from markdownx.admin import MarkdownxModelAdmin
 from markdownx.fields import MarkdownxFormField
+from reversion.admin import VersionAdmin
 
 from .models import Post
 
 
 @admin.register(Post)
-class PostAdmin(MarkdownxModelAdmin):
+class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
     exclude = ['author']
 
     prepopulated_fields = {'slug': ['title', 'text']}

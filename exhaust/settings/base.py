@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # Third-party
     'markdownx',
     'sorl.thumbnail',
+    'reversion',
 
     # Project-local things.
     'exhaust.common',
