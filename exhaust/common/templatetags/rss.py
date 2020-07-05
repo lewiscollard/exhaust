@@ -26,6 +26,7 @@ def path_to_url(value):
 
     return f'{root}{value}'
 
+
 @register.filter
 def format_rfc2822(value):
     '''
