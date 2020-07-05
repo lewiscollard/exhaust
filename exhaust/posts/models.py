@@ -15,7 +15,13 @@ class PostQuerySet(models.QuerySet):
     def select_published(self):
         return self.filter(
             online=True,
-            date__lte=timezone.now(),
+            # Swapping out the seconds and microseconds to 0 means that the
+            # same query is generated for any particular minute in the day.
+            # This is much more query-caching (i.e. cachalot) friendly, in
+            # both that the same query will be generated for one minute, and
+            # stops the cache filling up with entries that will never get a
+            # hit.
+            date__lte=timezone.now().replace(second=0, microsecond=0),
         )
 
 
