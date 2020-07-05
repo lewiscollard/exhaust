@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
+{% block title %}{% if object.seo_title %}{{ object.seo_title }}{% else %}{{ object }}{% endif %}{% endblock %}
+
 {% block meta %}
   <link rel="canonical" href="{{ object.get_absolute_url }}">
-{% endblock %}
 
-{% block title %}{{ object }}{% endblock %}
+  {% if object.meta_description %}
+    <meta name="description" content="{{ object.meta_description }}">
+  {% endif %}
+{% endblock %}
 
 {% block main %}
   {% include post.body_template %}

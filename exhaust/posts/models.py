@@ -76,6 +76,19 @@ class Post(models.Model):
         on_delete=models.PROTECT
     )
 
+    # SEO things
+    seo_title = models.CharField(
+        'SEO title',
+        max_length=60,
+        null=True,
+        blank=True,
+    )
+
+    meta_description = models.TextField(
+        null=True,
+        blank=True,
+    )
+
     class Meta:
         ordering = ['-date']
 

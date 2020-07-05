@@ -23,6 +23,5 @@ There's nothing in here that is technically interesting or even more-than-trivia
 
 == TODO
 
-* meta descriptions
 * OpenGraph stuff
 * RSS feeds

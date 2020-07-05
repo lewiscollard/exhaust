@@ -7,9 +7,21 @@ from .models import Post
 
 @admin.register(Post)
 class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
-    exclude = ['author']
 
     prepopulated_fields = {'slug': ['title', 'text']}
+
+    fieldsets = [
+        ('', {
+            'fields': ['title', 'slug', 'online'],
+        }),
+        ('Content', {
+            'fields': ['text', ('image', 'alt_text')],
+        }),
+        ('SEO', {
+            'fields': ['seo_title', 'meta_description'],
+            'classes': ['collapse'],
+        }),
+    ]
 
     def save_model(self, request, obj, form, change):
         if not change:
