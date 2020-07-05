@@ -13,7 +13,7 @@ I also knew that if I spent some non-trivial amount of time setting up a site wi
 I almost wanted to write a static site generator myself,
 but that too would have time from anything getting anything done,
 and less on having something approaching a blog.
-Given that I know Django (it is my day job), I thought it would be a good idea to write it in Django.
+I know Django (it is my day job), so I thought it would be a good idea to write it in Django.
 
 That it is probably the ugliest blog in the world is intentional.
 It saves me getting bogged down in making it look nice, and hopefully, gives me more time to write things.
