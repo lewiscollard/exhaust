@@ -1,6 +1,5 @@
 from django.contrib import admin
 from markdownx.admin import MarkdownxModelAdmin
-from markdownx.fields import MarkdownxFormField
 from reversion.admin import VersionAdmin
 
 from .models import Post
