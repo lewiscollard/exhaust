@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import redirect
 from django.views.generic import DetailView, ListView
 
@@ -38,3 +39,26 @@ class PostDetailView(PostMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['detail_page'] = True
         return context
+
+
+class PostFeedView(PostListView):
+    '''An RSS feed for all posts.
+
+    This would, in an idea world, work with Django's feed module. But that API
+    is a mess for the common use case of generating a human-readable RSS feed
+    to plug in to a reader, as well as looking absolutely nothing like any of
+    Django's generic views.
+    '''
+
+    template_name = 'posts/post_feed.html'
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+
+        # allow previewing in DEBUG mode
+        if settings.DEBUG and 'debug' in request.GET:
+            response['Content-Type'] = 'text/plain'
+        else:
+            response['Content-Type'] = 'application/rss+xml'
+
+        return response

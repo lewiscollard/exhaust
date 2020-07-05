@@ -1,0 +1,11 @@
+{% extends object.body_template %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block everything %}
+  <![CDATA[
+  {{ block.super }}
+  ]]>
+{% endblock %}
+

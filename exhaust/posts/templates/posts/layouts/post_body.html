@@ -1,42 +1,48 @@
 {% load assets markdown %}
 
-<article class="post">
-  {% if object.title %}
-    <header class="post__header">
-      {% if detail_page %}
-        <h1 class="post__title">
-          {{ object.title }}
-        </h1>
-      {% else %}
-        <h2 class="post__title">
-          <a href="{{ object.get_absolute_url }}" class="post__title-link">
-            {{ object.title }}
-          </a>
-        </h2>
+{% block everything %}
+  <article class="post">
+    {% block header %}
+      {% if object.title %}
+        <header class="post__header">
+          {% if detail_page %}
+            <h1 class="post__title">
+              {{ object.title }}
+            </h1>
+          {% else %}
+            <h2 class="post__title">
+              <a href="{{ object.get_absolute_url }}" class="post__title-link">
+                {{ object.title }}
+              </a>
+            </h2>
+          {% endif %}
+        </header>
       {% endif %}
-    </header>
-  {% endif %}
+    {% endblock %}
 
-  {% if object.image %}
-    <div class="post__image-wrapper">
-      {% render_image object.image alt_text=object.alt_text %}
-    </div>
-  {% endif %}
-
-  {% if object.text %}
-    <div class="post__text">
-      <div class="markdown">
-        {{ object.text|markdown }}
+    {% if object.image %}
+      <div class="post__image-wrapper">
+        {% render_image object.image alt_text=object.alt_text %}
       </div>
-    </div>
-  {% endif %}
+    {% endif %}
 
-  <footer class="post__footer">
-    <p class="post__date">
-      posted {{ object.date|date:"Y-m-d" }}
-      {% if not detail_page %}
-        - <a href="{{ object.get_absolute_url }}">permalink</a>
-      {% endif %}
-    </p>
-  </footer>
-</article>
+    {% if object.text %}
+      <div class="post__text">
+        <div class="markdown">
+          {{ object.text|markdown }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% block footer %}
+      <footer class="post__footer">
+        <p class="post__date">
+          posted {{ object.date|date:"Y-m-d" }}
+          {% if not detail_page %}
+            - <a href="{{ object.get_absolute_url }}">permalink</a>
+          {% endif %}
+        </p>
+      </footer>
+    {% endblock %}
+  </article>
+{% endblock %}
