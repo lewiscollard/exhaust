@@ -1,3 +1,21 @@
+.article-list__header {
+  margin-bottom: $vr;
+  padding-bottom: $vr;
+
+  border-bottom: 1px solid $color-border;
+}
+
+.article-list__title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.article-list__description {
+  margin-top: $vr;
+
+  line-height: 1.5;
+}
+
 .article-list__item {
   margin-bottom: $vr;
   padding-bottom: $vr;

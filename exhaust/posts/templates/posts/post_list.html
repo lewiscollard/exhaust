@@ -2,6 +2,7 @@
 
 {% block main %}
   <div class="article-list">
+    {% block above_list %}{% endblock %}
     {% for object in object_list %}
       <div class="article-list__item">
         {% include object.body_template with detail_page=False %}

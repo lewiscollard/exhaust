@@ -13,3 +13,17 @@
     <meta name="description" content="{{ object.description }}">
   {% endif %}
 {% endblock %}
+
+{% block above_list %}
+  <header class="article-list__header">
+    <h1 class="article-list__title">
+      Posts filed under &ldquo;{{ object }}&rdquo;
+    </h1>
+
+    {% if object.description %}
+      <p class="article-list__description">
+        {{ object.description|linebreaksbr }}
+      </p>
+    {% endif %}
+  </header>
+{% endblock %}
