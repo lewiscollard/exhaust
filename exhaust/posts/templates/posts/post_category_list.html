@@ -1,11 +1,13 @@
 {% extends 'posts/post_list.html' %}
 
+{% load rss %}
+
 {% block title %}Category: {{ object }}{% endblock %}
 
 {% block meta %}
   {{ block.super }}
 
-  <link rel="canonical" href="{{ object.get_absolute_url }}">
+  <link rel="canonical" href="{{ object.get_absolute_url|path_to_url }}">
 
   {% if object.description %}
     <meta name="description" content="{{ object.description }}">

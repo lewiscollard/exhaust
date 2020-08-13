@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
+{% load rss %}
+
 {% block title %}{% if object.seo_title %}{{ object.seo_title }}{% else %}{{ object }}{% endif %}{% endblock %}
 
 {% block meta %}
-  <link rel="canonical" href="{{ object.get_absolute_url }}">
+  <link rel="canonical" href="{{ object.get_absolute_url|path_to_url }}">
 
   {% if object.meta_description %}
     <meta name="description" content="{{ object.meta_description }}">
