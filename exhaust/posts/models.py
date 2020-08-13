@@ -82,6 +82,11 @@ class Post(models.Model):
         on_delete=models.PROTECT
     )
 
+    categories = models.ManyToManyField(
+        'posts.Category',
+        blank=True,
+    )
+
     # SEO things
     seo_title = models.CharField(
         'SEO title',
@@ -122,3 +127,27 @@ class Post(models.Model):
         if self.slug:
             return reverse('posts:post_detail', kwargs={'pk': self.pk, 'slug': self.slug})
         return reverse('posts:post_detail', kwargs={'pk': self.pk})
+
+
+class Category(models.Model):
+    title = models.CharField(
+        max_length=20,
+    )
+
+    slug = models.SlugField()
+
+    description = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ['title']
+        # avoid default rendering of "Categorys"
+        verbose_name_plural = 'categories'
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('posts:post_category_list', kwargs={'slug': self.slug})

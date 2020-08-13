@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView, ListView
 
-from .models import Post
+from .models import Category, Post
 
 
 class PostMixin:
@@ -13,7 +13,22 @@ class PostMixin:
 
 
 class PostListView(PostMixin, ListView):
-    pass
+    def get_queryset(self):
+        # Prefetch categories so we have a single query for loading categories,
+        # rather than N queries for N posts.
+        return super().get_queryset().prefetch_related('categories')
+
+
+class PostCategoryListView(PostMixin, ListView):
+    template_name = 'posts/post_category_list.html'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(categories__slug=self.kwargs['slug']).distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['object'] = get_object_or_404(Category, slug=self.kwargs['slug'])
+        return context
 
 
 class PostDetailView(PostMixin, DetailView):

@@ -1,0 +1,13 @@
+{% extends 'posts/post_list.html' %}
+
+{% block title %}Category: {{ object }}{% endblock %}
+
+{% block meta %}
+  {{ block.super }}
+
+  <link rel="canonical" href="{{ object.get_absolute_url }}">
+
+  {% if object.description %}
+    <meta name="description" content="{{ object.description }}">
+  {% endif %}
+{% endblock %}
