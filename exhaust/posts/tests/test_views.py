@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
 
-from ..models import Post
+from ..models import Category, Post
 
 
 class PostViewsTestCase(TestCase):
@@ -38,3 +38,16 @@ class PostViewsTestCase(TestCase):
         # slug redirects.
         response = self.client.get(reverse('posts:post_detail', kwargs={'pk': post_without_slug.pk, 'slug': 'anything-at-all'}))
         self.assertRedirects(response, post_without_slug.get_absolute_url(), status_code=301, target_status_code=200)
+
+    def test_category_view(self):
+        category = Category.objects.create(title='Test category', slug='test-category')
+        post = Post.objects.create(title='Test post', author=self.author, slug='test-post')
+        post.categories.add(category)
+
+        # create another uncategorised post
+        other_post = Post.objects.create(title='Test post', author=self.author, slug='test-post')
+
+        response = self.client.get(reverse('posts:post_category_list', kwargs={'slug': category.slug}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data['object'], category)
+        self.assertNotIn(other_post, response.context_data['object_list'])
