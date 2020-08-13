@@ -1,12 +1,34 @@
 {% extends 'base.html' %}
 
+{% load pagination %}
+
 {% block main %}
   <div class="article-list">
     {% block above_list %}{% endblock %}
-    {% for object in object_list %}
-      <div class="article-list__item">
-        {% include object.body_template with detail_page=False %}
+    <div class="article-list__items">
+      {% for object in object_list %}
+        <div class="article-list__item">
+          {% include object.body_template with detail_page=False %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if page_obj and page_obj.has_other_pages %}
+      <div class="article-list__paginator">
+        <nav class="paginator">
+          {% if page_obj.has_next %}
+            <div class="paginator__item paginator__item--next">
+              <a rel="next" href="{% pagination_url page_obj.next_page_number %}" class="paginator__link">&lt; Older posts</a>
+            </div>
+          {% endif %}
+
+          {% if page_obj.has_previous %}
+            <div class="paginator__item paginator__item--previous">
+              <a rel="prev" href="{% pagination_url page_obj.previous_page_number %}" class="paginator__link">Newer posts &gt;</a>
+            </div>
+          {% endif %}
+        </nav>
       </div>
-    {% endfor %}
+    {% endif %}
   </div>
 {% endblock %}

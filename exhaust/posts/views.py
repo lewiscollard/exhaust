@@ -13,13 +13,15 @@ class PostMixin:
 
 
 class PostListView(PostMixin, ListView):
+    paginate_by = 8
+
     def get_queryset(self):
         # Prefetch categories so we have a single query for loading categories,
         # rather than N queries for N posts.
         return super().get_queryset().prefetch_related('categories')
 
 
-class PostCategoryListView(PostMixin, ListView):
+class PostCategoryListView(PostListView):
     template_name = 'posts/post_category_list.html'
 
     def get_queryset(self):
