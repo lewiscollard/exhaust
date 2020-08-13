@@ -12,7 +12,7 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
 
     fieldsets = [
         ('', {
-            'fields': ['title', 'slug', 'online'],
+            'fields': ['title', 'date', 'slug', 'online'],
         }),
         ('Content', {
             'fields': ['text', ('image', 'alt_text')],
