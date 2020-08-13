@@ -14,7 +14,7 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
 
     filter_horizontal = ['categories']
 
-    list_display = ['__str__', 'get_categories', 'date']
+    list_display = ['__str__', 'get_categories', 'online', 'date']
 
     fieldsets = [
         ('', {
