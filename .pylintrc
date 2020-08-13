@@ -1,7 +1,7 @@
 [MASTER]
 
 profile=no
-ignore=tests, urls.py, migrations
+ignore=urls.py, migrations
 persistent=yes
 jobs=0
 score=no
