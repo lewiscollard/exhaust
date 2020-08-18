@@ -21,7 +21,7 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
             'fields': ['title', 'date', 'slug', 'online'],
         }),
         ('Content', {
-            'fields': ['text', ('image', 'alt_text'), 'categories'],
+            'fields': ['text', ('image', 'alt_text'), 'link', 'categories'],
         }),
         ('SEO', {
             'fields': ['seo_title', 'meta_description'],

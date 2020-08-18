@@ -47,6 +47,11 @@ class Post(models.Model):
         blank=True,
     )
 
+    link = models.URLField(
+        null=True,
+        blank=True,
+    )
+
     # Optional slug, for nicer URLs.
     slug = models.SlugField(
         null=True,
@@ -122,6 +127,9 @@ class Post(models.Model):
         # upgrade this later to handle various different kinds of post
         # layouts
         return 'posts/layouts/post_body.html'
+
+    def get_title_link_url(self):
+        return self.link or self.get_absolute_url()
 
     def get_absolute_url(self):
         if self.slug:

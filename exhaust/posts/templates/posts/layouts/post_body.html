@@ -5,13 +5,13 @@
     {% block header %}
       {% if object.title %}
         <header class="post__header">
-          {% if detail_page %}
+          {% if detail_page and not object.link %}
             <h1 class="post__title">
               {{ object.title }}
             </h1>
           {% else %}
             <h2 class="post__title">
-              <a href="{{ object.get_absolute_url }}" class="post__title-link">
+              <a href="{% if object.link %}{{ object.link }}{% else %}{{ object.get_absolute_url }}{% endif %}" class="post__title-link {% if object.link %}post__title-link--external{% endif %}">
                 {{ object.title }}
               </a>
             </h2>
