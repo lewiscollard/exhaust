@@ -1,6 +1,6 @@
 argon2-cffi==20.1.0
 commonmark==0.9.1
-Django==2.2.13
+Django==2.2.15
 django-cachalot==2.2.2
 django-reversion==3.0.7
 flake8==3.8.3
