@@ -128,13 +128,13 @@ class Post(models.Model):
         # layouts
         return 'posts/layouts/post_body.html'
 
-    def get_title_link_url(self):
-        return self.link or self.get_absolute_url()
-
     def get_absolute_url(self):
         if self.slug:
             return reverse('posts:post_detail', kwargs={'pk': self.pk, 'slug': self.slug})
         return reverse('posts:post_detail', kwargs={'pk': self.pk})
+
+    def get_title_link_url(self):
+        return self.link or self.get_absolute_url()
 
 
 class Category(models.Model):
