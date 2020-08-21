@@ -1,3 +1,5 @@
+import secrets
+
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -40,6 +42,13 @@ class Post(models.Model):
     date = models.DateTimeField(
         default=timezone.now
     )
+
+    # It is possible to not have a slug if we only have an image. I also want
+    # the option to change the slug while keeping a persistent URL (see views
+    # for how this works), so I want some kind of persistent identifier, and
+    # PKs offend me for irrational reasons. This will be automatically
+    # populated when save() is called.
+    identifier = models.IntegerField()
 
     title = models.CharField(
         max_length=280,
@@ -130,11 +139,19 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         if self.slug:
-            return reverse('posts:post_detail', kwargs={'pk': self.pk, 'slug': self.slug})
-        return reverse('posts:post_detail', kwargs={'pk': self.pk})
+            return reverse('posts:post_detail', kwargs={'identifier': self.identifier, 'slug': self.slug})
+        return reverse('posts:post_detail', kwargs={'identifier': self.identifier})
 
     def get_title_link_url(self):
         return self.link or self.get_absolute_url()
+
+    def save(self, *args, **kwargs):  # pylint:disable=signature-differs
+        if not self.identifier:
+            # probs enough for now as it's just me
+            # (dear future employers: I would never write something this crappy
+            # in code I write for you, promise)
+            self.identifier = secrets.randbelow(2**31)
+        super().save(*args, **kwargs)
 
 
 class Category(models.Model):

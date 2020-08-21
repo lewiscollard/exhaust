@@ -57,6 +57,9 @@ class PostDetailView(PostMixin, DetailView):
         context['detail_page'] = True
         return context
 
+    def get_object(self, queryset=None):
+        return self.get_queryset().get(identifier=self.kwargs['identifier'])
+
 
 class PostFeedView(PostListView):
     '''An RSS feed for all posts.

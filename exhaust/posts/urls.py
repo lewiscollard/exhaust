@@ -9,6 +9,6 @@ urlpatterns = [
     url(r'^$', views.PostListView.as_view(), name='post_list'),
     path('category/<slug:slug>/', views.PostCategoryListView.as_view(), name='post_category_list'),
     path('feed/', views.PostFeedView.as_view(), name='post_feed'),
-    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
-    path('post/<int:pk>-<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('post/<int:identifier>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('post/<slug:slug>-<int:identifier>/', views.PostDetailView.as_view(), name='post_detail'),
 ]
