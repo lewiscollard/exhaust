@@ -1,4 +1,4 @@
-<div class='image'>
+<div class='image' style="max-width: {{ original_width }}px">
   <div class="image__padder" style="padding-bottom: {{ aspect_padding }}%"></div>
   <picture {% if not alt_text %}aria-hidden="true"{% endif %}>
     {% for format, widths in sources.items %}

@@ -3,8 +3,8 @@ from commonmark.render.html import HtmlRenderer
 from django.template.loader import render_to_string
 from django.urls import NoReverseMatch, resolve, reverse
 
-from ..common.templatetags.assets import render_image
-from .models import PostImage
+from ..posts.models import PostImage
+from .images import render_multiformat_image
 
 
 class ExhaustHtmlRenderer(HtmlRenderer):
@@ -39,8 +39,9 @@ class ExhaustHtmlRenderer(HtmlRenderer):
             image = PostImage.objects.get(pk=kwargs['pk'])
         except PostImage.DoesNotExist:
             return self.lit('')
+        print(render_multiformat_image(image.image, alt_text=node.title, max_width=1280))
         return self.lit(
-            render_to_string('assets/image.html', render_image({}, image.image, alt_text=node.title, max_width=1280))
+            render_multiformat_image(image.image, alt_text=node.title, max_width=1280)
         )
 
 
