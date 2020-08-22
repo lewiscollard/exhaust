@@ -18,6 +18,8 @@
   <header class="article-list__header">
     <h1 class="article-list__title">
       Posts filed under &ldquo;{{ object }}&rdquo;
+
+      {% if page_obj.number > 1 %}(page {{ page_obj.number }}){% endif %}
     </h1>
 
     {% if object.description %}
