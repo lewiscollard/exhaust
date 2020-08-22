@@ -1,5 +1,7 @@
 import os
 
+from django.urls import reverse_lazy
+
 # Root directory of the 'exhaust' project.
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 # Root directory of the repository.
@@ -131,3 +133,5 @@ MARKDOWNX_IMAGE_MAX_SIZE = {
     'size': (1920, 1920),
     'quality': 90
 }
+
+MARKDOWNX_UPLOAD_URLS_PATH = reverse_lazy('posts:image_upload')

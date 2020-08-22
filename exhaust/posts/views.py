@@ -1,8 +1,11 @@
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, FormView, ListView, RedirectView
 
-from .models import Category, Post
+from .forms import ImageUploadForm
+from .models import Category, Post, PostImage
 
 
 class PostMixin:
@@ -82,3 +85,35 @@ class PostFeedView(PostListView):
             response['Content-Type'] = 'application/rss+xml'
 
         return response
+
+
+class ImageRedirectView(LoginRequiredMixin, RedirectView):
+    '''
+    A view that redirects to an image, based on its ID. This uses
+    LoginRequiredMixin as it is *only* intended to be used for previewing
+    Markdown in the admin. When said markdown is rendered on the front end
+    the image will be rendered via a different means (extract the PK from the
+    URL, then render it in a bunch of sizes). We don't want to do that in the
+    admin because it's quite expensive the first time.
+    '''
+    def get_redirect_url(self, *args, **kwargs):
+        # The pylint disable is because it can't see the 'image' for unclear
+        # reasons.
+        return PostImage.objects.get(pk=self.kwargs['pk']).image.url  # pylint:disable=no-member
+
+
+class ImageUploadView(LoginRequiredMixin, FormView):
+    '''
+    A replacement for MarkdownX's upload view. Rather than saving it directly
+    to storage, it will store it to the PostImage model.
+    '''
+    form_class = ImageUploadForm
+
+    def form_invalid(self, form):
+        return JsonResponse({})
+
+    def form_valid(self, form):
+        form.save()
+        return JsonResponse({
+            'image_code': '![]({})'.format(form.instance.get_absolute_url())
+        })

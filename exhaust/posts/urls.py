@@ -11,4 +11,7 @@ urlpatterns = [
     path('feed/', views.PostFeedView.as_view(), name='post_feed'),
     path('post/<int:identifier>/', views.PostDetailView.as_view(), name='post_detail'),
     path('post/<slug:slug>-<int:identifier>/', views.PostDetailView.as_view(), name='post_detail'),
+    # Media upload stuff for the admin.
+    path('image-upload/', views.ImageUploadView.as_view(), name='image_upload'),
+    path('image-redirect/<int:pk>/', views.ImageRedirectView.as_view(), name='image_redirect'),
 ]

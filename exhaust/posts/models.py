@@ -154,6 +154,34 @@ class Post(models.Model):
         super().save(*args, **kwargs)
 
 
+class PostImage(models.Model):
+    '''
+    A model for storing a in-text image. See `ImageUploadView` in views.py;
+    this isn't really useful by itself.
+    '''
+
+    image = models.ImageField()
+
+    title = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+
+    timestamp = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return self.title or self.file.name  # pylint:disable=no-member
+
+    def get_absolute_url(self):
+        return reverse('posts:image_redirect', kwargs={'pk': self.pk})
+
+
 class Category(models.Model):
     title = models.CharField(
         max_length=20,
