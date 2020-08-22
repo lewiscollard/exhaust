@@ -2,7 +2,8 @@
    v5.0.1 | 20191019
    License: none (public domain)
 */
-
+/* Disabling stylelint because vendor file I don't care to tidy up */
+/* stylelint-disable */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -50,3 +51,4 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+/* stylelint-enable */

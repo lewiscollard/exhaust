@@ -5631,7 +5631,7 @@ style-search@^0.1.0:
   resolved "https://registry.yarnpkg.com/style-search/-/style-search-0.1.0.tgz#7958c793e47e32e07d2b5cafe5c0bf8e12e77902"
   integrity sha1-eVjHk+R+MuB9K1yv5cC/jhLneQI=
 
-stylelint-order@^4.0.0:
+stylelint-order@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/stylelint-order/-/stylelint-order-4.1.0.tgz#692d05b7d0c235ac66fcf5ea1d9e5f08a76747f6"
   integrity sha512-sVTikaDvMqg2aJjh4r48jsdfmqLT+nqB1MOsaBnvM3OwLx4S+WXcsxsgk5w18h/OZoxZCxuyXMh61iBHcj9Qiw==
@@ -5645,7 +5645,7 @@ stylelint-z-index-value-constraint@^1.1.0:
   resolved "https://registry.yarnpkg.com/stylelint-z-index-value-constraint/-/stylelint-z-index-value-constraint-1.1.0.tgz#aa70f5be05e96f81f38008bc373389ae85a3baed"
   integrity sha512-+G8gKfAi21vr4i2YnsnyRNpQIc1AtyqkyQS5c9SgEqjRj4MjIphks632/bsYkDw7mlfZLo8MsyhTaQpMjfktMg==
 
-stylelint@^13.4.1:
+stylelint@13.6.1:
   version "13.6.1"
   resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-13.6.1.tgz#cc1d76338116d55e8ff2be94c4a4386c1239b878"
   integrity sha512-XyvKyNE7eyrqkuZ85Citd/Uv3ljGiuYHC6UiztTR6sWS9rza8j3UeQv/eGcQS9NZz/imiC4GKdk1EVL3wst5vw==
