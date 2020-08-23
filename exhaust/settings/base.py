@@ -17,7 +17,7 @@ with open('.secret_key') as fd:
 
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [SITE_DOMAIN, f'www.{SITE_DOMAIN}', '127.0.0.1']
 
 INSTALLED_APPS = [
     # Standard Django stuff.
