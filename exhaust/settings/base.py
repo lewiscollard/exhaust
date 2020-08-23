@@ -1,4 +1,5 @@
 import os
+import subprocess  # nosec
 
 from django.urls import reverse_lazy
 
@@ -140,7 +141,7 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(ROOT_DIR, 'static')]
 
 # Current git HEAD hash, useful for cache invalidation.
-GIT_COMMIT_HASH = os.popen('git rev-parse --short HEAD').read().strip()
+GIT_COMMIT_HASH = subprocess.check_output(['/usr/bin/git', 'rev-parse', '--short', 'HEAD']).decode('utf8').strip()  # nosec
 
 # MarkdownX things
 MARKDOWNX_IMAGE_MAX_SIZE = {

@@ -6,7 +6,7 @@
     "build": "webpack --mode=production",
     "lint": "yarn lint:css; yarn lint:python",
     "lint:css": "stylelint assets/scss/**/*.scss",
-    "lint:python": "pylint exhaust/ && flake8 exhaust/ && isort --check-only --diff"
+    "lint:python": "pylint exhaust/ && flake8 exhaust/ && isort --check-only --diff && bandit -rq exhaust/"
   },
   "dependencies": {
     "@babel/core": "^7.9.6",
