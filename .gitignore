@@ -2,6 +2,6 @@ node_modules
 .venv
 *.pyc
 yarn-error.log
-# My local manage.py script, with secret key in environment
-/m
+# Carries Django's SECRET_KEY.
+.secret_key
 static/build

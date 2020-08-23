@@ -11,7 +11,9 @@ SITE_DOMAIN = 'exhaust.lewiscollard.com'
 SITE_NAME = 'Exhaust'
 SITE_DESCRIPTION = 'something resembling a blog, by Lewis Collard'
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+with open('.secret_key') as fd:
+    SECRET_KEY = fd.read().strip()
+
 
 DEBUG = False
 
