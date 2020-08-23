@@ -1,0 +1,27 @@
+#!/bin/bash
+
+NAME="exhaust"
+DJANGODIR=/var/www/exhaust
+USER=exhaust
+GROUP=webapps
+NUM_WORKERS=`expr 2 \* \`cat /proc/cpuinfo | grep processor | wc -l\` + 1`
+DJANGO_WSGI_MODULE=exhaust.wsgi
+
+echo "Starting $NAME as `whoami`"
+
+# Activate the virtual environment.
+cd $DJANGODIR
+source .venv/bin/activate
+
+export DJANGO_SETTINGS_MODULE=exhaust.settings.production
+export DB_USER=exhaust
+export DB_NAME=exhaust
+
+# Programs meant to be run under supervisor should not daemonize themselves
+# (do not use --daemon).
+exec .venv/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+    --name $NAME \
+      --workers $NUM_WORKERS \
+      --user=$USER --group=$GROUP \
+      --log-level=info \
+      --bind=127.0.0.1:2000
