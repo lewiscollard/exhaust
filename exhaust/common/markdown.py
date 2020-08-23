@@ -1,6 +1,5 @@
 from commonmark.blocks import Parser
 from commonmark.render.html import HtmlRenderer
-from django.template.loader import render_to_string
 from django.urls import NoReverseMatch, resolve, reverse
 
 from ..posts.models import PostImage
