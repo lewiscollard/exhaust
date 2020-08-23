@@ -38,7 +38,6 @@ class ExhaustHtmlRenderer(HtmlRenderer):
             image = PostImage.objects.get(pk=kwargs['pk'])
         except PostImage.DoesNotExist:
             return self.lit('')
-        print(render_multiformat_image(image.image, alt_text=node.title, max_width=1280))
         return self.lit(
             render_multiformat_image(image.image, alt_text=node.title, max_width=1280)
         )
