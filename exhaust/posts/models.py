@@ -184,7 +184,7 @@ class PostImage(models.Model):
 
 class Category(models.Model):
     title = models.CharField(
-        max_length=20,
+        max_length=100,
     )
 
     slug = models.SlugField()
