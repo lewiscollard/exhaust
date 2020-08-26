@@ -18,7 +18,7 @@ with open(os.path.join(ROOT_DIR, '.secret_key')) as fd:
 
 DEBUG = False
 
-ALLOWED_HOSTS = [SITE_DOMAIN, f'www.{SITE_DOMAIN}', '127.0.0.1']
+ALLOWED_HOSTS = [SITE_DOMAIN, f'www.{SITE_DOMAIN}', '127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     # Standard Django stuff.
