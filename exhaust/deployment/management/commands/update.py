@@ -30,7 +30,6 @@ class Command(BaseCommand):
         connection = fabric.Connection(conf['HOST'], user=conf['SUDO_USER'])
         connection.sudo(f'git -C {conf["ROOT_DIR"]} pull', user=conf['USER'])
 
-
         # Build frontend stuff. There's much of this "bash -c" stuff; it's
         # unavoidable as we need to use shell scripts that play with their
         # env :(
