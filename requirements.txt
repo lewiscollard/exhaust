@@ -14,4 +14,4 @@ pylint==2.5.3
 pylint-django==2.0.15
 python-memcached==1.59
 sorl-thumbnail==12.6.3
--e git+ssh://git@github.com/lewiscollard/django-markdownx.git@master#egg=django-markdownx
+-e git+ssh://git@github.com/lewiscollard/django-markdownx.git@no-anonymous-uploads#egg=django-markdownx
