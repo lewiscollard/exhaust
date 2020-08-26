@@ -12,7 +12,7 @@ SITE_DOMAIN = 'exhaust.lewiscollard.com'
 SITE_NAME = 'Exhaust'
 SITE_DESCRIPTION = 'something resembling a blog, by Lewis Collard'
 
-with open('.secret_key') as fd:
+with open(os.path.join(ROOT_DIR, '.secret_key')) as fd:
     SECRET_KEY = fd.read().strip()
 
 
@@ -140,8 +140,10 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(ROOT_DIR, 'static')]
 
-# Current git HEAD hash, useful for cache invalidation.
-GIT_COMMIT_HASH = subprocess.check_output(['/usr/bin/git', 'rev-parse', '--short', 'HEAD']).decode('utf8').strip()  # nosec
+# Current git HEAD hash, useful for cache invalidation. -C ROOT_DIR ensures
+# Git is running in the same directory that 'manage.py' lives in; when we're
+# using management commands we cannot assume this is the case.
+GIT_COMMIT_HASH = subprocess.check_output(['/usr/bin/git', '-C', ROOT_DIR, 'rev-parse', '--short', 'HEAD']).decode('utf8').strip()  # nosec
 
 # MarkdownX things
 MARKDOWNX_IMAGE_MAX_SIZE = {
@@ -156,6 +158,6 @@ DEPLOYMENT = {
     'HOST': '178.128.170.126',
     'USER': 'exhaust',
     'SUDO_USER': 'deploy',
-    'ROOT_DIR': '/var/www/exhaust/',
+    'ROOT_DIR': '/var/www/exhaust',
     'DJANGO_SETTINGS_MODULE': 'exhaust.settings.production',
 }
