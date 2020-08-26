@@ -15,9 +15,6 @@ from django.core.management.base import BaseCommand
 class Command(BaseCommand):
     def handle(self, *args, **options):
         conf = settings.DEPLOYMENT
-        django_env = {
-            'DJANGO_SETTINGS_MODULE': conf['DJANGO_SETTINGS_MODULE']
-        }
 
         connection = fabric.Connection(conf['HOST'], user=conf['SUDO_USER'])
         connection.sudo('ls', user=conf['USER'])
@@ -29,9 +26,10 @@ class Command(BaseCommand):
         self.sudo_cd(connection, conf['ROOT_DIR'], 'rm -rf .venv', user=conf['USER'])
         self.sudo_cd(connection, conf['ROOT_DIR'], 'virtualenv -p python3.8 .venv', user=conf['USER'])
         self.sudo_cd(connection, conf['ROOT_DIR'], 'source .venv/bin/activate && pip install -r requirements.txt', user=conf['USER'])
+        settings_file = conf['DJANGO_SETTINGS_MODULE']
         # Collect static files and migrate DB.
-        self.sudo_cd(connection, conf['ROOT_DIR'], 'source .venv/bin/activate && ./manage.py collectstatic --noinput -l', user=conf['USER'], env=django_env)
-        self.sudo_cd(connection, conf['ROOT_DIR'], 'source .venv/bin/activate && echo yes yes | ./manage.py migrate', user=conf['USER'], env=django_env)
+        self.sudo_cd(connection, conf['ROOT_DIR'], f'source .venv/bin/activate && ./manage.py collectstatic --noinput -l --settings {settings_file}', user=conf['USER'])
+        self.sudo_cd(connection, conf['ROOT_DIR'], f'source .venv/bin/activate && echo yes yes | ./manage.py migrate --settings {settings_file}', user=conf['USER'])
 
         connection.sudo('service memcached restart')
         connection.sudo('supervisorctl restart all')
