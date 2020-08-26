@@ -51,6 +51,10 @@
           {% if not detail_page %}
             - <a href="{{ object.get_absolute_url }}">permalink</a>
           {% endif %}
+
+          {% if request.user.is_superuser %}
+            - <a href="{% url 'admin:posts_post_change' object.pk %}" target="_blank">edit this</a>
+          {% endif %}
         </p>
       </footer>
     {% endblock %}
