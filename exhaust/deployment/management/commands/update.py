@@ -7,6 +7,10 @@ https://github.com/onespacemedia/server-management/blob/develop/server_managemen
 Rewritten entirely to use a modern Fabric and to remove cleverness around venv
 (a small amount of downtime during deploys is OK for me).
 '''
+# We use posixpath because we want it to use Unix joining rules, rather than
+# whatever is on the local system (not that I intend to use anything else).
+import posixpath
+
 import fabric
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -16,27 +20,29 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         conf = settings.DEPLOYMENT
 
-        connection = fabric.Connection(conf['HOST'], user=conf['SUDO_USER'])
-        connection.sudo('ls', user=conf['USER'])
+        # Make my fstrings a little less ugly.
+        root_path = conf['ROOT_DIR']
+        venv_path = posixpath.join(root_path, '.venv')
+        venv_activate_path = posixpath.join(venv_path, 'bin/activate')
+        requirements_path = posixpath.join(root_path, 'requirements.txt')
+        managepy_path = posixpath.join(root_path, 'manage.py')
 
-        self.sudo_cd(connection, conf['ROOT_DIR'], 'git pull', user=conf['USER'])
-        # Build frontend stuff.
-        self.sudo_cd(connection, conf['ROOT_DIR'], '. ~/.nvm/nvm.sh && nvm install && yarn && yarn run build', user=conf['USER'])
+        connection = fabric.Connection(conf['HOST'], user=conf['SUDO_USER'])
+        connection.sudo(f'git -C {conf["ROOT_DIR"]} pull', user=conf['USER'])
+
+
+        # Build frontend stuff. There's much of this "bash -c" stuff; it's
+        # unavoidable as we need to use shell scripts that play with their
+        # env :(
+        connection.sudo(f'bash -c "source ~/.nvm/nvm.sh && cd {root_path} && nvm install && yarn && yarn run build"', user=conf['USER'])
         # Nuke venv & rebuild.
-        self.sudo_cd(connection, conf['ROOT_DIR'], 'rm -rf .venv', user=conf['USER'])
-        self.sudo_cd(connection, conf['ROOT_DIR'], 'virtualenv -p python3.8 .venv', user=conf['USER'])
-        self.sudo_cd(connection, conf['ROOT_DIR'], 'source .venv/bin/activate && pip install -r requirements.txt', user=conf['USER'])
+        connection.sudo(f'rm -rf {venv_path}', user=conf['USER'])
+        connection.sudo(f'virtualenv -p python3.8 {venv_path}', user=conf['USER'])
+        connection.sudo(f'bash -c "source {venv_activate_path} && pip install -r {requirements_path}"', user=conf['USER'])
         settings_file = conf['DJANGO_SETTINGS_MODULE']
         # Collect static files and migrate DB.
-        self.sudo_cd(connection, conf['ROOT_DIR'], f'source .venv/bin/activate && ./manage.py collectstatic --noinput -l --settings {settings_file}', user=conf['USER'])
-        self.sudo_cd(connection, conf['ROOT_DIR'], f'source .venv/bin/activate && echo yes yes | ./manage.py migrate --settings {settings_file}', user=conf['USER'])
+        connection.sudo(f'bash -c "source {venv_activate_path} && {managepy_path} collectstatic --noinput -l --settings {settings_file}"', user=conf['USER'])
+        connection.sudo(f'bash -c "source {venv_activate_path} && echo yes yes | {managepy_path} migrate --settings {settings_file}"', user=conf['USER'])
 
         connection.sudo('service memcached restart')
         connection.sudo('supervisorctl restart all')
-
-    def sudo_cd(self, connection, path, command, user=None, **kwargs):
-        # Workaround (and not a nice one) for a bug in invoke wherein you
-        # can't use the sudo *and* cd context managers.
-        # https://github.com/pyinvoke/invoke/issues/459
-        user = user or 'root'
-        connection.sudo(f'bash -c "cd {path} && {command}"', user=user, **kwargs)
