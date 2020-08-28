@@ -1,7 +1,13 @@
-/* stylelint-disable selector-max-universal */
+/* stylelint-disable selector-max-universal, selector-max-type */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+sup {
+  font-size: 0.8em;
+  line-height: 1;
+  vertical-align: super;
 }
 /* stylelint-enable */
