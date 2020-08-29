@@ -2,7 +2,7 @@
   <div class="image__padder" style="padding-bottom: {{ aspect_padding }}%"></div>
   <picture {% if not alt_text %}aria-hidden="true"{% endif %}>
     {% for format, widths in sources.items %}
-      <source srcset="{% for width in widths %}{{ width.url }} {{ width.width}}w{% if not loop.last %}, {% endif %}{% endfor %}" type="{{ format }}">
+      <source srcset="{% for width in widths %}{{ width.url }} {{ width.width}}w{% if not forloop.last %}, {% endif %}{% endfor %}" type="{{ format }}">
     {% endfor %}
 
     <img class="image__image"
