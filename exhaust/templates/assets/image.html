@@ -1,13 +1,19 @@
+{% load rss %}
+{% comment %}
+  We use the rss library for converting /relative/images/paths into
+  a full URL with procotol & domain.
+{% endcomment %}
+
 <div class='image' style="max-width: {{ original_width }}px">
   <div class="image__padder" style="padding-bottom: {{ aspect_padding }}%"></div>
   <picture {% if not alt_text %}aria-hidden="true"{% endif %}>
     {% for format, widths in sources.items %}
-      <source srcset="{% for width in widths %}{{ width.url }} {{ width.width}}w{% if not forloop.last %}, {% endif %}{% endfor %}" type="{{ format }}">
+      <source srcset="{% for width in widths %}{{ width.url|path_to_url }} {{ width.width}}w{% if not forloop.last %}, {% endif %}{% endfor %}" type="{{ format }}">
     {% endfor %}
 
     <img class="image__image"
          loading="lazy"
-         src="{{ image.url }}"
+         src="{{ image.url|path_to_url }}"
          alt="{{ alt_text }}"
     >
   </picture>
