@@ -1,5 +1,6 @@
 argon2-cffi==20.1.0
 bandit==1.6.2
+beautifulsoup4==4.9.1
 commonmark==0.9.1
 Django==2.2.15
 django-cachalot==2.2.2

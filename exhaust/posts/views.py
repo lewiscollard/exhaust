@@ -80,9 +80,9 @@ class PostFeedView(PostListView):
 
         # allow previewing in DEBUG mode
         if settings.DEBUG and 'debug' in request.GET:
-            response['Content-Type'] = 'text/plain'
+            response['Content-Type'] = 'text/plain; charset=utf-8'
         else:
-            response['Content-Type'] = 'application/rss+xml'
+            response['Content-Type'] = 'application/rss+xml; charset=utf-8'
 
         return response
 

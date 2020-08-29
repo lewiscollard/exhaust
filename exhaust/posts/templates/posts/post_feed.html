@@ -23,7 +23,9 @@
         <description>{% if object.meta_description %}{{ object.meta_description }}{% endif %}</description>
 
         <content:encoded>
-          {% include 'posts/post_rss_item.html' %}
+          <![CDATA[
+          {% rss_post_body object %}
+          ]]>
         </content:encoded>
       </item>
     {% endfor %}
