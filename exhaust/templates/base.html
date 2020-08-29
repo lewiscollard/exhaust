@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="LeuIuUyPpFkUmbRYvfIYrYxTXTyto9r2L_jao7aeEiI">
-    <link rel="stylesheet" href="{% static 'build/webpack/style.css' %}">
+    <link rel="stylesheet" href="{% static 'build/webpack/style.css' %}?last={{ settings.GIT_COMMIT_HASH }}">
 
     {% block meta %}{% endblock %}
     <title>{% block title %}{{ settings.SITE_NAME }} - {{ settings.SITE_DESCRIPTION }}{% endblock %}</title>
