@@ -1,9 +1,6 @@
 [MASTER]
-
-profile=no
 ignore=migrations
-persistent=yes
-jobs=0
+jobs=2
 score=no
 load-plugins=pylint_django
 
