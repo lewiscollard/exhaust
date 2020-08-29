@@ -10,7 +10,7 @@
     <description>{{ settings.SITE_DESCRIPTION }}</description>
     <link>{{ '/'|path_to_url }}</link>
     <language>en-GB</language>
-    {% url 'posts:feed' as feed_url %}
+    {% url 'posts:post_feed' as feed_url %}
     <atom:link href="{{ feed_url|path_to_url }}" rel="self" type="application/rss+xml" />
 
     {% for object in object_list %}
