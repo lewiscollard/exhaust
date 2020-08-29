@@ -6,6 +6,7 @@ django-cachalot==2.2.2
 django-reversion==3.0.7
 fabric==2.5.0
 flake8==3.8.3
+flake8-use-fstring==1.1
 gunicorn==20.0.4
 isort==4.3.21
 Pillow==7.1.2

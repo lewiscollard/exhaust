@@ -44,7 +44,7 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
         # handy edit link to the categories too.
         return format_html_join(
             ',',
-            '<a href="{}">{}</a>',
+            '<a href="{}">{}</a>',  # noqa:FS003
             [
                 (reverse('admin:posts_category_change', args=[category.pk]), category.title)
                 for category in obj.categories.all()

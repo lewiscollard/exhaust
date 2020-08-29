@@ -126,7 +126,7 @@ class Post(models.Model):
                 return f'{self.text[:38]}...'
 
         if self.image:
-            return 'Image post: {self.image.file.name}'
+            return f'Image post: {self.image.file.name}'
 
         # Should never happen, but make pylint happy
         return '(Broken post)'

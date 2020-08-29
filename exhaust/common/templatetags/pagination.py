@@ -20,5 +20,5 @@ def pagination_url(context, page_number):
     else:
         params[context.get('pagination_key', 'page')] = page_number
     if params:
-        url += '?{}'.format(params.urlencode())
+        url = f'{url}?{params.urlencode()}'
     return url

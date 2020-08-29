@@ -115,5 +115,5 @@ class ImageUploadView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return JsonResponse({
-            'image_code': '![]({})'.format(form.instance.get_absolute_url())
+            'image_code': f'![]({form.instance.get_absolute_url()})'
         })
