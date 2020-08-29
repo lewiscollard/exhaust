@@ -5,18 +5,20 @@
   xmlns:atom="http://www.w3.org/2005/Atom"
   >
 {% load rss %}
+  <channel>
+    <title>{{ settings.SITE_NAME }}</title>
+    <description>{{ settings.SITE_DESCRIPTION }}</description>
+    <link>{{ '/'|path_to_url }}</link>
+    <language>en-GB</language>
+    {% url 'posts:feed' as feed_url %}
+    <atom:link href="{{ feed_url|path_to_url }}" rel="self" type="application/rss+xml" />
 
-<channel>
-  <title>{{ settings.SITE_NAME }}</title>
-  <description>{{ settings.SITE_DESCRIPTION }}</description>
-  <link>{{ '/'|path_to_url }}</link>
-  <language>en-GB</language>
-
-  <items>
     {% for object in object_list %}
       <item>
         <title>{{ object }}</title>
         <link>{{ object.get_absolute_url|path_to_url }}</link>
+        {% url 'posts:post_detail' identifier=object.identifier as guid_url %}
+        <guid>{{ guid_url|path_to_url }}</guid>
         <pubDate>{{ object.date|format_rfc2822 }}</pubDate>
         <description>{% if object.meta_description %}{{ object.meta_description }}{% endif %}</description>
 
@@ -25,5 +27,5 @@
         </content:encoded>
       </item>
     {% endfor %}
-  </items>
-</channel>
+  </channel>
+</rss>
