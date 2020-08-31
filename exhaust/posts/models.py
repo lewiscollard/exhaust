@@ -73,7 +73,7 @@ class Post(models.Model):
     )
 
     online = models.BooleanField(
-        default=True,
+        default=False,
         help_text='Uncheck this to hide this post on the frontend.'
     )
 
