@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.utils.timezone import now
 
 from ..models import Category, Post
+from ..urls import urlpatterns as post_urlpatterns
+from ..views import PostViewMixin
 
 
 class PostViewsTestCase(TestCase):
@@ -104,8 +106,8 @@ class PostViewsTestCase(TestCase):
             self.assertEqual(response.status_code, 404)
 
         # Now create a staff user and log in to it.
-        get_user_model().objects.create_superuser(username='lewis', email='lewis@lewiscollard.com', password='lewis') # nosec
-        self.client.login(username='lewis', password='lewis') # nosec
+        get_user_model().objects.create_superuser(username='lewis', email='lewis@lewiscollard.com', password='lewis')  # nosec
+        self.client.login(username='lewis', password='lewis')  # nosec
         # When we're logged in we should see all of the draft posts.
         response = self.client.get(reverse('posts:post_list'))
         self.assertEqual(len(response.context_data['object_list']), 3)
@@ -114,3 +116,14 @@ class PostViewsTestCase(TestCase):
         for post in [draft_post, future_post, published_post]:
             response = self.client.get(reverse('posts:post_detail', kwargs={'slug': post.slug, 'identifier': post.identifier}))
             self.assertEqual(response.status_code, 200)
+
+    def test_all_views_inherit_from_postmixin(self):
+        # Sanity check to ensure that all Post-wrangling views inherit from
+        # PostMixin, so that it cannot accidentally bypass the above code.
+        for pattern in post_urlpatterns:
+            view_class = pattern.callback.view_class
+            if not hasattr(view_class, 'model'):
+                continue
+
+            if not view_class.model == Post:
+                self.assertTrue(isinstance(pattern.callback.view_class, PostViewMixin))
