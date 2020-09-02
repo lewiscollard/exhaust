@@ -1,5 +1,5 @@
 [flake8]
-exclude = */tests/*,*/migrations/*,exhaust/settings/local.py
+exclude = */migrations/*,exhaust/settings/local.py
 ignore =
     # Line too long. I won't make code look worse to fit within 78 characters.
     E501,

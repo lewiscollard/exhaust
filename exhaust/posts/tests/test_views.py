@@ -24,7 +24,7 @@ class PostViewsTestCase(TestCase):
 
         post_without_slug = Post.objects.create(
             author=self.author,
-            date=now()  - timedelta(minutes=1),
+            date=now() - timedelta(minutes=1),
             text='bargle',
             online=True,
         )
