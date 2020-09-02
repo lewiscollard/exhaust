@@ -8,14 +8,19 @@ from .forms import ImageUploadForm
 from .models import Category, Post, PostImage
 
 
-class PostMixin:
+class PostViewMixin:
     model = Post
 
     def get_queryset(self):
-        return super().get_queryset().select_published()
+        queryset = super().get_queryset()
+        # Allow staff users (me) to view unpublished posts to see what they
+        # will look like on the front end.
+        if not self.request.user.is_staff:
+            queryset = queryset.select_published()
+        return queryset
 
 
-class PostListView(PostMixin, ListView):
+class PostListView(PostViewMixin, ListView):
     paginate_by = 8
 
     def get_queryset(self):
@@ -36,7 +41,7 @@ class PostCategoryListView(PostListView):
         return context
 
 
-class PostDetailView(PostMixin, DetailView):
+class PostDetailView(PostViewMixin, DetailView):
     def get(self, request, *args, **kwargs):
         # If the path does not match the canonical URL of the post, then
         # redirect. This handles two situations:

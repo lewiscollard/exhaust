@@ -153,6 +153,14 @@ class Post(models.Model):
             self.identifier = secrets.randbelow(2**31)
         super().save(*args, **kwargs)
 
+    @cached_property
+    def status_text(self):
+        if not self.online:
+            return 'Draft'
+        if self.date > timezone.now():
+            return 'Scheduled'
+        return 'Published'
+
 
 class PostImage(models.Model):
     '''

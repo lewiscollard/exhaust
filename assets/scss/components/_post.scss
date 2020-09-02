@@ -1,3 +1,9 @@
+.post--unpublished {
+  padding: 20px;
+
+  background-color: #fdd;
+}
+
 .post__header {
   margin-bottom: $vr;
 }
@@ -6,6 +12,12 @@
   font-size: 20px;
   font-weight: 700;
   line-height: 30px;
+}
+
+.post__title-status {
+  text-transform: uppercase;
+
+  color: #f00;
 }
 
 .post__image-wrapper {

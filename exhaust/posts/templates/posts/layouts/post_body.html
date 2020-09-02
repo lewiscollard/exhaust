@@ -1,16 +1,20 @@
-{% load assets markdown %}
+{% load assets markdown posts %}
 
 {% block everything %}
-  <article class="post">
+  <article class="post {% if not object.status_text == 'Published' %}post--unpublished{% endif %}">
     {% block header %}
       {% if object.title %}
         <header class="post__header">
           {% if detail_page and not object.link %}
             <h1 class="post__title">
+              {% post_status_html object %}
+
               {{ object.title }}
             </h1>
           {% else %}
             <h2 class="post__title">
+              {% post_status_html object %}
+
               <a href="{% if object.link %}{{ object.link }}{% else %}{{ object.get_absolute_url }}{% endif %}" class="post__title-link {% if object.link %}post__title-link--external{% endif %}">
                 {{ object.title }}
               </a>
