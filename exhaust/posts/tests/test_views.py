@@ -12,6 +12,12 @@ class PostViewsTestCase(TestCase):
     def setUp(self):
         self.author = User.objects.create(username='admin')
 
+    def test_detail_doesnt_raise_exception(self):
+        # Ensure that accessing a post that does not exist does a 404, rather
+        # than raising an exception.
+        response = self.client.get(reverse('posts:post_detail', kwargs={'identifier': 999, 'slug': 'please-dont-raise-exception'}))
+        self.assertEqual(response.status_code, 404)
+
     def test_detail_redirects(self):
         post_with_slug = Post.objects.create(
             title='bargle',

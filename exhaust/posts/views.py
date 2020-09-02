@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DetailView, FormView, ListView, RedirectView
 
@@ -66,7 +66,10 @@ class PostDetailView(PostViewMixin, DetailView):
         return context
 
     def get_object(self, queryset=None):
-        return self.get_queryset().get(identifier=self.kwargs['identifier'])
+        try:
+            return self.get_queryset().get(identifier=self.kwargs['identifier'])
+        except self.model.DoesNotExist:
+            raise Http404(f'{self.model._meta.verbose_name.capitalize()} not found.')
 
 
 class PostFeedView(PostListView):
