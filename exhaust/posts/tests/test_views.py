@@ -19,12 +19,14 @@ class PostViewsTestCase(TestCase):
             author=self.author,
             # the manager replaces seconds & microseconds with 0
             date=now() - timedelta(minutes=1),
+            online=True,
         )
 
         post_without_slug = Post.objects.create(
             author=self.author,
             date=now()  - timedelta(minutes=1),
             text='bargle',
+            online=True,
         )
 
         possibles = [
@@ -44,11 +46,11 @@ class PostViewsTestCase(TestCase):
 
     def test_category_view(self):
         category = Category.objects.create(title='Test category', slug='test-category')
-        post = Post.objects.create(title='Test post', author=self.author, slug='test-post')
+        post = Post.objects.create(title='Test post', author=self.author, slug='test-post', online=True)
         post.categories.add(category)
 
         # create another uncategorised post
-        other_post = Post.objects.create(title='Test post', author=self.author, slug='test-post')
+        other_post = Post.objects.create(title='Test post', author=self.author, slug='test-post', online=True)
 
         response = self.client.get(reverse('posts:post_category_list', kwargs={'slug': category.slug}))
         self.assertEqual(response.status_code, 200)
