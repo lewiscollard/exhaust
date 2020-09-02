@@ -104,8 +104,8 @@ class PostViewsTestCase(TestCase):
             self.assertEqual(response.status_code, 404)
 
         # Now create a staff user and log in to it.
-        get_user_model().objects.create_superuser(username='lewis', email='lewis@lewiscollard.com', password='lewis')
-        self.client.login(username='lewis', password='lewis')
+        get_user_model().objects.create_superuser(username='lewis', email='lewis@lewiscollard.com', password='lewis') # nosec
+        self.client.login(username='lewis', password='lewis') # nosec
         # When we're logged in we should see all of the draft posts.
         response = self.client.get(reverse('posts:post_list'))
         self.assertEqual(len(response.context_data['object_list']), 3)
