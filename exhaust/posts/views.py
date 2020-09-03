@@ -66,6 +66,8 @@ class PostDetailView(PostViewMixin, DetailView):
         return context
 
     def get_object(self, queryset=None):
+        # Re-implementation of the Django default get_object, which cannot
+        # handle two arguments when one of the arguments is not `pk`.
         try:
             return self.get_queryset().get(identifier=self.kwargs['identifier'])
         except self.model.DoesNotExist:
