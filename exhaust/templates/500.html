@@ -1,0 +1,16 @@
+{% extends 'error_base.html' %}
+
+{# we'll never see this :D #}
+
+{% block title %}Oh noes{% endblock %}
+
+{% block number %}500{% endblock %}
+
+{% block description %}Internal server error{% endblock %}
+
+{% block text %}
+  An unexpected error has occurred. Please reload this page in a few seconds.
+{% endblock %}
+
+{% block link %}javascript:window.location.reload(){% endblock %}
+{% block link_text %}Reload now{% endblock %}

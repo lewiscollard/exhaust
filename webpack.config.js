@@ -10,7 +10,11 @@ const DEV = process.env.NODE_ENV === 'development';
 module.exports = {
   entry: {
     'main': './assets/js/index.js',
-    'style': './assets/scss/styles.scss'
+    'style': './assets/scss/styles.scss',
+    // Separate stylesheet to avoid bloating out the primary one - by
+    // definition we won't need these styles on our normal pages, so no reason
+    // to load them.
+    'error-styles': './assets/scss/error-styles.scss'
   },
   output: {
     filename: '[name].js'

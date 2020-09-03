@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  {% load static %}
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'build/webpack/error-styles.css' %}?last={{ settings.GIT_COMMIT_HASH }}">
+  </head>
+
+  <body>
+    <div class="error-page">
+      <div class="error-page__inner">
+        <div class="error-page__header">
+          <h1 class="error-page__title">
+            <span class="error-page__title-number">{% block number %}{% endblock %}:</span>
+            <span class="error-page__title-description">{% block description %}{% endblock %}</span>
+          </h1>
+
+          <p class="error-page__text">
+            {% block text %}{% endblock %}
+          </p>
+
+          <p class="error-page__link-wrap">
+            <a href="{% block link %}{% endblock %}">{% block link_text %}{% endblock %}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {% if settings.DEBUG %}
+      <script src="{% static 'build/webpack/main.js' %}"></script>
+    {% endif %}
+  </body>
+</html>

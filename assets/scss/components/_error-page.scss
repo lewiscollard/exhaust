@@ -1,0 +1,34 @@
+.error-page {
+  flex-direction: column;
+
+  display: flex;
+  min-height: 100vh;
+}
+
+.error-page__inner {
+  @include grid-container;
+
+  max-width: 600px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: $vr;
+  padding-bottom: $vr;
+
+  text-align: center;
+}
+
+.error-page__title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.error-page__text {
+  margin-top: $vr;
+
+  line-height: 1.5;
+}
+
+.error-page__link-wrap {
+  margin-top: $vr;
+}

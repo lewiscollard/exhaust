@@ -1,0 +1,14 @@
+{% extends 'error_base.html' %}
+
+{% block title %}404 - Not found{% endblock %}
+
+{% block number %}404{% endblock %}
+
+{% block description %}Page not found{% endblock %}
+
+{% block text %}
+  The page you are looking for was deleted, or it might not have existed.
+{% endblock %}
+
+{% block link %}/{% endblock %}
+{% block link_text %}Go to the {{ settings.SITE_NAME }} home page{% endblock %}
