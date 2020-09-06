@@ -47,4 +47,3 @@ and reflects a model in which the data on my local machine can, however briefly,
 ## TODO
 
 * OpenGraph stuff
-* RSS feeds
