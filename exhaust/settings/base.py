@@ -153,6 +153,9 @@ MARKDOWNX_IMAGE_MAX_SIZE = {
 
 MARKDOWNX_UPLOAD_URLS_PATH = reverse_lazy('posts:image_upload')
 
+# Default is 95, which is unnecessary at these sizes.
+THUMBNAIL_QUALITY = 80
+
 # Settings for deployment & management scripts.
 DEPLOYMENT = {
     'HOST': '178.128.170.126',
