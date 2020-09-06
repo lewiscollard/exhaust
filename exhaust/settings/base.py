@@ -158,6 +158,7 @@ DEPLOYMENT = {
     'HOST': '178.128.170.126',
     'USER': 'exhaust',
     'DATABASE_NAME': 'exhaust',
+    'LOCAL_DATABASE_NAME': 'exhaust',
     'SUDO_USER': 'deploy',
     'ROOT_DIR': '/var/www/exhaust',
     'DJANGO_SETTINGS_MODULE': 'exhaust.settings.production',
