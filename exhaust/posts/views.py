@@ -71,7 +71,7 @@ class PostDetailView(PostViewMixin, DetailView):
         try:
             return self.get_queryset().get(identifier=self.kwargs['identifier'])
         except self.model.DoesNotExist:
-            raise Http404(f'{self.model._meta.verbose_name.capitalize()} not found.')
+            raise Http404(f'{self.model._meta.verbose_name.capitalize()} not found.')  # pylint:disable=raise-missing-from
 
 
 class PostFeedView(PostListView):
