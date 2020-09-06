@@ -1,11 +1,5 @@
 '''
 A management command to deploy code changes to the live site.
-
-Heavily inspired by the onespacemedia-server-management command:
-https://github.com/onespacemedia/server-management/blob/develop/server_management/management/commands/update.py
-
-Rewritten entirely to use a modern Fabric and to remove cleverness around venv
-(a small amount of downtime during deploys is OK for me).
 '''
 # We use posixpath because we want it to use Unix joining rules, rather than
 # whatever is on the local system (not that I intend to use anything else).
