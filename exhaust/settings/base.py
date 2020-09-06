@@ -153,10 +153,11 @@ MARKDOWNX_IMAGE_MAX_SIZE = {
 
 MARKDOWNX_UPLOAD_URLS_PATH = reverse_lazy('posts:image_upload')
 
-# Settings for deployment scripts.
+# Settings for deployment & management scripts.
 DEPLOYMENT = {
     'HOST': '178.128.170.126',
     'USER': 'exhaust',
+    'DATABASE_NAME': 'exhaust',
     'SUDO_USER': 'deploy',
     'ROOT_DIR': '/var/www/exhaust',
     'DJANGO_SETTINGS_MODULE': 'exhaust.settings.production',
