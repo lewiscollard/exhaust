@@ -161,5 +161,6 @@ DEPLOYMENT = {
     'LOCAL_DATABASE_NAME': 'exhaust',
     'SUDO_USER': 'deploy',
     'ROOT_DIR': '/var/www/exhaust',
+    'MEDIA_DIR': MEDIA_ROOT + '/',
     'DJANGO_SETTINGS_MODULE': 'exhaust.settings.production',
 }
