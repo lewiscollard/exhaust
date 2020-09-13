@@ -5,3 +5,4 @@ yarn-error.log
 # Carries Django's SECRET_KEY.
 .secret_key
 static/build
+.coverage
