@@ -2,7 +2,8 @@
 ignore=migrations
 jobs=2
 score=no
-load-plugins=pylint_django
+load-plugins=pylint_django, pylint.extensions.bad_builtin
+bad-functions=print
 
 [MESSAGES CONTROL]
 disable=
