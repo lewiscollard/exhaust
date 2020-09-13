@@ -125,5 +125,5 @@ class PostViewsTestCase(TestCase):
             if not hasattr(view_class, 'model'):
                 continue
 
-            if not view_class.model == Post:
-                self.assertTrue(isinstance(pattern.callback.view_class, PostViewMixin))
+            if view_class.model == Post:
+                self.assertTrue(issubclass(pattern.callback.view_class, PostViewMixin))
