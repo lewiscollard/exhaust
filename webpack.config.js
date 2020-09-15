@@ -2,6 +2,7 @@ const path = require('path');
 
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const webpack = require('webpack');
 
@@ -21,6 +22,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
       {
         test: /\.scss$/,
         use: [
@@ -44,6 +49,7 @@ module.exports = {
       }
     ]
   },
+
   devServer: {
     // Compression is mildly pointless in local dev.
     compress: false,
@@ -54,6 +60,13 @@ module.exports = {
         target: 'http://localhost:8000/'
       }
     }
+  },
+
+  // https://stackoverflow.com/questions/47332728/you-are-using-the-runtime-only-build-of-vue-where-the-template-compiler-is-not-a
+  resolve: {
+      alias: {
+          vue: 'vue/dist/vue.js'
+      },
   },
 
   output: {
@@ -71,5 +84,6 @@ module.exports = {
       filename: '[name].css'
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new VueLoaderPlugin(),
   ]
 }

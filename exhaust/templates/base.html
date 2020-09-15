@@ -64,9 +64,6 @@
       </div>
     </footer>
 
-    {% if settings.DEBUG %}
-      {# we don't need JS in prod, but it's nice to have for Webpack reloading #}
-      <script src="{% static 'build/webpack/main.js' %}"></script>
-    {% endif %}
+    <script src="{% static 'build/webpack/main.js' %}"></script>
   </body>
 </html>

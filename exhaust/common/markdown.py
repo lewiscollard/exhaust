@@ -1,5 +1,7 @@
+from bs4 import BeautifulSoup
 from commonmark.blocks import Parser
 from commonmark.render.html import HtmlRenderer
+from django.template.loader import render_to_string
 from django.urls import NoReverseMatch, resolve, reverse
 
 from ..posts.models import PostImage
@@ -46,4 +48,14 @@ class ExhaustHtmlRenderer(HtmlRenderer):
 def markdown_to_html(text):
     parser = Parser()
     ast = parser.parse(text)
-    return ExhaustHtmlRenderer().render(ast)
+
+    html = ExhaustHtmlRenderer().render(ast)
+    soup = BeautifulSoup(html)
+    # Swap out our custom <youtube> tag for a temporary no-JS placeholder
+    # (which is also an RSS placeholder). This itself will later get swapped
+    # out by a Vue component.
+    for tag in soup.find_all('youtube'):
+        tag.replace_with(BeautifulSoup(render_to_string('youtube_video.html', {
+            'id': tag.get('id')
+        })))
+    return str(soup)

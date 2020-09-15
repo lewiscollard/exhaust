@@ -1,0 +1,35 @@
+.youtube-video {
+  position: relative;
+
+  padding-bottom: 56.25%;
+
+  font-size: 14px;
+
+  background-color: rgba(0, 0, 0, 0.1);
+
+  /* stylelint-disable selector-max-universal */
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+  }
+  /* stylelint-enable */
+}
+
+.youtube-video__inner,
+.youtube-video__placeholder-link {
+  align-items: center;
+  justify-content: center;
+
+  display: flex;
+  padding: 20px $vr;
+
+  text-align: center;
+}
+
+.youtube-video__button-wrap {
+  margin-top: $vr * 0.5;
+}
