@@ -50,12 +50,12 @@ def markdown_to_html(text):
     ast = parser.parse(text)
 
     html = ExhaustHtmlRenderer().render(ast)
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, 'html.parser')
     # Swap out our custom <youtube> tag for a temporary no-JS placeholder
     # (which is also an RSS placeholder). This itself will later get swapped
     # out by a Vue component.
     for tag in soup.find_all('youtube'):
         tag.replace_with(BeautifulSoup(render_to_string('youtube_video.html', {
             'id': tag.get('id')
-        })))
+        }), 'html.parser'))
     return str(soup)
