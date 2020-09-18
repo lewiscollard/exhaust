@@ -28,7 +28,9 @@ This contains a few management commands for maintenance purposes.
 * `backupdb`: makes a local backup of the site's database to a local `.sql` file.
 * `pulldb`: does the above, then loads that file into your local database (this is destructive, obviously!).
 * `pullmedia`: a very thin wrapper around `rsync` that pulls a copy of the site's media files.
-* `update`: pushes code changes to the live site. It does a `git pull` on the server, runs a build of frontend files, does a `collectstatic`, migrates the database, and
+* `pull`: shortcut that calls both `pulldb` and `pullmedia`.
+* `remote_manage`: runs manage.py on the server with the given arguments, e.g. `./manage.py remote_manage migrate`.
+* `update`: pushes code changes to the live site. It does a `git pull` on the server, builds the frontend CSS and JS, does a `collectstatic`, migrates the database, and
 restarts things that need restarting.
 
 This is heavily inspired by
