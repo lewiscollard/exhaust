@@ -1,7 +1,7 @@
 <template>
   <div class="youtube-video">
     <template v-if="shouldShow">
-      <iframe :src="iframeUrl" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe :src="iframeUrl" frameborder="0" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </template>
     <template v-else>
       <div class="youtube-video__inner">
