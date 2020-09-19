@@ -43,7 +43,7 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
         # Make it easier to find uncategorised articles at a glance, and add a
         # handy edit link to the categories too.
         return format_html_join(
-            ',',
+            ', ',
             '<a href="{}">{}</a>',  # noqa:FS003
             [
                 (reverse('admin:posts_category_change', args=[category.pk]), category.title)
