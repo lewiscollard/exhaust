@@ -27,7 +27,7 @@ class Command(BaseCommand):
         # Build frontend stuff. There's much of this "bash -c" stuff; it's
         # unavoidable as we need to use shell scripts that play with their
         # env :(
-        connection.sudo(f'bash -c "source ~/.nvm/nvm.sh && cd {root_path} && nvm install && yarn && yarn run build"', user=conf['USER'])
+        connection.sudo(f'bash -c "source ~/.nvm/nvm.sh && cd {root_path} && nvm install && nvm use && npm install -g yarn && yarn && yarn run build"', user=conf['USER'])
         # Nuke venv & rebuild.
         connection.sudo(f'rm -rf {venv_path}', user=conf['USER'])
         connection.sudo(f'virtualenv -p python3.8 {venv_path}', user=conf['USER'])
