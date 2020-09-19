@@ -17,7 +17,12 @@
   <body class="layout__body">
     <header class="header">
       <div class="header__inner">
-        <div class="header__masthead">
+        {% url 'posts:post_list' as homepage_url %}
+        {% if request.path == homepage_url %}
+          <h1 class="header__masthead">
+        {% else %}
+          <div class="header__masthead">
+        {% endif %}
           <a href="/" class="header__masthead-link">
             <div class="header__title">
               {{ settings.SITE_NAME }}
@@ -27,7 +32,11 @@
               {{ settings.SITE_DESCRIPTION }}
             </div>
           </a>
-        </div>
+        {% if request.path == homepage_url %}
+          </h1>
+        {% else %}
+          </div>
+        {% endif %}
       </div>
     </header>
 
