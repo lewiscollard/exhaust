@@ -88,13 +88,18 @@
   pre {
     background-color: #eee;
     color: #000;
+
+    font-family: monospace;
+    font-size: 14px;
+  }
+
+  code {
+    padding: 3px;
   }
 
   pre {
     padding: 10px;
 
-    font-family: monospace;
-    font-size: 14px;
     white-space: pre-wrap;
 
     border: 1px solid $color-border;
