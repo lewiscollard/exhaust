@@ -3,6 +3,16 @@ html {
   font-size: 18px;
 }
 
+body {
+  background-color: #fff;
+  color: #000;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #222;
+    color: #fff;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -13,5 +23,11 @@ sup {
   font-size: 0.8em;
   line-height: 1;
   vertical-align: super;
+}
+
+a {
+  @media (prefers-color-scheme: dark) {
+    color: #aaf;
+  }
 }
 /* stylelint-enable */

@@ -57,7 +57,7 @@
       width: 5px;
       height: 5px;
 
-      background-color: #000;
+      background-color: currentColor;
     }
   }
 
@@ -86,11 +86,16 @@
 
   code,
   pre {
+    font-family: monospace;
+    font-size: 14px;
+
     background-color: #eee;
     color: #000;
 
-    font-family: monospace;
-    font-size: 14px;
+    @media (prefers-color-scheme: dark) {
+      background-color: #333;
+      color: inherit;
+    }
   }
 
   code {
