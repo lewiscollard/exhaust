@@ -9,6 +9,7 @@ from exhaust.posts.sitemaps import POSTS_SITE_MAPS
 
 urlpatterns = [
     path('', include('exhaust.posts.urls', namespace='posts')),
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     path('admin/', admin.site.urls),
     path('markdownx/', include('markdownx.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': POSTS_SITE_MAPS}, name='django.contrib.sitemaps.views.sitemap'),
