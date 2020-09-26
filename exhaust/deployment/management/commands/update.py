@@ -31,7 +31,8 @@ class Command(BaseCommand):
         # include shell scripts that play with their env :(
         connection.sudo(f'bash -c "source {venv_activate_path} && pip install -r {requirements_path}"', user=conf['USER'])
         settings_file = conf['DJANGO_SETTINGS_MODULE']
-        connection.sudo(f'bash -c "source {venv_activate_path} && echo yes yes | {managepy_path} migrate --settings {settings_file}"', user=conf['USER'])
+        connection.sudo(f'bash -c "source {venv_activate_path} && {managepy_path} --noinput migrate --settings {settings_file}"', user=conf['USER'])
+        connection.sudo(f'bash -c "source {venv_activate_path} && {managepy_path} --noinput remove_stale_contenttypes --settings {settings_file}"', user=conf['USER'])
 
         connection.sudo(f'bash -c "source ~/.nvm/nvm.sh && cd {root_path} && nvm install && nvm use && npm install -g yarn && yarn && yarn run build"', user=conf['USER'])
         connection.sudo(f'bash -c "source {venv_activate_path} && {managepy_path} collectstatic --noinput -l --settings {settings_file}"', user=conf['USER'])
