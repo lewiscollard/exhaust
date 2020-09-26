@@ -58,6 +58,7 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(VersionAdmin, MarkdownxModelAdmin):
+    list_display = ['__str__', 'description']
     prepopulated_fields = {'slug': ['title']}
 
     fieldsets = [
