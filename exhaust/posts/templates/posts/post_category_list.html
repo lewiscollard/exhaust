@@ -3,7 +3,13 @@
 {% load markdown %}
 {% load rss %}
 
-{% block title %}Category: {{ object }}{% endblock %}
+{% block title %}
+  {% if object.seo_title %}
+    {{ object.seo_title}}
+  {% else %}
+    Category: {{ object}}
+  {% endif %}
+{% endblock %}
 
 {% block meta %}
   {{ block.super }}
