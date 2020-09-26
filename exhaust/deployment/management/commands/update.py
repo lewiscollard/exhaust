@@ -24,18 +24,17 @@ class Command(BaseCommand):
         connection = fabric.Connection(conf['HOST'], user=conf['SUDO_USER'])
         connection.sudo(f'git -C {conf["ROOT_DIR"]} pull', user=conf['USER'])
 
-        # Build frontend stuff. There's much of this "bash -c" stuff; it's
-        # unavoidable as we need to use shell scripts that play with their
-        # env :(
-        connection.sudo(f'bash -c "source ~/.nvm/nvm.sh && cd {root_path} && nvm install && nvm use && npm install -g yarn && yarn && yarn run build"', user=conf['USER'])
         # Nuke venv & rebuild.
         connection.sudo(f'rm -rf {venv_path}', user=conf['USER'])
         connection.sudo(f'virtualenv -p python3.8 {venv_path}', user=conf['USER'])
+        # There's much of this "bash -c" stuff; it's unavoidable as we need to
+        # include shell scripts that play with their env :(
         connection.sudo(f'bash -c "source {venv_activate_path} && pip install -r {requirements_path}"', user=conf['USER'])
         settings_file = conf['DJANGO_SETTINGS_MODULE']
-        # Collect static files and migrate DB.
-        connection.sudo(f'bash -c "source {venv_activate_path} && {managepy_path} collectstatic --noinput -l --settings {settings_file}"', user=conf['USER'])
         connection.sudo(f'bash -c "source {venv_activate_path} && echo yes yes | {managepy_path} migrate --settings {settings_file}"', user=conf['USER'])
+
+        connection.sudo(f'bash -c "source ~/.nvm/nvm.sh && cd {root_path} && nvm install && nvm use && npm install -g yarn && yarn && yarn run build"', user=conf['USER'])
+        connection.sudo(f'bash -c "source {venv_activate_path} && {managepy_path} collectstatic --noinput -l --settings {settings_file}"', user=conf['USER'])
 
         connection.sudo('service memcached restart')
         connection.sudo('supervisorctl restart all')
