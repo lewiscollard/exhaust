@@ -17,7 +17,7 @@ I know Django (it is my day job), so I thought it would be a good idea to write 
 
 That it is probably the ugliest blog in the world is intentional.
 It saves me getting bogged down in making it look nice, which hopefully gives me more time to write things.
-It does have a trivial Webpack build set up in case I need to make it more frontend-heavy in future.
+It does have a Webpack build system, should I want to make it more frontend-heavy in future.
 
 There's not much here that is more-than-trivial to implement, but please feel free to steal anything and everything from here.
 
@@ -25,7 +25,7 @@ There's not much here that is more-than-trivial to implement, but please feel fr
 
 ### The `deployment` app
 
-This contains a few management commands for maintenance purposes.
+This contains a few management commands for site maintenance.
 
 * `backupdb`: makes a local backup of the site's database to a local `.sql` file.
 * `pulldb`: does the above, then loads that file into your local database (this is destructive, obviously!).
@@ -36,13 +36,14 @@ This contains a few management commands for maintenance purposes.
 restarts things that need restarting.
 
 This is heavily inspired by
-[onespacemedia-server-management](https://github.com/onespacemedia/server-management/), even keeping the same command names.
-It was rewritten from scratch to make it use a modern version of Fabric,
+[onespacemedia-server-management](https://github.com/onespacemedia/server-management/);
+it even keeps the same command names.
+It was rewritten from scratch to make it use a modern version of [Fabric](https://www.fabfile.org/),
 to be less weird in places,
 and to take its settings from `django.conf.settings` instead of a JSON file.
 It also does not have `pushdb` and `pushmedia`;
 these are dangerous,
-and reflects a model in which the data on my local machine can, however briefly, be the site's canonical state, which I dislike.
+and permits the data on my local machine being, however briefly, the site's canonical state, which should never be the case.
 
 ### Privacy-respecting and noscript-friendly YouTube embeds
 
@@ -52,7 +53,7 @@ In the Markdown editor in the admin, I can enter a tag like this:
 <youtube id="4bQ6h0DPuHQ" />
 ```
 
-This gets swapped out on the server side by a link to the video in question, which CSS style as a link in a fixed 16:9 aspect area. People with Javascript disabled will know there is something missing, and the 16:9 aspect ratio prevents a document reflow if the video is loaded. In the RSS feed, this appears as a paragraph with a link to the video, because it is.
+This gets swapped out on the server side by a link to the video in question, which CSS styles as a link in a fixed 16:9 aspect area. People with Javascript disabled will know there is something missing, and the 16:9 aspect ratio prevents a document reflow if the video is loaded. In the RSS feed, this appears as a paragraph with a link to the video, because it is.
 
 If the user has Javascript enabled, the video is swapped out _again_ with a Vue component. This will ask the user to choose to load just that embedded video, or to always load off-site embeds. If the former, it is switched out with a privacy-enhanced IFrame (using the [special domain youtube-nocookie.com](https://www.ghacks.net/2018/05/23/why-you-should-always-use-youtubes-privacy-enhanced-mode/)). If the latter, all videos on the page are switched out with it, and a local storage item remembers that they'll want to do this in the future. (I may change this to session storage in future.)
 
