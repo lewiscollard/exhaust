@@ -6,7 +6,6 @@ from reversion.admin import VersionAdmin
 
 from .models import Category, Post
 
-
 SEO_FIELDSET = ('SEO', {
     'fields': ['seo_title', 'meta_description'],
     'classes': ['collapse'],
