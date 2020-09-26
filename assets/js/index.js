@@ -1,14 +1,12 @@
-import Vue from 'vue';
-
 window.addEventListener('DOMContentLoaded', () => {
   if (document.querySelector('.vue-youtube-mount')) {
-    import('vue').then(module => {
-      import('./components/youtube-video.vue').then(ytmodule => {
+    import('vue').then(vueModule => {
+      import('./components/youtube-video.vue').then(ytModule => {
         for (const mountpoint of document.querySelectorAll('.vue-youtube-mount')) {
-          new Vue({
+          new vueModule.default({
             el: mountpoint,
             components: {
-              'youtube-video': ytmodule.default,
+              'youtube-video': ytModule.default,
             }
           })
         }
