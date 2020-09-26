@@ -8,6 +8,26 @@ from django.utils.functional import cached_property
 from markdownx.models import MarkdownxField
 
 
+class SEOModel(models.Model):
+    '''
+    Helper model to get SEO fields (common to posts and categories).
+    '''
+    seo_title = models.CharField(
+        'SEO title',
+        max_length=60,
+        null=True,
+        blank=True,
+    )
+
+    meta_description = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        abstract = True
+
+
 class PostQuerySet(models.QuerySet):
     '''
     A manager that allows some crude version of "draft" and a "post queue"
@@ -27,7 +47,7 @@ class PostQuerySet(models.QuerySet):
         )
 
 
-class Post(models.Model):
+class Post(SEOModel):
     '''
     A post on the site.
 
@@ -98,19 +118,6 @@ class Post(models.Model):
 
     categories = models.ManyToManyField(
         'posts.Category',
-        blank=True,
-    )
-
-    # SEO things
-    seo_title = models.CharField(
-        'SEO title',
-        max_length=60,
-        null=True,
-        blank=True,
-    )
-
-    meta_description = models.TextField(
-        null=True,
         blank=True,
     )
 
@@ -190,7 +197,7 @@ class PostImage(models.Model):
         return reverse('posts:image_redirect', kwargs={'pk': self.pk})
 
 
-class Category(models.Model):
+class Category(SEOModel):
     title = models.CharField(
         max_length=100,
     )

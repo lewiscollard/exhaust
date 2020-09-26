@@ -7,6 +7,12 @@ from reversion.admin import VersionAdmin
 from .models import Category, Post
 
 
+SEO_FIELDSET = ('SEO', {
+    'fields': ['seo_title', 'meta_description'],
+    'classes': ['collapse'],
+})
+
+
 @admin.register(Post)
 class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
 
@@ -23,10 +29,7 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
         ('Content', {
             'fields': ['text', ('image', 'alt_text'), 'link', 'categories'],
         }),
-        ('SEO', {
-            'fields': ['seo_title', 'meta_description'],
-            'classes': ['collapse'],
-        }),
+        SEO_FIELDSET,
     ]
 
     def save_model(self, request, obj, form, change):
@@ -56,3 +59,10 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(VersionAdmin, MarkdownxModelAdmin):
     prepopulated_fields = {'slug': ['title']}
+
+    fieldsets = [
+        ('', {
+            'fields': ['title', 'slug', 'description'],
+        }),
+        SEO_FIELDSET,
+    ]

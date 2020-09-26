@@ -1,5 +1,6 @@
 {% extends 'posts/post_list.html' %}
 
+{% load markdown %}
 {% load rss %}
 
 {% block title %}Category: {{ object }}{% endblock %}
@@ -9,8 +10,8 @@
 
   <link rel="canonical" href="{{ object.get_absolute_url|path_to_url }}">
 
-  {% if object.description %}
-    <meta name="description" content="{{ object.description }}">
+  {% if object.meta_description %}
+    <meta name="description" content="{{ object.meta_description }}">
   {% endif %}
 {% endblock %}
 
@@ -23,9 +24,11 @@
     </h1>
 
     {% if object.description %}
-      <p class="article-list__description">
-        {{ object.description|linebreaksbr }}
-      </p>
+      <div class="article-list__description">
+        <div class="markdown-area">
+          {{ object.description|markdown }}
+        </div>
+      </div>
     {% endif %}
   </header>
 {% endblock %}
