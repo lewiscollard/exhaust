@@ -1,9 +1,23 @@
+import hashlib
+
+from django.core.cache import cache
 from django.template.loader import render_to_string
 from sorl.thumbnail import get_thumbnail
 
 
-def render_multiformat_image(image, alt_text=None, max_width=None, extra_context=None):
-    context = extra_context or {}
+def render_multiformat_image(image, alt_text=None, max_width=None):
+    # Grab it from the cache if we possibly can. Hash the filename (the file
+    # itself never changes) and every parameter we are given so we can't
+    # return the same thing for a different invocation.
+    cache_hash = hashlib.sha256(image.file.name.encode('utf8'))
+    cache_hash.update((alt_text or '').encode('utf8'))
+    cache_hash.update(str(max_width).encode('utf8'))
+    cache_key = f'multiformat_image_{cache_hash.hexdigest()[:6]}'
+    cached_version = cache.get(cache_key)
+    if cached_version:
+        return cached_version
+
+    context = {}
     context.update({
         'image': image,
         'alt_text': alt_text,
@@ -20,6 +34,8 @@ def render_multiformat_image(image, alt_text=None, max_width=None, extra_context
     context['sources'] = {'image/webp': [], 'image/jpeg': []}
 
     for width in widths:
+        if max_width is not None and width > max_width:
+            continue
         context['sources']['image/webp'].append({
             'width': width,
             'url': get_thumbnail(image.file, str(width), format='WEBP').url
@@ -29,4 +45,7 @@ def render_multiformat_image(image, alt_text=None, max_width=None, extra_context
             'width': width,
             'url': get_thumbnail(image.file, str(width), format='JPEG').url
         })
-    return render_to_string('assets/image.html', context)
+
+    rendered = render_to_string('assets/image.html', context)
+    cache.set(cache_key, rendered)
+    return rendered
