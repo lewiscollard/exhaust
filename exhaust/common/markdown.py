@@ -23,14 +23,31 @@ class ExhaustHtmlRenderer(HtmlRenderer):
         # everything but the last two characters will be our image prefix :)
         self.post_image_prefix = imaginary[:-2]
 
+        # Once we enter an image node, we want to keep track of any string
+        # literals that are emitted so that we have an alt text for the image
+        # when we render on node exit. The alt for an image can in fact be
+        # further markdown nodes, rather than plain text! But we're never
+        # going to have HTML inside of a alt attribute, so we don't have to
+        # worry about that case.
+        #
+        # The base implementation handles subnodes by only emitting the
+        # closing ' />' for the tag when the node visit is exited. That's
+        # unpleasant, and makes it harder to render using a template. This
+        # way is much nicer.
+        self.expecting_alt_text = False
+        self.alt_text = ''
+
     def image(self, node, entering):
         # Does it look like a PostImage redirect link?
         if not node.destination.startswith(self.post_image_prefix):
             return super().image(node, entering)
-
-        if not entering:
-            # AFAIK this never actually happens...
+        if entering:
+            self.expecting_alt_text = True
+            self.alt_text = ''
             return self.lit('')
+
+        self.expecting_alt_text = False
+
         try:
             _, _, kwargs = resolve(node.destination)
         except NoReverseMatch:  # probs should never happen
@@ -41,8 +58,14 @@ class ExhaustHtmlRenderer(HtmlRenderer):
         except PostImage.DoesNotExist:
             return self.lit('')
         return self.lit(
-            render_multiformat_image(image.image, alt_text=node.title, max_width=1280)
+            render_multiformat_image(image.image, alt_text=self.alt_text, max_width=1280)
         )
+
+    def text(self, node, entering=None):
+        if not self.expecting_alt_text:
+            super().text(node, entering)
+            return
+        self.alt_text += node.literal
 
 
 def markdown_to_html(text):
