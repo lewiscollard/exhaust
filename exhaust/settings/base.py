@@ -66,6 +66,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'exhaust.common.context_processors.settings',
+                # Uncomment for query count debugging
+                # 'exhaust.common.context_processors.query_count',
             ],
         },
     },
