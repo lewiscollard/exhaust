@@ -47,7 +47,7 @@ and permits the data on my local machine being, however briefly, the site's cano
 
 ### Markdown
 
-This uses [Django MarkdownX](https://github.com/neutronX/django-markdownx) (my own fork of it to fix what I consider to be a [design flaw](https://github.com/neutronX/django-markdownx/pull/182), to give me a nice Markdown editor in my admin, with drag and drop image uploads.
+This uses [Django MarkdownX](https://github.com/neutronX/django-markdownx) (my own fork of it to fix what I consider to be a [design flaw](https://github.com/neutronX/django-markdownx/pull/182)), which gives me a nice Markdown editor in my admin, with drag and drop image uploads.
 
 This has a custom Markdown renderer to render images in multiple sizes (if they are uploaded via drag-and-drop).
 It uses the `<picture>` and `<source>` to allow the browser to pick the most appropriate one.
@@ -64,7 +64,7 @@ In the Markdown editor in the admin, I can enter a tag like this:
 
 This gets swapped out on the server side by a link to the video in question, which CSS styles as a link in a fixed 16:9 aspect area. People with Javascript disabled will know there is something missing, and the 16:9 aspect ratio prevents a document reflow if the video is loaded. In the RSS feed, this appears as a paragraph with a link to the video, because it is.
 
-If the user has Javascript enabled, the video is swapped out _again_ with a Vue component. This will ask the user to choose to load just that embedded video, or to always load off-site embeds. If the former, it is switched out with a privacy-enhanced IFrame (using the [special domain youtube-nocookie.com](https://www.ghacks.net/2018/05/23/why-you-should-always-use-youtubes-privacy-enhanced-mode/)). If the latter, all videos on the page are switched out with it, and a local storage item remembers that they'll want to do this in the future. (I may change this to session storage in future.)
+If the user has Javascript enabled, the video is swapped out _again_ with a Vue component. This will ask the user to choose to load just that embedded video, or to always load off-site embeds. If the former, it is switched out with a privacy-enhanced IFrame (using the [special domain youtube-nocookie.com](https://www.ghacks.net/2018/05/23/why-you-should-always-use-youtubes-privacy-enhanced-mode/)). If the latter, all videos on the page are switched out with one of these IFrames, and a local storage item remembers to do this in the future. (I may change this to session storage in future.)
 
 I think this is a reasonable compromise between protecting users' privacy and not being too annoying to people that don't care; Google won't be tracking you unless you opt in to it, and if you opt in it'll load the video in a way that Google [almost promises won't track you](https://support.google.com/youtube/answer/171780?hl=en-GB). Anyone that doesn't care is just one extra click away from showing all videos forever.
 
