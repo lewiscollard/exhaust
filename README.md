@@ -45,6 +45,15 @@ It also does not have `pushdb` and `pushmedia`;
 these are dangerous,
 and permits the data on my local machine being, however briefly, the site's canonical state, which should never be the case.
 
+### Markdown
+
+This uses [Django MarkdownX](https://github.com/neutronX/django-markdownx) (my own fork of it to fix what I consider to be a [design flaw](https://github.com/neutronX/django-markdownx/pull/182), to give me a nice Markdown editor in my admin, with drag and drop image uploads.
+
+This has a custom Markdown renderer to render images in multiple sizes (if they are uploaded via drag-and-drop).
+It uses the `<picture>` and `<source>` to allow the browser to pick the most appropriate one.
+There are WebP versions for those browsers that support it, too.
+That's currently a majority of browsers as of September 2020, and soon to be the _overwhelming_ majority once iOS 14 gets widely deployed).
+
 ### Privacy-respecting and noscript-friendly YouTube embeds
 
 In the Markdown editor in the admin, I can enter a tag like this:
