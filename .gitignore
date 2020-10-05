@@ -6,3 +6,4 @@ yarn-error.log
 .secret_key
 static/build
 .coverage
+.tox
