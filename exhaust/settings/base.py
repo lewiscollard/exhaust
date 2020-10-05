@@ -12,7 +12,9 @@ SITE_DOMAIN = 'exhaust.lewiscollard.com'
 SITE_NAME = 'Exhaust'
 SITE_DESCRIPTION = 'something resembling a blog, by Lewis Collard'
 
-with open(os.path.join(ROOT_DIR, '.secret_key')) as fd:
+SECRET_KEY_FILE = os.path.join(ROOT_DIR, '.secret_key')
+
+with open(SECRET_KEY_FILE) as fd:
     SECRET_KEY = fd.read().strip()
 
 
