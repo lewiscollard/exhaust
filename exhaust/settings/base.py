@@ -171,6 +171,43 @@ MARKDOWNX_UPLOAD_URLS_PATH = reverse_lazy('posts:image_upload')
 # Default is 95, which is unnecessary at these sizes.
 THUMBNAIL_QUALITY = 80
 
+# HTML sanitising options.
+BLEACH_CONFIG = {
+    'tags': [
+        'p', 'div', 'a', 'hr',
+        # Image & videos
+        'img', 'video', 'picture', 'figure', 'figcaption', 'source',
+        # Simple emphasis
+        'i', 'em', 'strong', 'b',
+        # Lists
+        'ul', 'ol', 'li', 'dl', 'dt', 'dd',
+        # Quotes
+        'q', 'blockquote',
+        # Custom thing swapped out with a Vue component.
+        'youtube-video',
+        # Code formats
+        'code', 'pre',
+        # super/subscripts
+        'sup', 'sub',
+        # Obsolete tags that I use anyway!
+        'center', 's',
+    ],
+    'attributes': {
+        'img': ['src', 'alt', 'title', 'loading', 'class'],
+        'a': ['href', 'rel', 'target'],
+        'youtube-video': ['id', 'title'],
+        # This feels a bit too blanket, but should be safe.
+        'div': ['class', 'style'],
+        'source': ['srcset', 'src', 'type'],
+        'picture': ['aria-hidden'],
+    },
+    'styles': [
+        # Used by our multiformat image for aspect ratio preservation (must be
+        # inline, unfortunately).
+        'padding-bottom', 'max-width'
+    ]
+}
+
 # Settings for deployment & management scripts.
 DEPLOYMENT = {
     'HOST': '178.128.170.126',

@@ -1,6 +1,8 @@
+import bleach
 from bs4 import BeautifulSoup
 from commonmark.blocks import Parser
 from commonmark.render.html import HtmlRenderer
+from django.conf import settings
 from django.template.loader import render_to_string
 from django.urls import NoReverseMatch, resolve, reverse
 
@@ -81,4 +83,4 @@ def markdown_to_html(text):
         tag.replace_with(BeautifulSoup(render_to_string('youtube_video.html', {
             'id': tag.get('id')
         }), 'html.parser'))
-    return str(soup)
+    return bleach.clean(str(soup), **settings.BLEACH_CONFIG)
