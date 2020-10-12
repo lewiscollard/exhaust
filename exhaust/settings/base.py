@@ -168,6 +168,9 @@ MARKDOWNX_IMAGE_MAX_SIZE = {
 
 MARKDOWNX_UPLOAD_URLS_PATH = reverse_lazy('posts:image_upload')
 
+# Group writable is intentional.
+FILE_UPLOAD_PERMISSIONS = 0o664
+
 # Default is 95, which is unnecessary at these sizes.
 THUMBNAIL_QUALITY = 80
 
