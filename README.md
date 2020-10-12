@@ -55,7 +55,7 @@ There are WebP versions for those browsers that support it, too.
 That's currently a majority of browsers as of September 2020, and soon to be the _overwhelming_ majority once iOS 14 gets widely deployed).
 
 The rendered HTML output is piped through [Bleach](https://github.com/mozilla/bleach);
-not because I don't trust myself to write safe HTML,
+this is not because I don't trust myself to write safe HTML,
 but because I don't want an (unlikely) compromise of `/admin/` to turn into an attack on people reading the site.
 
 ### Privacy-respecting and noscript-friendly YouTube embeds
