@@ -81,6 +81,10 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1:11211',
+        # None = cache forever (until a code update does a memcached restart).
+        # If there's no clear plan for cache invalidation, it should not be
+        # cached.
+        'TIMEOUT': None,
     }
 }
 
