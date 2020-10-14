@@ -8,6 +8,6 @@ register = template.Library()
 
 @register.filter
 def markdown(value):
-    # mark_safe is fine because I'm not going to introduce an XSS on myself
-    # in my posts
+    # Mark_safe is fine here - it's filtered through Bleach which takes care
+    # of removing anything malicious
     return mark_safe(markdown_to_html(value))  # nosec
