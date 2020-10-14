@@ -1,23 +1,14 @@
 argon2-cffi==20.1.0
-bandit==1.6.2
 beautifulsoup4==4.9.1
 bleach==3.2.1
 commonmark==0.9.1
-coverage==5.3
 Django==2.2.16
 django-cachalot==2.3.1
-django-coverage-plugin==1.8.0
 django-reversion==3.0.8
 fabric==2.5.0
-flake8==3.8.3
-flake8-use-fstring==1.1
 gunicorn==20.0.4
-isort==5.5.1
 Pillow==7.2.0
 psycopg2==2.8.5
-pylint==2.6.0
-pylint-django==2.3.0
 python-memcached==1.59
 sorl-thumbnail==12.6.3
-tox==3.20.0
 -e git+ssh://git@github.com/lewiscollard/django-markdownx.git@no-anonymous-uploads#egg=django-markdownx
