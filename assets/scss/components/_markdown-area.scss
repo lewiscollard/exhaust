@@ -110,6 +110,12 @@
     border: 1px solid $color-border;
   }
 
+  /* Probs shouldn't use this and should get this using <figure> and
+  <figcaption> where I need it, but */
+  center {
+    font-style: italic;
+  }
+
   hr {
     width: 100px;
     height: 2px;
