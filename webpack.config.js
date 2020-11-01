@@ -8,7 +8,7 @@ const webpack = require('webpack');
 
 const DEV = process.env.NODE_ENV === 'development';
 
-module.exports = {
+const config = {
   entry: {
     'main': './assets/js/index.js',
     'style': './assets/scss/styles.scss',
@@ -86,4 +86,12 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new VueLoaderPlugin(),
   ]
+}
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'production') {
+    config.resolve.alias.vue = 'vue/dist/vue.min.js'
+  }
+
+  return config
 }
