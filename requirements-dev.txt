@@ -2,9 +2,9 @@
 bandit==1.6.2
 coverage==5.3
 django-coverage-plugin==1.8.0
-flake8==3.8.3
+flake8==3.8.4
 flake8-use-fstring==1.1
-isort==5.5.1
+isort==5.6.4
 pylint==2.6.0
 pylint-django==2.3.0
-tox==3.20.0
+tox==3.20.1

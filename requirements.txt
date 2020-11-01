@@ -1,14 +1,14 @@
 argon2-cffi==20.1.0
-beautifulsoup4==4.9.1
+beautifulsoup4==4.9.3
 bleach==3.2.1
 commonmark==0.9.1
 Django==2.2.16
-django-cachalot==2.3.1
+django-cachalot==2.3.2
 django-reversion==3.0.8
 fabric==2.5.0
 gunicorn==20.0.4
-Pillow==7.2.0
-psycopg2==2.8.5
+Pillow==8.0.1
+psycopg2==2.8.6
 python-memcached==1.59
 sorl-thumbnail==12.6.3
 -e git+ssh://git@github.com/lewiscollard/django-markdownx.git@no-anonymous-uploads#egg=django-markdownx
