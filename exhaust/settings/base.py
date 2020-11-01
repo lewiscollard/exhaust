@@ -205,6 +205,7 @@ BLEACH_CONFIG = {
         'youtube-video': ['id', 'title'],
         # This feels a bit too blanket, but should be safe.
         'div': ['class', 'style'],
+        'p': ['class'],
         'source': ['srcset', 'src', 'type'],
         'picture': ['aria-hidden'],
     },
