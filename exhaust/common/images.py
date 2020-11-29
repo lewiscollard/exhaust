@@ -29,11 +29,14 @@ def render_multiformat_image(image, alt_text=None, max_width=None):
 
     # Stick a bunch of image widths into the context, in both webp and
     # the original format.
-    widths = [320, 480, 768, 1024, 1280, 1920]
+    widths = sorted([image.width, 320, 480, 768, 1024, 1280, 1920])
 
     context['sources'] = {'image/webp': [], 'image/jpeg': []}
 
     for width in widths:
+        # Never upscale an image.
+        if width > image.width:
+            break
         if max_width is not None and width > max_width:
             continue
         context['sources']['image/webp'].append({
