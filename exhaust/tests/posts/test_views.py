@@ -1,7 +1,8 @@
 from datetime import timedelta
+from xml.etree import ElementTree  # nosec
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.timezone import now
 
@@ -127,3 +128,33 @@ class PostViewsTestCase(TestCase):
 
             if view_class.model == Post:
                 self.assertTrue(issubclass(pattern.callback.view_class, PostViewMixin))
+
+    def test_rss_feed(self):
+        for i in range(1, 6):
+            Post.objects.create(
+                title=f'Test post {i}',
+                slug=f'test-post-{i}',
+                text='unimportant',
+                author=self.author,
+                online=True,
+                date=now() - timedelta(minutes=1)
+            )
+
+        posts_url = reverse('posts:post_feed')
+
+        # Check the "secret" debug branch
+        with override_settings(DEBUG=True):
+            response = self.client.get(posts_url, {'debug': 'yep'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/plain; charset=utf-8')
+
+        # In lieu of a full validator, let's just make sure it looks
+        # something like XML (in which case etree will fail to read it) and
+        # looks vaguely like a feed.
+        response = self.client.get(posts_url)
+        self.assertEqual(response.status_code, 200)
+
+        tree = ElementTree.fromstring(response.content.decode('utf-8'))  # nosec
+        channel = tree.find('channel')
+        self.assertEqual(len(channel.findall('item')), 5)
