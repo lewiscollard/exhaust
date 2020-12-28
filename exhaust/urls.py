@@ -14,15 +14,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('markdownx/markdownify/', MarkdownifyView.as_view(), name='markdownx_markdownify'),
     path('sitemap.xml', sitemap, {'sitemaps': POSTS_SITE_MAPS}, name='django.contrib.sitemaps.views.sitemap'),
+    # Error page styling tests. It's OK to have these outside of DEBUG (if
+    # someone wants to pretend they're having a 500 they're more than welcome
+    # to). It means there's one less branch to test in settings.
+    path('404/', TemplateView.as_view(template_name='404.html')),
+    path('500/', TemplateView.as_view(template_name='500.html')),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 ) + static(
     settings.STATIC_URL, document_root=settings.STATIC_ROOT
 )
-
-if settings.DEBUG:
-    # Error page styling tests.
-    urlpatterns += [
-        path('404/', TemplateView.as_view(template_name='404.html')),
-        path('500/', TemplateView.as_view(template_name='500.html')),
-    ]

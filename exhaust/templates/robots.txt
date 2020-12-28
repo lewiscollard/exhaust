@@ -1,1 +1,5 @@
 Sitemap: {% load rss %}{% url 'django.contrib.sitemaps.views.sitemap' as sitemap_url %}{{ sitemap_url|path_to_url }}
+
+User-Agent: *
+Disallow: /404/
+Disallow: /500/
