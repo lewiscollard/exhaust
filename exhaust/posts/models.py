@@ -138,11 +138,13 @@ class Post(SEOModel):
         # Should never happen, but make pylint happy
         return '(Broken post)'
 
-    @cached_property
-    def body_template(self):
-        # upgrade this later to handle various different kinds of post
-        # layouts
-        return 'posts/layouts/post_body.html'
+    def save(self, *args, **kwargs):  # pylint:disable=signature-differs
+        if not self.identifier:
+            # probs enough for now as it's just me
+            # (dear future employers: I would never write something this crappy
+            # in code I write for you, promise)
+            self.identifier = secrets.randbelow(2**31)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         if self.slug:
@@ -152,13 +154,11 @@ class Post(SEOModel):
     def get_title_link_url(self):
         return self.link or self.get_absolute_url()
 
-    def save(self, *args, **kwargs):  # pylint:disable=signature-differs
-        if not self.identifier:
-            # probs enough for now as it's just me
-            # (dear future employers: I would never write something this crappy
-            # in code I write for you, promise)
-            self.identifier = secrets.randbelow(2**31)
-        super().save(*args, **kwargs)
+    @cached_property
+    def body_template(self):
+        # upgrade this later to handle various different kinds of post
+        # layouts
+        return 'posts/layouts/post_body.html'
 
     @cached_property
     def status_text(self):
