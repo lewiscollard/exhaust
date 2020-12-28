@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.html import format_html_join
 from markdownx.admin import MarkdownxModelAdmin
@@ -12,6 +13,29 @@ SEO_FIELDSET = ('SEO', {
 })
 
 
+class QualityControlListFilter(admin.SimpleListFilter):
+    '''
+    A filter to do quality control on posts, so I can quickly find out what
+    posts can have SEO improvements.
+    '''
+    title = 'quality control errors'
+
+    parameter_name = 'quality_control'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('no_meta_description', 'No meta description'),
+            ('no_categories', 'No categories'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'no_meta_description':
+            return queryset.filter(Q(meta_description=None) | Q(meta_description=''))
+        if self.value() == 'no_categories':
+            return queryset.filter(categories=None)
+        return queryset
+
+
 @admin.register(Post)
 class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
 
@@ -20,6 +44,8 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
     filter_horizontal = ['categories']
 
     list_display = ['__str__', 'get_categories', 'online', 'date']
+
+    list_filter = [QualityControlListFilter]
 
     fieldsets = [
         ('', {
