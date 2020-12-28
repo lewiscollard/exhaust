@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from django.test import TestCase
 
-from ..markdown import markdown_to_html
+from exhaust.common.markdown import markdown_to_html
 
 
 class MarkdownTestCase(TestCase):

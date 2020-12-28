@@ -5,9 +5,9 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now
 
-from ..models import Category, Post
-from ..urls import urlpatterns as post_urlpatterns
-from ..views import PostViewMixin
+from exhaust.posts.models import Category, Post
+from exhaust.posts.urls import urlpatterns as post_urlpatterns
+from exhaust.posts.views import PostViewMixin
 
 
 class PostViewsTestCase(TestCase):
