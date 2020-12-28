@@ -59,3 +59,26 @@ class PostAdminTestCase(TestCase):
         # Check the fall-through case, just to ensure full coverage.
         response = self.client.get(admin_url, {'quality_control': 'garbage'})
         self.assertEqual(len(response.context_data['cl'].result_list), 3)
+
+    def test_prefetching_categories(self):
+        cat = Category.objects.create(title='Test cat', slug='test-cat')
+        cat2 = Category.objects.create(title='Test cat 2', slug='test-cat-2')
+
+        for i in range(1, 10):
+            post = Post.objects.create(
+                title=f'An optimised post{i}',
+                slug=f'post-{i}',
+                author=self.user,
+            )
+            post.categories.set([cat, cat2])
+
+        # Baseload number of queries for loading the list, with no objects,
+        # should be 5. That is getting the current session, getting the
+        # current user, some savepoint thing (two queries, one for grab & one
+        # for release), and getting the total count of posts. Our prefetching
+        # should mean we only add 2 queries to this regardless of the number
+        # of posts
+        with self.assertNumQueries(7):
+            response = self.client.get(reverse('admin:posts_post_changelist'))
+
+        self.assertEqual(len(response.context_data['cl'].result_list), 9)
