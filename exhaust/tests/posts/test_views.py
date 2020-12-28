@@ -54,7 +54,7 @@ class PostViewsTestCase(TestCase):
         self.assertRedirects(response, post_without_slug.get_absolute_url(), status_code=301, target_status_code=200)
 
     def test_category_view(self):
-        category = Category.objects.create(title='Test category', slug='test-category')
+        category = Category.objects.create(title='Test category', slug='test-category', description='Testing!', meta_description='Test!')
         post = Post.objects.create(title='Test post', author=self.author, slug='test-post', online=True)
         post.categories.add(category)
 
@@ -65,6 +65,12 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data['object'], category)
         self.assertNotIn(other_post, response.context_data['object_list'])
+
+        # Ensure that the "has SEO title" branch is checked in the template.
+        category.seo_title = 'Search engine optimised!'
+        category.save()
+        response = self.client.get(reverse('posts:post_category_list', kwargs={'slug': category.slug}))
+        self.assertEqual(response.status_code, 200)
 
     def test_queryset_excludes_when_appropriate(self):
         # Add a draft post...
