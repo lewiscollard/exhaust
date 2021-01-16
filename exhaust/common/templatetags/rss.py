@@ -68,7 +68,7 @@ def rss_post_body(post):
     # W3C happy.
     for element in soup.find_all(attrs={'class': 'image'}):
         element['style'] = ''
-    return mark_safe(str(soup))  # nosec
+    return mark_safe(str(soup))
 
 
 @register.filter

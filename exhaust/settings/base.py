@@ -1,5 +1,5 @@
 import os
-import subprocess  # nosec
+import subprocess
 
 from django.urls import reverse_lazy
 
@@ -162,7 +162,7 @@ SILENCED_SYSTEM_CHECKS = ['security.W004']
 # Current git HEAD hash, useful for cache invalidation. -C ROOT_DIR ensures
 # Git is running in the same directory that 'manage.py' lives in; when we're
 # using management commands we cannot assume this is the case.
-GIT_COMMIT_HASH = subprocess.check_output(['/usr/bin/git', '-C', ROOT_DIR, 'rev-parse', '--short', 'HEAD']).decode('utf8').strip()  # nosec
+GIT_COMMIT_HASH = subprocess.check_output(['/usr/bin/git', '-C', ROOT_DIR, 'rev-parse', '--short', 'HEAD']).decode('utf8').strip()
 
 # MarkdownX things
 MARKDOWNX_IMAGE_MAX_SIZE = {

@@ -1,4 +1,4 @@
-import subprocess  # nosec
+import subprocess
 
 import fabric
 from django.conf import settings
@@ -18,7 +18,7 @@ class Command(BaseCommand):
         local_db = conf['LOCAL_DATABASE_NAME']
         local_dump = make_db_backup(connection)
 
-        subprocess.run(['dropdb', local_db], check=True)  # nosec
-        subprocess.run(['createdb', local_db], check=True)  # nosec
+        subprocess.run(['dropdb', local_db], check=True)
+        subprocess.run(['createdb', local_db], check=True)
         with open(local_dump) as fd:
-            subprocess.run(['psql', '--quiet', local_db], stdin=fd, check=True)  # nosec
+            subprocess.run(['psql', '--quiet', local_db], stdin=fd, check=True)

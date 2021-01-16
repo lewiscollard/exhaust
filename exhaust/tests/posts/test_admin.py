@@ -7,13 +7,12 @@ from exhaust.posts.models import Category, Post
 
 class PostAdminTestCase(TestCase):
     def setUp(self):
-        # nosec
-        self.user = get_user_model().objects.create_superuser(  # nosec
+        self.user = get_user_model().objects.create_superuser(
             username='admin',
             password='123',
             email='nobody@example.invalid',
         )
-        self.client.login(username='admin', password='123')  # nosec
+        self.client.login(username='admin', password='123')
 
     def test_quality_control_filter(self):
         # Ensure QualityControlListFilter works.

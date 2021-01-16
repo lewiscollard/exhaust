@@ -1,5 +1,5 @@
 from datetime import timedelta
-from xml.etree import ElementTree  # nosec
+from xml.etree import ElementTree
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -47,7 +47,7 @@ class SitemapsTestCase(TestCase):
         response = self.client.get(reverse('django.contrib.sitemaps.views.sitemap'))
         self.assertEqual(response.status_code, 200)
 
-        tree = ElementTree.fromstring(response.content.decode('utf-8'))  # nosec
+        tree = ElementTree.fromstring(response.content.decode('utf-8'))
         self.assertEqual(len(list(tree)), 5)
 
     def test_categories_sitemap(self):
@@ -80,7 +80,7 @@ class SitemapsTestCase(TestCase):
         response = self.client.get(reverse('django.contrib.sitemaps.views.sitemap'))
         self.assertEqual(response.status_code, 200)
 
-        tree = ElementTree.fromstring(response.content.decode('utf-8'))  # nosec
+        tree = ElementTree.fromstring(response.content.decode('utf-8'))
         child_items = list(tree)
         self.assertEqual(len(child_items), 2)
         nsinfo = {'sitemaps': 'http://www.sitemaps.org/schemas/sitemap/0.9'}

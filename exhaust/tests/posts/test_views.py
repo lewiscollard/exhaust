@@ -1,5 +1,5 @@
 from datetime import timedelta
-from xml.etree import ElementTree  # nosec
+from xml.etree import ElementTree
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
@@ -113,8 +113,8 @@ class PostViewsTestCase(TestCase):
             self.assertEqual(response.status_code, 404)
 
         # Now create a staff user and log in to it.
-        get_user_model().objects.create_superuser(username='lewis', email='lewis@lewiscollard.com', password='lewis')  # nosec
-        self.client.login(username='lewis', password='lewis')  # nosec
+        get_user_model().objects.create_superuser(username='lewis', email='lewis@lewiscollard.com', password='lewis')
+        self.client.login(username='lewis', password='lewis')
         # When we're logged in we should see all of the draft posts.
         response = self.client.get(reverse('posts:post_list'))
         self.assertEqual(len(response.context_data['object_list']), 3)
@@ -161,6 +161,6 @@ class PostViewsTestCase(TestCase):
         response = self.client.get(posts_url)
         self.assertEqual(response.status_code, 200)
 
-        tree = ElementTree.fromstring(response.content.decode('utf-8'))  # nosec
+        tree = ElementTree.fromstring(response.content.decode('utf-8'))
         channel = tree.find('channel')
         self.assertEqual(len(channel.findall('item')), 5)

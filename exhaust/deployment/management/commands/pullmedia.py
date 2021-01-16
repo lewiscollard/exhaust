@@ -1,5 +1,5 @@
 import os
-import subprocess  # nosec
+import subprocess
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -17,7 +17,7 @@ class Command(BaseCommand):
             # this will almost always be the case :)
             pass
 
-        subprocess.run(  # nosec
+        subprocess.run(
             [
                 'rsync',
                 '--progress',
