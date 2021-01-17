@@ -26,6 +26,7 @@ class QualityControlListFilter(admin.SimpleListFilter):
         return (
             ('no_meta_description', 'No meta description'),
             ('no_categories', 'No categories'),
+            ('no_alt_text', 'Image with no alt text'),
         )
 
     def queryset(self, request, queryset):
@@ -33,6 +34,8 @@ class QualityControlListFilter(admin.SimpleListFilter):
             return queryset.filter(Q(meta_description=None) | Q(meta_description=''))
         if self.value() == 'no_categories':
             return queryset.filter(categories=None)
+        if self.value() == 'no_alt_text':
+            return queryset.exclude(image='').filter(alt_text=None)
         return queryset
 
 
