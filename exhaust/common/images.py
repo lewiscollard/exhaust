@@ -11,6 +11,7 @@ def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None
     # return the same thing for a different invocation.
     cache_hash = hashlib.sha256(image.file.name.encode('utf8'))
     cache_hash.update((alt_text or '').encode('utf8'))
+    cache_hash.update((title or '').encode('utf8'))
     cache_hash.update(str(max_width).encode('utf8'))
     cache_key = f'multiformat_image_{cache_hash.hexdigest()[:6]}'
     cached_version = cache.get(cache_key)
