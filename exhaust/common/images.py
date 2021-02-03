@@ -24,7 +24,6 @@ def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None
         'alt_text': alt_text,
         'title': title,
     })
-    context['original_width'] = image.width
     context['image'] = image
     context['alt_text'] = alt_text or ''
     context['aspect_padding'] = round(image.height / image.width, 6) * 100
@@ -40,7 +39,7 @@ def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None
         if width > image.width:
             break
         if max_width is not None and width > max_width:
-            continue
+            break
         context['sources']['image/webp'].append({
             'width': width,
             'url': get_thumbnail(image.file, str(width), format='WEBP').url
@@ -50,6 +49,13 @@ def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None
             'width': width,
             'url': get_thumbnail(image.file, str(width), format='JPEG').url
         })
+
+    # This is necessary because at least one RSS reader (The Old Reader, which
+    # I use) strips out picture/source tags.
+    context['fallback_image_url'] = context['sources']['image/jpeg'][-1]['url']
+    # Set the max_width so that images that are not wide enough to be displayed
+    # at 100% width look okay.
+    context['max_width'] = context['sources']['image/jpeg'][-1]['width']
 
     rendered = render_to_string('assets/image.html', context)
     cache.set(cache_key, rendered)
