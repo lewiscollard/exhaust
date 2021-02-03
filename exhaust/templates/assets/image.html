@@ -4,6 +4,11 @@
   a full URL with procotol & domain.
 {% endcomment %}
 
+{# abuse the "title" attribute as caption for figure/figcaption #}
+{% if title %}
+  <figure class="figure" style="max-width: {{ original_width }}px">
+{% endif %}
+
 <div class='image' style="max-width: {{ original_width }}px">
   <div class="image__padder" style="padding-bottom: {{ aspect_padding }}%"></div>
   <picture {% if not alt_text %}aria-hidden="true"{% endif %}>
@@ -18,3 +23,8 @@
     >
   </picture>
 </div>
+
+{% if title %}
+  <figcaption class="figure__caption">{{ title }}</figcaption>
+  </figure>
+{% endif %}

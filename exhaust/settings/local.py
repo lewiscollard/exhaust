@@ -10,4 +10,4 @@ MEDIA_ROOT = os.path.expanduser(os.path.join('~/Sites', SITE_DOMAIN, 'media'))
 STATIC_ROOT = os.path.expanduser(os.path.join('~/Sites', SITE_DOMAIN, 'static'))
 
 # Uncomment for no-cache testing.
-# CACHES['default']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'
+CACHES['default']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'

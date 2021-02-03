@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from sorl.thumbnail import get_thumbnail
 
 
-def render_multiformat_image(image, alt_text=None, max_width=None):
+def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None):
     # Grab it from the cache if we possibly can. Hash the filename (the file
     # itself never changes) and every parameter we are given so we can't
     # return the same thing for a different invocation.
@@ -21,6 +21,7 @@ def render_multiformat_image(image, alt_text=None, max_width=None):
     context.update({
         'image': image,
         'alt_text': alt_text,
+        'title': title,
     })
     context['original_width'] = image.width
     context['image'] = image

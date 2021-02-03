@@ -203,8 +203,10 @@ BLEACH_CONFIG = {
         'img': ['src', 'alt', 'title', 'loading', 'class'],
         'a': ['href', 'rel', 'target'],
         'youtube-video': ['id', 'title'],
-        # This feels a bit too blanket, but should be safe.
+        # These feel a bit too blanket, but should be safe.
         'div': ['class', 'style'],
+        'figure': ['class', 'style'],
+        'figcaption': ['class'],
         'p': ['class'],
         'source': ['srcset', 'src', 'type'],
         'picture': ['aria-hidden'],
