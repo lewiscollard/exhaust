@@ -27,6 +27,7 @@ class QualityControlListFilter(admin.SimpleListFilter):
             ('no_meta_description', 'No meta description'),
             ('no_categories', 'No categories'),
             ('no_alt_text', 'Image with no alt text'),
+            ('no_alt_text_body', 'Images with no alt text (in body)'),
         )
 
     def queryset(self, request, queryset):
@@ -36,6 +37,20 @@ class QualityControlListFilter(admin.SimpleListFilter):
             return queryset.filter(categories=None)
         if self.value() == 'no_alt_text':
             return queryset.exclude(image='').filter(alt_text=None)
+        # This is slightly terrible. But it's much simpler than denormalising
+        # this out of the body into something else on save. What we're trying
+        # to find is this Markdown, which might be the _only_ way to represent
+        # an image without alt text in Markdown (without using the HTML <img>
+        # tag):
+        #
+        # ![](/some-image/)
+        #
+        # Those first four characters are unlikely enough _in the body of a
+        # blog post written in Markdown_ that it is a good enough detection
+        # method, and it's not really all that slow on a blog the size of
+        # mine.
+        if self.value() == 'no_alt_text_body':
+            return queryset.filter(text__contains='![](')
         return queryset
 
 
