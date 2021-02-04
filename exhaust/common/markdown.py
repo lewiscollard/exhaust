@@ -4,7 +4,8 @@ from commonmark.blocks import Parser
 from commonmark.render.html import HtmlRenderer
 from django.conf import settings
 from django.template.loader import render_to_string
-from django.urls import NoReverseMatch, resolve, reverse
+from django.urls import resolve, reverse
+from django.urls.exceptions import Resolver404
 
 from ..posts.models import PostImage
 from .images import render_multiformat_image
@@ -52,7 +53,7 @@ class ExhaustHtmlRenderer(HtmlRenderer):
 
         try:
             _, _, kwargs = resolve(node.destination)
-        except NoReverseMatch:  # probs should never happen
+        except Resolver404:  # probs should never happen
             return self.lit('')
 
         try:

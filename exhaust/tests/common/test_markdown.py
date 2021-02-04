@@ -1,7 +1,12 @@
+import os
+
 from bs4 import BeautifulSoup
-from django.test import TestCase
+from django.core.files.base import File
+from django.test import TestCase, override_settings
+from django.urls import reverse
 
 from exhaust.common.markdown import markdown_to_html
+from exhaust.posts.models import PostImage
 
 
 class MarkdownTestCase(TestCase):
@@ -25,3 +30,56 @@ class MarkdownTestCase(TestCase):
         self.assertEqual(rendered.strip(), '&lt;script&gt;alert(1)&lt;/script&gt;')
         soup = BeautifulSoup(rendered, features='html.parser')
         self.assertEqual(soup.find('script'), None)
+
+    @override_settings(
+        DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
+        THUMBNAIL_STORAGE='inmemorystorage.InMemoryStorage',
+        INMEMORYSTORAGE_PERSIST=True,
+        CACHES={
+            'default': {
+                'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+            }
+        },
+        # So we have a known fixed value, independent of whatever I decide to
+        # use in prod some time.
+        MEDIA_URL='/m/'
+    )
+    def test_markdown_images(self):
+        # Test multiformat renderer does not attempt to handle off-site images.
+        rendered = markdown_to_html('![](https://www.example.com/off-site-image/)')
+        soup = BeautifulSoup(rendered, 'html.parser')
+        self.assertEqual(soup.find('img')['src'], 'https://www.example.com/off-site-image/')
+
+        # Check the branch that tests non-existent post images.
+        url = reverse('posts:image_redirect', kwargs={'pk': '999999999999'})
+        rendered = markdown_to_html(f'![]({url})')
+        soup = BeautifulSoup(rendered, 'html.parser')
+        self.assertIs(soup.find('img'), None)
+
+        # Check the branch that looks for garbage (bad URL reversing)
+        url = '/image-redirect/*****/'
+        rendered = markdown_to_html(f'![]({url})')
+        soup = BeautifulSoup(rendered, 'html.parser')
+        self.assertIs(soup.find('img'), None)
+
+        # Check with a "real" image. The real tests are already done for
+        # render_multiformat_image. We'll only make sure it looks something
+        # like what we expect.
+        data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
+        image = os.path.join(data_path, 'small-image.jpg')
+        post_image = PostImage()
+        with open(image, 'rb') as fd:
+            post_image.image.save('small-image.jpg', File(fd))
+        post_image.save()
+
+        url = reverse('posts:image_redirect', kwargs={'pk': post_image.pk})
+        rendered = markdown_to_html(f'![]({url})')
+        soup = BeautifulSoup(rendered, 'html.parser')
+        self.assertIsNot(soup.find('img'), None)
+        self.assertIsNot(soup.find('picture'), None)
+
+        # Be really sure we haven't done something to break alt text, because
+        # we are a bit dependent on CommonMark's internals.
+        rendered = markdown_to_html('![alt text](https://example.com/offsite-image.jpg)')
+        soup = BeautifulSoup(rendered, 'html.parser')
+        self.assertEqual(soup.find('img')['alt'], 'alt text')
