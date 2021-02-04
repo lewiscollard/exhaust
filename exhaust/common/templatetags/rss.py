@@ -53,7 +53,7 @@ def rss_post_body(post):
 
     # Simple attribute replacements - convert to absolute URLs where
     # appropriate.
-    check_these = [('img', 'src'), ('source', 'src'), ('iframe', 'src'), ('a', 'href')]
+    check_these = [('img', 'src'), ('source', 'src'), ('a', 'href')]
     for tag, attribute in check_these:
         for element in soup.find_all(tag):
             if element.has_attr(attribute) and is_relative(element[attribute]):
