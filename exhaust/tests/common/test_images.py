@@ -7,6 +7,7 @@ from django.core.files.storage import default_storage
 from django.test import TestCase, override_settings
 
 from exhaust.common.images import render_multiformat_image
+from exhaust.common.templatetags.assets import render_image
 from exhaust.posts.models import PostImage
 
 
@@ -50,6 +51,8 @@ class ImagesTestCase(TestCase):
         # Ensure that a large image renders reasonably.
         image = self._post_image_from_test_file('large-image.jpg')
         self._check_rendered_image_html(render_multiformat_image(image.image, max_width=720))
+        # Make sure the template tag works as well.
+        self._check_rendered_image_html(render_image(image.image, max_width=720))
 
         # Ensure the "never upscale" branch is visited.
         image = self._post_image_from_test_file('small-image.jpg')
