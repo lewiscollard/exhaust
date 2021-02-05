@@ -26,7 +26,7 @@
 
     {% if object.image %}
       <div class="post__image-wrapper">
-        {% render_image object.image alt_text=object.alt_text %}
+        {% render_image object.image alt_text=object.alt_text max_width=960 %}
       </div>
     {% endif %}
 

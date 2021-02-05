@@ -181,7 +181,7 @@ THUMBNAIL_QUALITY = 80
 # HTML sanitising options.
 BLEACH_CONFIG = {
     'tags': [
-        'p', 'div', 'a', 'hr',
+        'p', 'div', 'a', 'hr', 'span',
         # Image & videos
         'img', 'video', 'picture', 'figure', 'figcaption', 'source',
         # Simple emphasis
@@ -201,10 +201,11 @@ BLEACH_CONFIG = {
     ],
     'attributes': {
         'img': ['src', 'alt', 'title', 'loading', 'class'],
-        'a': ['href', 'rel', 'target'],
+        'a': ['href', 'rel', 'target', 'title', 'class'],
         'youtube-video': ['id', 'title'],
         # These feel a bit too blanket, but should be safe.
         'div': ['class', 'style'],
+        'span': ['class'],
         'figure': ['class', 'style'],
         'figcaption': ['class'],
         'p': ['class'],

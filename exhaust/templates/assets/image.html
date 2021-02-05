@@ -22,6 +22,14 @@
          alt="{{ alt_text }}"
     >
   </picture>
+
+  {% if original.width > 600 %}
+    <p class="image__enlarger">
+      <a href="{{ original.url }}" class="image__enlarger-link" target="_blank">
+        <span class="image__enlarger-text">View original image</span>
+      </a>
+    </p>
+  {% endif %}
 </div>
 
 {% if title %}
