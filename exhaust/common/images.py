@@ -30,7 +30,7 @@ def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None
 
     # Stick a bunch of image widths into the context, in both webp and
     # the original format.
-    widths = sorted([image.width, 320, 480, 768, 1024, 1280, 1920])
+    widths = sorted(list(set([image.width, max_width, 320, 480, 768, 1024, 1280, 1920])))
 
     context['sources'] = {'image/webp': [], 'image/jpeg': []}
 
@@ -56,6 +56,8 @@ def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None
     # Set the max_width so that images that are not wide enough to be displayed
     # at 100% width look okay.
     context['max_width'] = context['sources']['image/jpeg'][-1]['width']
+    # So we can add a link to the original!
+    context['original'] = image
 
     rendered = render_to_string('assets/image.html', context)
     cache.set(cache_key, rendered)
