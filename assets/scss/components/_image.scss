@@ -37,6 +37,8 @@
   width: 30px;
   height: 30px;
 
+  /* I'd ordinarily have an inline SVG here, but there's no guarantee it will
+  render well with none of our CSS (i.e. in an RSS reader). */
   background-image: url('/static/build/webpack/images/new-window.svg');
   background-size: 100%;
 
@@ -47,8 +49,8 @@
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
 
   @media (min-width: 768px) {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
   }
 
   @media (hover: hover) {
