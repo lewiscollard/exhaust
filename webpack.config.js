@@ -79,7 +79,7 @@ const config = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        {from: 'assets/images', to: path.resolve(__dirname, './static/build/images')}
+        {from: 'assets/images', to: path.resolve(__dirname, './static/build/webpack/images')}
       ]
     }),
     new MiniCssExtractPlugin({
