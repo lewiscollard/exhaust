@@ -2,7 +2,6 @@ from unittest.mock import MagicMock
 
 from bs4 import BeautifulSoup
 from django.contrib.auth import get_user_model
-from django.http import QueryDict
 from django.test import TestCase, override_settings
 
 from exhaust.common.templatetags.markdown import markdown
@@ -13,25 +12,25 @@ from exhaust.posts.models import Post
 
 class TagsTestCase(TestCase):
     def test_pagination_url(self):
-        def generate_context(get_params=None):
-            get = QueryDict('', mutable=True)
-            get.update(get_params or {})
-            return {
-                'request': MagicMock(
-                    path='/test/',
-                    GET=get,
-                )
-            }
+        class FakeResolverMatch:
+            # For some reason MagicMock won't work for this. I don't know why.
+            def __init__(self):
+                self.namespace = 'posts'
+                self.url_name = 'post_list'
+                self.args = []
+                self.kwargs = {}
 
-        # page=1 should not append a GET parameter.
-        self.assertEqual(pagination_url(generate_context(), 1), '/test/')
+        context = {
+            'request': MagicMock(
+                # resolver_match=FakeResolverMatch(),
+                resolver_match=FakeResolverMatch()
+            )
+        }
+
+        # page=1 should not pass the 'page' argument.
+        self.assertEqual(pagination_url(context, 1), '/')
         # but page=ANYTHINGELSE should
-        self.assertEqual(pagination_url(generate_context(), 2), '/test/?page=2')
-
-        # Ensure that query strings are being reconstructed appropriately in
-        # both cases.
-        self.assertEqual(pagination_url(generate_context({'test': 'wat'}), 1), '/test/?test=wat')
-        self.assertEqual(pagination_url(generate_context({'test': 'wat'}), 2), '/test/?test=wat&page=2')
+        self.assertEqual(pagination_url(context, 2), '/page/2/')
 
     def test_markdown(self):
         # More tests are in test case for MarkdownRenderer and markdown_to_html.

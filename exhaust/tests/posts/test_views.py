@@ -124,6 +124,11 @@ class PostViewsTestCase(TestCase):
             response = self.client.get(reverse('posts:post_detail', kwargs={'slug': post.slug, 'identifier': post.identifier}))
             self.assertEqual(response.status_code, 200)
 
+    def test_list_redirects_page_querystring(self):
+        response = self.client.get(f'{reverse("posts:post_list")}?page=2')
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response['Location'], '/page/2/')
+
     def test_all_views_inherit_from_postmixin(self):
         # Sanity check to ensure that all Post-wrangling views inherit from
         # PostMixin, so that it cannot accidentally bypass the above code.

@@ -1,12 +1,14 @@
-from django.urls import path, re_path
+from django.urls import path
 
 from . import views
 
 app_name = 'posts'
 
 urlpatterns = [
-    re_path(r'^$', views.PostListView.as_view(), name='post_list'),
+    path('', views.PostListView.as_view(), name='post_list'),
+    path('page/<int:page>/', views.PostListView.as_view(), name='post_list'),
     path('category/<slug:slug>/', views.PostCategoryListView.as_view(), name='post_category_list'),
+    path('category/<slug:slug>/page/<int:page>/', views.PostCategoryListView.as_view(), name='post_category_list'),
     path('feed/', views.PostFeedView.as_view(), name='post_feed'),
     path('post/<int:identifier>/', views.PostDetailView.as_view(), name='post_detail'),
     path('post/<int:identifier>/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import DetailView, FormView, ListView, RedirectView
 
 from .forms import ImageUploadForm
@@ -22,6 +23,16 @@ class PostViewMixin:
 
 class PostListView(PostViewMixin, ListView):
     paginate_by = 8
+
+    def get(self, request, *args, **kwargs):
+        # For old pagination compatibility: redirect '?page=1' to '/page/1/'
+        if 'page' in request.GET:
+            kwargs['page'] = request.GET['page']
+            return redirect(
+                reverse(f'{request.resolver_match.namespace}:{request.resolver_match.url_name}', kwargs=kwargs),
+                permanent=True,
+            )
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         # Prefetch categories so we have a single query for loading categories,
