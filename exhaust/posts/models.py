@@ -219,3 +219,20 @@ class Category(SEOModel):
 
     def get_absolute_url(self):
         return reverse('posts:post_category_list', kwargs={'slug': self.slug})
+
+
+class Attachment(models.Model):
+    # A model for "I want to do something with a file". I will use it for
+    # small locally-hosted videos.
+
+    file = models.FileField()
+
+    timestamp = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return self.file.name

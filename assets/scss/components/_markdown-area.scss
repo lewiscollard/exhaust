@@ -13,6 +13,13 @@
     height: auto;
   }
 
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: $vr auto;
+  }
+
   > *:last-child {
     margin-bottom: 0;
   }

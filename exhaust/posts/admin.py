@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.db.models import Q
 from django.urls import reverse
-from django.utils.html import format_html_join
+from django.utils.html import format_html, format_html_join
 from markdownx.admin import MarkdownxModelAdmin
 from reversion.admin import VersionAdmin
 
-from .models import Category, Post
+from .models import Attachment, Category, Post
 
 SEO_FIELDSET = ('SEO', {
     'fields': ['seo_title', 'meta_description'],
@@ -110,3 +110,15 @@ class CategoryAdmin(VersionAdmin, MarkdownxModelAdmin):
         }),
         SEO_FIELDSET,
     ]
+
+
+@admin.register(Attachment)
+class AttachmentAdmin(VersionAdmin):
+    fields = ['file']
+
+    list_display = ['__str__', 'link']
+
+    def link(self, obj):
+        return format_html(
+            '<a target="_blank" href="{}">Here</a>', obj.file.url
+        )
