@@ -225,7 +225,9 @@ class Attachment(models.Model):
     # A model for "I want to do something with a file". I will use it for
     # small locally-hosted videos.
 
-    file = models.FileField()
+    file = models.FileField(
+        upload_to='post-attachments',
+    )
 
     timestamp = models.DateTimeField(
         default=timezone.now,

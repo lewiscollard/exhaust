@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='Attachment',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to='')),
+                ('file', models.FileField(upload_to='post-attachments')),
                 ('timestamp', models.DateTimeField(default=django.utils.timezone.now)),
             ],
             options={
