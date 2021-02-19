@@ -213,6 +213,7 @@ BLEACH_CONFIG = {
         'source': ['srcset', 'src', 'type'],
         'picture': ['aria-hidden'],
         'video': ['autoplay', 'muted', 'loop', 'width', 'height', 'title'],
+        'abbr': ['title'],
     },
     'styles': [
         # Used by our multiformat image for aspect ratio preservation (must be
