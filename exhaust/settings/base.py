@@ -196,6 +196,8 @@ BLEACH_CONFIG = {
         'code', 'pre',
         # super/subscripts
         'sup', 'sub',
+        # a thing I needed once
+        'abbr',
         # Obsolete tags that I use anyway!
         'center', 's',
     ],
