@@ -10,6 +10,20 @@
   {% if object.meta_description %}
     <meta name="description" content="{{ object.meta_description }}">
   {% endif %}
+
+  {% if object.title or object.opengraph_title %}
+    <meta property="og:title" content="{% if object.opengraph_title %}{{ object.opengraph_title }}{% else %}{{ object.title }}{% endif %}">
+  {% endif %}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ object.get_absolute_url|path_to_url }}">
+
+  {% if object.meta_description or object.opengraph_description %}
+    <meta property="og:description" content="{% if object.opengraph_description %}{{ object.opengraph_description }}{% else %}{{ object.meta_description }}{% endif %}">
+  {% endif %}
+
+  {% if object.image or object.opengraph_image %}
+    <meta property="og:image" content="{% if object.opengraph_image %}{{ object.opengraph_image.url|path_to_url }}{% else %}{{ object.image.url|path_to_url }}{% endif %}">
+  {% endif %}
 {% endblock %}
 
 {% block main %}

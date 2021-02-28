@@ -73,6 +73,10 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
             'fields': ['text', ('image', 'alt_text'), 'link', 'categories'],
         }),
         SEO_FIELDSET,
+        ('Open Graph', {
+            'fields': ['opengraph_title', 'opengraph_description', 'opengraph_image'],
+            'classes': ['collapse'],
+        }),
     ]
 
     def save_model(self, request, obj, form, change):

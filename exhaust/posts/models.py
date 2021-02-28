@@ -121,6 +121,27 @@ class Post(SEOModel):
         blank=True,
     )
 
+    # Open Graph stuff. I don't like Facebook, but their standards for having
+    # a title and description and an image are universally adopted. Roll with
+    # it.
+    opengraph_title = models.CharField(
+        verbose_name='title',
+        max_length=100,
+        blank=True,
+    )
+
+    opengraph_image = models.ImageField(
+        verbose_name='image',
+        null=True,
+        blank=True,
+        upload_to='opengraph-images'
+    )
+
+    opengraph_description = models.TextField(
+        verbose_name='description',
+        blank=True,
+    )
+
     class Meta:
         ordering = ['-date']
 
