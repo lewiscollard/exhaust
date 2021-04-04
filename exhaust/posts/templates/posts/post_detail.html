@@ -15,6 +15,7 @@
   <meta property="og:url" content="{{ object.get_absolute_url|path_to_url }}">
   {% if object.title or object.opengraph_title %}
     <meta property="og:title" content="{% if object.opengraph_title %}{{ object.opengraph_title }}{% else %}{{ object.title }}{% endif %}">
+    <meta name="twitter:title" content="{% if object.opengraph_title %}{{ object.opengraph_title }}{% else %}{{ object.title }}{% endif %}">
   {% endif %}
 
   {% if object.meta_description or object.opengraph_description %}
@@ -23,6 +24,10 @@
 
   {% if object.image or object.opengraph_image %}
     <meta property="og:image" content="{% if object.opengraph_image %}{{ object.opengraph_image.url|path_to_url }}{% else %}{{ object.image.url|path_to_url }}{% endif %}">
+  {% endif %}
+
+  {% if object.opengraph_image and object.opengraph_description %}
+    <meta name="twitter:card" content="summary_large_image">
   {% endif %}
 {% endblock %}
 
