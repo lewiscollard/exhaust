@@ -20,10 +20,12 @@
 
   {% if object.meta_description or object.opengraph_description %}
     <meta property="og:description" content="{% if object.opengraph_description %}{{ object.opengraph_description }}{% else %}{{ object.meta_description }}{% endif %}">
+    <meta name="twitter:description" content="{% if object.opengraph_description %}{{ object.opengraph_description }}{% else %}{{ object.meta_description }}{% endif %}">
   {% endif %}
 
   {% if object.image or object.opengraph_image %}
     <meta property="og:image" content="{% if object.opengraph_image %}{{ object.opengraph_image.url|path_to_url }}{% else %}{{ object.image.url|path_to_url }}{% endif %}">
+    <meta name="twitter:image" content="{% if object.opengraph_image %}{{ object.opengraph_image.url|path_to_url }}{% else %}{{ object.image.url|path_to_url }}{% endif %}">
   {% endif %}
 
   {% if object.opengraph_image and object.opengraph_description %}
