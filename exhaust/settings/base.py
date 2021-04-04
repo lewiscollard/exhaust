@@ -182,6 +182,8 @@ THUMBNAIL_QUALITY = 80
 BLEACH_CONFIG = {
     'tags': [
         'p', 'div', 'a', 'hr',
+        # Headings
+        'h2', 'h3', 'h4', 'h5', 'h6',
         # Image & videos
         'img', 'video', 'picture', 'figure', 'figcaption', 'source',
         # Simple emphasis
