@@ -130,5 +130,21 @@
 
     border: 2px solid $color-border;
   }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.25em;
+  }
 }
 /* stylelint-enable */
