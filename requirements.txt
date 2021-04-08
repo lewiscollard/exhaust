@@ -2,7 +2,7 @@ argon2-cffi==20.1.0
 beautifulsoup4==4.9.3
 bleach==3.3.0
 commonmark==0.9.1
-Django==3.1.7
+Django==3.1.8
 django-cachalot==2.3.3
 django-reversion==3.0.8
 fabric==2.5.0
