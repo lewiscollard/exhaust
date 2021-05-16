@@ -1,9 +1,9 @@
 -r requirements.txt
-coverage==5.3
+coverage==5.5
 dj-inmemorystorage==2.1.0
 django-coverage-plugin==1.8.0
-flake8==3.8.4
+flake8==3.9.2
 flake8-use-fstring==1.1
-isort==5.6.4
-pylint==2.6.0
-pylint-django==2.3.0
+isort==5.8.0
+pylint==2.8.2
+pylint-django==2.4.4
