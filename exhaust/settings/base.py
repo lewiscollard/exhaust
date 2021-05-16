@@ -155,9 +155,14 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 
-# The "no HSTS header" thing can be silenced, since my whole domain is on the
-# HSTS Preload list and my web server adds an HSTS header.
-SILENCED_SYSTEM_CHECKS = ['security.W004']
+SILENCED_SYSTEM_CHECKS = [
+    # The "no HSTS header" thing can be silenced, since my whole domain is on
+    # the HSTS Preload list and my web server adds an HSTS header.
+    'security.W004',
+    # This is coming from django-reversion not defining a primary key type.
+    # Remove this some day.
+    'models.W042',
+]
 
 # Current git HEAD hash, useful for cache invalidation. -C ROOT_DIR ensures
 # Git is running in the same directory that 'manage.py' lives in; when we're
