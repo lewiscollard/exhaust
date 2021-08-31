@@ -219,7 +219,7 @@ BLEACH_CONFIG = {
         'p': ['class'],
         'source': ['srcset', 'src', 'type'],
         'picture': ['aria-hidden'],
-        'video': ['autoplay', 'muted', 'loop', 'width', 'height', 'title'],
+        'video': ['autoplay', 'muted', 'controls', 'loop', 'width', 'height', 'title'],
         'abbr': ['title'],
     },
     'styles': [
