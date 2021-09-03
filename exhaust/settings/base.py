@@ -193,6 +193,8 @@ BLEACH_CONFIG = {
         'img', 'video', 'picture', 'figure', 'figcaption', 'source',
         # Simple emphasis
         'i', 'em', 'strong', 'b',
+        # obvs
+        'br',
         # Lists
         'ul', 'ol', 'li', 'dl', 'dt', 'dd',
         # Quotes
