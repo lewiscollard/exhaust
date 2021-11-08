@@ -11,10 +11,17 @@
   {% endif %}
 {% endblock %}
 
+{% block feed_url %}
+  {% url 'posts:post_category_feed' category=object.slug as feed_url %}
+  <link rel="alternate" type="application/rss+xml" href="{{ feed_url|path_to_url }}" />
+{% endblock %}
+
+{% block canonical_url %}
+  <link rel="canonical" href="{{ object.get_absolute_url|path_to_url }}">
+{% endblock %}
+
 {% block meta %}
   {{ block.super }}
-
-  <link rel="canonical" href="{{ object.get_absolute_url|path_to_url }}">
 
   {% if object.meta_description %}
     <meta name="description" content="{{ object.meta_description }}">
@@ -33,6 +40,11 @@
       <div class="article-list__description">
         <div class="markdown">
           {{ object.description|markdown }}
+
+          <p>
+            {% url 'posts:post_category_feed' category=object.slug as feed_url %}
+            <a href="{{ feed_url }}">RSS feed for this category</a>
+          </p>
         </div>
       </div>
     {% endif %}

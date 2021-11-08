@@ -61,7 +61,7 @@ class PostViewsTestCase(TestCase):
         # create another uncategorised post
         other_post = Post.objects.create(title='Test post', author=self.author, slug='test-post', online=True)
 
-        response = self.client.get(reverse('posts:post_category_list', kwargs={'slug': category.slug}))
+        response = self.client.get(reverse('posts:post_category_list', kwargs={'category': category.slug}))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data['object'], category)
         self.assertNotIn(other_post, response.context_data['object_list'])
@@ -69,7 +69,7 @@ class PostViewsTestCase(TestCase):
         # Ensure that the "has SEO title" branch is checked in the template.
         category.seo_title = 'Search engine optimised!'
         category.save()
-        response = self.client.get(reverse('posts:post_category_list', kwargs={'slug': category.slug}))
+        response = self.client.get(reverse('posts:post_category_list', kwargs={'category': category.slug}))
         self.assertEqual(response.status_code, 200)
 
     def test_queryset_excludes_when_appropriate(self):

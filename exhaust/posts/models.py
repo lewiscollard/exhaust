@@ -239,7 +239,7 @@ class Category(SEOModel):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('posts:post_category_list', kwargs={'slug': self.slug})
+        return reverse('posts:post_category_list', kwargs={'category': self.slug})
 
 
 class Attachment(models.Model):

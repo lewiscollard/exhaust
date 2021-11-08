@@ -37,18 +37,19 @@ class PostListView(PostViewMixin, ListView):
     def get_queryset(self):
         # Prefetch categories so we have a single query for loading categories,
         # rather than N queries for N posts.
-        return super().get_queryset().prefetch_related('categories')
+        queryset = super().get_queryset().prefetch_related('categories')
+
+        if self.kwargs.get('category'):
+            queryset = queryset.filter(categories__slug=self.kwargs['category']).distinct()
+        return queryset
 
 
 class PostCategoryListView(PostListView):
     template_name = 'posts/post_category_list.html'
 
-    def get_queryset(self):
-        return super().get_queryset().filter(categories__slug=self.kwargs['slug']).distinct()
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['object'] = get_object_or_404(Category, slug=self.kwargs['slug'])
+        context['object'] = get_object_or_404(Category, slug=self.kwargs['category'])
         return context
 
 
@@ -85,7 +86,7 @@ class PostDetailView(PostViewMixin, DetailView):
             raise Http404(f'{self.model._meta.verbose_name.capitalize()} not found.')  # pylint:disable=raise-missing-from
 
 
-class PostFeedView(PostListView):
+class BasePostFeedView(PostListView):
     '''An RSS feed for all posts.
 
     This would, in an idea world, work with Django's feed module. But that API
@@ -106,6 +107,21 @@ class PostFeedView(PostListView):
             response['Content-Type'] = 'application/rss+xml; charset=utf-8'
 
         return response
+
+
+class PostFeedView(BasePostFeedView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['feed_title'] = settings.SITE_NAME
+        return context
+
+
+class PostCategoryFeedView(BasePostFeedView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        category = get_object_or_404(Category, slug=self.kwargs['category'])
+        context['feed_title'] = f'{category} - {settings.SITE_NAME}'
+        return context
 
 
 class ImageRedirectView(LoginRequiredMixin, RedirectView):
