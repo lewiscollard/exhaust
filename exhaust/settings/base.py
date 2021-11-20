@@ -10,7 +10,7 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 
 SITE_DOMAIN = 'exhaust.lewiscollard.com'
 SITE_NAME = 'Exhaust'
-SITE_DESCRIPTION = 'something resembling a blog, by Lewis Collard'
+SITE_DESCRIPTION = 'things Lewis Collard likes, by Lewis Collard'
 
 SECRET_KEY_FILE = os.path.join(ROOT_DIR, '.secret_key')
 
