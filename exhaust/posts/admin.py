@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.decorators import display
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.html import format_html, format_html_join
@@ -89,6 +90,7 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
         # Optimisation for "get_categories" above.
         return super().get_queryset(request).prefetch_related('categories')
 
+    @display(description='categories')
     def get_categories(self, obj):
         # Make it easier to find uncategorised articles at a glance, and add a
         # handy edit link to the categories too.
@@ -100,7 +102,6 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
                 for category in obj.categories.all()
             ]
         )
-    get_categories.short_description = 'Categories'
 
 
 @admin.register(Category)
