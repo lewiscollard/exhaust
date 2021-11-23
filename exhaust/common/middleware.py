@@ -9,6 +9,8 @@ class CSPMiddleware:
         'style-src': ["'self'", "'unsafe-inline'"],
         # Allow YouTube embeds.
         'frame-src': ["'self'", "https://www.youtube-nocookie.com"],
+        # Something deep in the guts of Vue wants to use <s>evil</s> eval.
+        'script-src': ["'self'", "'unsafe-eval'"],
     }
 
     def __init__(self, get_response):
