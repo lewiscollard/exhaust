@@ -35,3 +35,8 @@ class Command(BaseCommand):
 
         connection.sudo('service memcached restart')
         connection.sudo('supervisorctl restart all')
+        # In case I've broken the nginx config; this should cause nginx to
+        # keep running (at least until the next reboot) while causing the
+        # update to fail.
+        connection.sudo('nginx -t')
+        connection.sudo('service nginx reload')
