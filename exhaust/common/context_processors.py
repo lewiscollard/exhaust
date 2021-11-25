@@ -1,6 +1,3 @@
-from django.db import connection
-
-
 def settings(request):
     '''Adds "settings" to our context.
 
@@ -15,15 +12,4 @@ def settings(request):
 
     return {
         'settings': django.conf.settings,
-    }
-
-
-def query_count(request):
-    '''
-    Not needed most of the time; this is my helper for too-many-DB-reads
-    debugging.
-    '''
-    return {
-        'query_count': lambda: len(connection.queries),
-        'queries': lambda: connection.queries
     }

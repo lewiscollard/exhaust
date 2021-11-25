@@ -70,12 +70,6 @@
           <p class="footer__block">
             The source code for this website <a href="https://github.com/lewiscollard/exhaust">is available</a>.
           </p>
-
-          {% if request.user.is_staff and query_count %}
-            <p class="footer__block">
-              Query count: {{ query_count }}
-            </p>
-          {% endif %}
         </div>
       </div>
     </footer>
