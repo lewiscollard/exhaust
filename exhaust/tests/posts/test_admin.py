@@ -40,10 +40,17 @@ class PostAdminTestCase(TestCase):
             meta_description='test',
         )
 
+        no_alt_text_in_body_post = Post.objects.create(
+            author=self.user,
+            meta_description='test',
+            text='![](/some-image.jpg)',
+        )
+        no_alt_text_in_body_post.categories.set([cat])
+
         admin_url = reverse('admin:posts_post_changelist')
         response = self.client.get(admin_url)
         # sanity check
-        self.assertEqual(len(response.context_data['cl'].result_list), 3)
+        self.assertEqual(len(response.context_data['cl'].result_list), 4)
 
         response = self.client.get(admin_url, {'quality_control': 'no_meta_description'})
         results = response.context_data['cl'].result_list
@@ -55,9 +62,15 @@ class PostAdminTestCase(TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0], no_categories_post)
 
+        response = self.client.get(admin_url, {'quality_control': 'no_alt_text_body'})
+        self.assertEqual(response.status_code, 200)
+        results = response.context_data['cl'].result_list
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0], no_alt_text_in_body_post)
+
         # Check the fall-through case, just to ensure full coverage.
         response = self.client.get(admin_url, {'quality_control': 'garbage'})
-        self.assertEqual(len(response.context_data['cl'].result_list), 3)
+        self.assertEqual(len(response.context_data['cl'].result_list), 4)
 
     def test_prefetching_categories(self):
         cat = Category.objects.create(title='Test cat', slug='test-cat')
@@ -81,3 +94,16 @@ class PostAdminTestCase(TestCase):
             response = self.client.get(reverse('admin:posts_post_changelist'))
 
         self.assertEqual(len(response.context_data['cl'].result_list), 9)
+
+    def test_saving_post_sets_user(self):
+        # Ensure saving the post sets the current user as the author.
+        response = self.client.post(reverse('admin:posts_post_add'), {
+            'title': 'author test',
+            'text': 'author test!',
+            'slug': 'author-test',
+            'date_0': '2021-11-25',
+            'date_1': '12:12:12',
+        })
+        self.assertEqual(response.status_code, 302)
+        post = Post.objects.first()
+        self.assertEqual(post.author, self.user)
