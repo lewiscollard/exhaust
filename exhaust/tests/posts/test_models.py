@@ -81,7 +81,8 @@ class PostModelTestCase(TestCase):
         with open(image, mode='rb') as fd:
             post.image.save('small-image.jpg', File(fd, name='test-image.jpg'))
 
-        self.assertEqual(str(post), 'Image post: small-image.jpg')
+        self.assertIs(str(post).startswith('Image post: small-image'), True)
+        self.assertIs(str(post).endswith('.jpg'), True)
 
     def test_post_get_title_link_url(self):
         post = Post.objects.create(title='Test', text='Something', author=self.author)

@@ -1,8 +1,11 @@
+import os
+
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.core.files.base import File
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from exhaust.posts.models import Category, Post
+from exhaust.posts.models import Attachment, Category, Post
 
 
 class PostAdminTestCase(TestCase):
@@ -14,6 +17,11 @@ class PostAdminTestCase(TestCase):
         )
         self.client.login(username='admin', password='123')
 
+    @override_settings(
+        DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
+        INMEMORYSTORAGE_PERSIST=False,
+        MEDIA_URL='/m/'
+    )
     def test_quality_control_filter(self):
         # Ensure QualityControlListFilter works.
         cat = Category.objects.create(title='Test cat', slug='test-cat')
@@ -40,6 +48,17 @@ class PostAdminTestCase(TestCase):
             meta_description='test',
         )
 
+        no_alt_text_post = Post.objects.create(
+            title='No alt text',
+            slug='no-alt-text',
+            author=self.user,
+            meta_description='Description',
+        )
+        image = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'small-image.jpg'))
+        with open(image, mode='rb') as fd:
+            no_alt_text_post.image.save('small-image.jpg', File(fd, name='test-image.jpg'))
+        no_alt_text_post.categories.set([cat])
+
         no_alt_text_in_body_post = Post.objects.create(
             author=self.user,
             meta_description='test',
@@ -50,7 +69,7 @@ class PostAdminTestCase(TestCase):
         admin_url = reverse('admin:posts_post_changelist')
         response = self.client.get(admin_url)
         # sanity check
-        self.assertEqual(len(response.context_data['cl'].result_list), 4)
+        self.assertEqual(len(response.context_data['cl'].result_list), 5)
 
         response = self.client.get(admin_url, {'quality_control': 'no_meta_description'})
         results = response.context_data['cl'].result_list
@@ -62,6 +81,12 @@ class PostAdminTestCase(TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0], no_categories_post)
 
+        response = self.client.get(admin_url, {'quality_control': 'no_alt_text'})
+        self.assertEqual(response.status_code, 200)
+        results = response.context_data['cl'].result_list
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0], no_alt_text_post)
+
         response = self.client.get(admin_url, {'quality_control': 'no_alt_text_body'})
         self.assertEqual(response.status_code, 200)
         results = response.context_data['cl'].result_list
@@ -70,7 +95,7 @@ class PostAdminTestCase(TestCase):
 
         # Check the fall-through case, just to ensure full coverage.
         response = self.client.get(admin_url, {'quality_control': 'garbage'})
-        self.assertEqual(len(response.context_data['cl'].result_list), 4)
+        self.assertEqual(len(response.context_data['cl'].result_list), 5)
 
     def test_prefetching_categories(self):
         cat = Category.objects.create(title='Test cat', slug='test-cat')
@@ -107,3 +132,19 @@ class PostAdminTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         post = Post.objects.first()
         self.assertEqual(post.author, self.user)
+
+    @override_settings(
+        DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
+        INMEMORYSTORAGE_PERSIST=False,
+        MEDIA_URL='/m/'
+    )
+    def test_attachment_list_view(self):
+        # Simple test of the list, sort-of tests the "link" thing in the
+        # list_display, at least the "doesn't explode" part of it
+        attachment = Attachment.objects.create()
+        attachment_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'small-image.jpg'))
+        with open(attachment_path, mode='rb') as fd:
+            attachment.file.save('small-image.jpg', File(fd, name='test-image.jpg'))
+
+        response = self.client.get(reverse('admin:posts_attachment_changelist'))
+        self.assertEqual(response.status_code, 200)
