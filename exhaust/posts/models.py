@@ -1,3 +1,4 @@
+import os
 import secrets
 
 from django.conf import settings
@@ -152,6 +153,7 @@ class Post(SEOModel):
         if self.text:
             if len(self.text) > 40:
                 return f'{self.text[:38]}...'
+            return self.text
 
         if self.image:
             return f'Image post: {self.image.file.name}'
@@ -212,7 +214,7 @@ class PostImage(models.Model):
         ordering = ['-timestamp']
 
     def __str__(self):
-        return self.title or self.file.name  # pylint:disable=no-member
+        return self.title or self.image.file.name
 
     def get_absolute_url(self):
         return reverse('posts:image_redirect', kwargs={'pk': self.pk})
@@ -258,4 +260,4 @@ class Attachment(models.Model):
         ordering = ['-timestamp']
 
     def __str__(self):
-        return self.file.name
+        return os.path.basename(self.file.name)

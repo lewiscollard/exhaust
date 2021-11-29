@@ -14,23 +14,24 @@ class TagsTestCase(TestCase):
     def test_pagination_url(self):
         class FakeResolverMatch:
             # For some reason MagicMock won't work for this. I don't know why.
-            def __init__(self):
+            def __init__(self, view_kwargs):
                 self.namespace = 'posts'
                 self.url_name = 'post_list'
                 self.args = []
-                self.kwargs = {}
+                self.kwargs = view_kwargs or {}
 
-        context = {
-            'request': MagicMock(
-                # resolver_match=FakeResolverMatch(),
-                resolver_match=FakeResolverMatch()
-            )
-        }
+        # Test both branches of "if 'page' in view_kwargs"
+        for view_kwargs in [{}, {'page': 2}]:
+            context = {
+                'request': MagicMock(
+                    resolver_match=FakeResolverMatch(view_kwargs=view_kwargs)
+                )
+            }
 
-        # page=1 should not pass the 'page' argument.
-        self.assertEqual(pagination_url(context, 1), '/')
-        # but page=ANYTHINGELSE should
-        self.assertEqual(pagination_url(context, 2), '/page/2/')
+            # page=1 should not pass the 'page' argument.
+            self.assertEqual(pagination_url(context, 1), '/')
+            # but page=ANYTHINGELSE should
+            self.assertEqual(pagination_url(context, 2), '/page/2/')
 
     def test_markdown(self):
         # More tests are in test case for MarkdownRenderer and markdown_to_html.
