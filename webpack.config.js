@@ -12,6 +12,7 @@ const DEV = process.env.NODE_ENV === 'development';
 process.env.BROWSERSLIST_IGNORE_OLD_DATA = true
 
 const config = {
+  stats: 'minimal',
   entry: {
     'main': './assets/js/index.js',
     'style': './assets/scss/styles.scss',
@@ -53,6 +54,7 @@ const config = {
   devServer: {
     // Compression is mildly pointless in local dev.
     compress: false,
+    host: 'localhost',
     // I use 3000 out of an old habit.
     port: 3000,
     proxy: {
