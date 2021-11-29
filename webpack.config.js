@@ -7,6 +7,9 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const webpack = require('webpack');
 
 const DEV = process.env.NODE_ENV === 'development';
+// Remove pointless noise ("caniuse-lite is outdated") that I do not care
+// about.
+process.env.BROWSERSLIST_IGNORE_OLD_DATA = true
 
 const config = {
   entry: {
