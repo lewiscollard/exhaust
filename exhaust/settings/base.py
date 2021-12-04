@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Project-local things.
     'exhaust.common',
     'exhaust.deployment',
+    'exhaust.exogram',
     'exhaust.posts',
 ]
 
