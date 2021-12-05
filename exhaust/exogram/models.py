@@ -1,4 +1,5 @@
 import secrets
+from datetime import datetime
 
 from django.db import models
 from django.urls import reverse
@@ -27,6 +28,17 @@ class Gram(PublishedModel):
 
     class Meta:
         ordering = ['-date']
+
+    def __str__(self):
+        parts = [datetime.strftime(self.date, '%Y-%m-%d')]
+
+        if self.text:
+            if len(self.text) > 40:
+                parts.append(self.text[:40] + '...')
+            else:
+                parts.append(self.text)
+
+        return ': '.join(parts)
 
     def save(self, *args, **kwargs):
         if not self.public_id:
