@@ -9,7 +9,7 @@ from exhaust.exogram.models import Gram
 class GramAdmin(VersionAdmin):
     fieldsets = [
         ('', {
-            'fields': ['image', 'slug']
+            'fields': ['image', 'slug', 'text'],
         }),
         PUBLICATION_FIELDSET,
     ]
