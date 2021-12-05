@@ -5,20 +5,14 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, FormView, ListView, RedirectView
 
-from .forms import ImageUploadForm
-from .models import Category, Post, PostImage
+from exhaust.common.views import PublishedModelViewMixin
+from exhaust.posts.forms import ImageUploadForm
+from exhaust.posts.models import Category, Post, PostImage
 
 
-class PostViewMixin:
+class PostViewMixin(PublishedModelViewMixin):
     model = Post
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        # Allow staff users (me) to view unpublished posts to see what they
-        # will look like on the front end.
-        if not self.request.user.is_staff:
-            queryset = queryset.select_published()
-        return queryset
 
 
 class PostListView(PostViewMixin, ListView):
