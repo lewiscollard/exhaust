@@ -3,13 +3,11 @@
 {% load assets %}
 
 {% block main %}
-  <h1>Random acts of camera</h1>
-
   <ul class="image-grid">
     {% for object in object_list %}
-      <li style="width: 300px;">
+      <li class="image-grid__item">
           <a href="{{ object.get_absolute_url }}">
-            {% render_image object.image max_width=400 %}
+            {% render_image object.image max_width=320 %}
           </a>
         </a>
       </li>
