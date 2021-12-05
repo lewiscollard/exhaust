@@ -6,7 +6,8 @@ from django.utils.html import format_html, format_html_join
 from markdownx.admin import MarkdownxModelAdmin
 from reversion.admin import VersionAdmin
 
-from .models import Attachment, Category, Post
+from exhaust.common.admin import PUBLICATION_FIELDSET
+from exhaust.posts.models import Attachment, Category, Post
 
 SEO_FIELDSET = ('SEO', {
     'fields': ['seo_title', 'meta_description'],
@@ -68,8 +69,9 @@ class PostAdmin(VersionAdmin, MarkdownxModelAdmin):
 
     fieldsets = [
         ('', {
-            'fields': ['title', 'date', 'slug', 'online'],
+            'fields': ['title', 'slug'],
         }),
+        PUBLICATION_FIELDSET,
         ('Content', {
             'fields': ['text', ('image', 'alt_text'), 'link', 'categories'],
         }),

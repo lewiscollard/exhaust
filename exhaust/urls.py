@@ -10,6 +10,7 @@ from exhaust.posts.sitemaps import POSTS_SITE_MAPS
 
 urlpatterns = [
     path('', include('exhaust.posts.urls', namespace='posts')),
+    path('exogram/', include('exhaust.exogram.urls', namespace='exogram')),
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     path('admin/', admin.site.urls),
     path('markdownx/markdownify/', MarkdownifyView.as_view(), name='markdownx_markdownify'),

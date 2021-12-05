@@ -8,6 +8,8 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from markdownx.models import MarkdownxField
 
+from exhaust.common.models import PublishedModel
+
 
 class SEOModel(models.Model):
     '''
@@ -29,26 +31,7 @@ class SEOModel(models.Model):
         abstract = True
 
 
-class PostQuerySet(models.QuerySet):
-    '''
-    A manager that allows some crude version of "draft" and a "post queue"
-    by excluding anything with online=False or a date set to the future.
-    '''
-
-    def select_published(self):
-        return self.filter(
-            online=True,
-            # Swapping out the seconds and microseconds to 0 means that the
-            # same query is generated for any particular minute in the day.
-            # This is much more query-caching (i.e. cachalot) friendly, in
-            # both that the same query will be generated for one minute, and
-            # stops the cache filling up with entries that will never get a
-            # hit.
-            date__lte=timezone.now().replace(second=0, microsecond=0),
-        )
-
-
-class Post(SEOModel):
+class Post(PublishedModel, SEOModel):
     '''
     A post on the site.
 
@@ -57,12 +40,6 @@ class Post(SEOModel):
     have a post with no title, text or image set, but that can be enforced in
     the admin.
     '''
-
-    objects = models.Manager.from_queryset(PostQuerySet)()
-
-    date = models.DateTimeField(
-        default=timezone.now
-    )
 
     # It is possible to not have a slug if we only have an image. I also want
     # the option to change the slug while keeping a persistent URL (see views
@@ -91,11 +68,6 @@ class Post(SEOModel):
     text = MarkdownxField(
         null=True,
         blank=True,
-    )
-
-    online = models.BooleanField(
-        default=False,
-        help_text='Uncheck this to hide this post on the frontend.'
     )
 
     image = models.ImageField(
