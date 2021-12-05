@@ -38,6 +38,20 @@
         {% else %}
           </div>
         {% endif %}
+
+        <div class="header__navigation">
+          <nav class="navigation">
+            <ul class="navigation__items">
+              <li class="navigation__item">
+                <a href="{% url 'posts:post_list' %}" class="navigation__item-link">posts</a>
+              </li>
+
+              <li class="navigation__item">
+                <a href="{% url 'exogram:gram_list' %}" class="navigation__item-link">random acts of image</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </header>
 
