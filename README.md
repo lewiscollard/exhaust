@@ -75,7 +75,3 @@ I think this is a reasonable compromise between protecting users' privacy and no
 ## License
 
 [WTFPL](http://www.wtfpl.net/)
-
-## TODO
-
-* OpenGraph stuff?
