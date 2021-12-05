@@ -14,7 +14,6 @@ class PostViewMixin(PublishedModelViewMixin):
     model = Post
 
 
-
 class PostListView(PostViewMixin, ListView):
     paginate_by = 8
 
