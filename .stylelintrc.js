@@ -1,4 +1,5 @@
 module.exports = {
+  "customSyntax": "postcss-scss",
   "plugins": [
     "stylelint-order",
     "stylelint-z-index-value-constraint"
