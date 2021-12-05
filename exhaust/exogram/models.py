@@ -2,6 +2,7 @@ import secrets
 
 from django.db import models
 from django.urls import reverse
+from markdownx.models import MarkdownxField
 
 from exhaust.common.models import PublishedModel
 
@@ -22,7 +23,7 @@ class Gram(PublishedModel):
 
     image = models.ImageField()
 
-    text = models.TextField(null=True, blank=True)
+    text = MarkdownxField(null=True, blank=True)
 
     class Meta:
         ordering = ['-date']
