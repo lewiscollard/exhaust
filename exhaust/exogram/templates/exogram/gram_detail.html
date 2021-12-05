@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load assets markdown %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block main %}
+  <div class="exogram-detail">
+    <div class="exogram-detail__image">
+      {% render_image object.image max_width=1024 %}
+    </div>
+
+    <h1 class="exogram-detail__title">
+      {{ object.date|date }}
+    </h1>
+
+    <div class="exogram-detail__description">
+      <div class="markdown">
+        {{ object.text|markdown }}
+      </div>
+    </div>
+
+    <div class="exogram-detail__paginator">
+      <nav class="paginator">
+        {% if object.detail_pagination.newer %}
+          <div class="paginator__item paginator__item--next">
+            <a rel="next" href="{{ object.detail_pagination.newer }}" class="paginator__link js-bind-left">&lt; Newer</a>
+          </div>
+        {% endif %}
+
+        {% if object.detail_pagination.older %}
+          <div class="paginator__item paginator__item--previous">
+            <a rel="prev" href="{{ object.detail_pagination.older }}" class="paginator__link js-bind-right">Older &gt;</a>
+          </div>
+        {% endif %}
+      </nav>
+    </div>
+
+  </div>
+{% endblock %}

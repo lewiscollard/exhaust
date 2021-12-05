@@ -11,4 +11,21 @@ window.addEventListener('DOMContentLoaded', async () => {
       })
     }
   }
+
+  // Bind left/right arrows in exogram detail mode.
+  const bindArrows = [
+    {selector: '.js-bind-right', keyCode: 39},
+    {selector: '.js-bind-left', keyCode: 37}
+  ]
+  for (const binding of bindArrows) {
+    const element = document.querySelector(binding.selector)
+    if (element) {
+      window.addEventListener('keydown', (ev) => {
+        if (ev.keyCode === binding.keyCode) {
+          ev.stopPropagation()
+          element.click()
+        }
+      })
+    }
+  }
 });

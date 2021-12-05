@@ -52,3 +52,12 @@ class Gram(PublishedModel):
                 kwargs={'public_id': self.id, 'slug': self.slug}
             )
         return reverse('exogram:gram_detail', kwargs={'public_id': self.public_id})
+
+    def detail_pagination(self):
+        pagination = {}
+        for key, attribute in [('newer', 'get_next_by_date'), ('older', 'get_previous_by_date')]:
+            try:
+                pagination[key] = getattr(self, attribute)().get_absolute_url()
+            except self.DoesNotExist:
+                pass
+        return pagination
