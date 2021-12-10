@@ -101,6 +101,7 @@ DATABASES = {
 
 WSGI_APPLICATION = 'exhaust.wsgi.application'
 
+LOGIN_URL = 'admin:login'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
