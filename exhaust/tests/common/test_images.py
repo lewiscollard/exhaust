@@ -2,24 +2,16 @@ import os
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
-from django.core.files.base import File
 from django.core.files.storage import default_storage
 from django.test import TestCase, override_settings
 
 from exhaust.common.images import render_multiformat_image
 from exhaust.common.templatetags.assets import render_image
-from exhaust.posts.models import PostImage
+from exhaust.tests.factories import PostImageFactory
 
 
 class ImagesTestCase(TestCase):
     TEST_DATA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
-
-    def _post_image_from_test_file(self, filename):
-        image_obj = PostImage()
-        with open(os.path.join(self.TEST_DATA_ROOT, filename), 'rb') as fd:
-            image_obj.image.save(filename, File(fd))
-        image_obj.save()
-        return image_obj
 
     def _check_rendered_image_html(self, html):
         # Tests that all the HTML from a rendered multiformat image is
@@ -49,17 +41,17 @@ class ImagesTestCase(TestCase):
     )
     def test_render_multiformat_image(self):
         # Ensure that a large image renders reasonably.
-        image = self._post_image_from_test_file('large-image.jpg')
+        image = PostImageFactory(image='large-image.jpg')
         self._check_rendered_image_html(render_multiformat_image(image.image, max_width=720))
         # Make sure the template tag works as well.
         self._check_rendered_image_html(render_image(image.image, max_width=720))
 
         # Ensure the "never upscale" branch is visited.
-        image = self._post_image_from_test_file('small-image.jpg')
+        image = PostImageFactory(image='small-image.jpg')
         self._check_rendered_image_html(render_multiformat_image(image.image, max_width=720))
 
         # Check the "has a title" branch in the template.
-        image = self._post_image_from_test_file('small-image.jpg')
+        image = PostImageFactory(image='small-image.jpg')
         html = render_multiformat_image(image.image, max_width=720, title='Testing!')
         self._check_rendered_image_html(html)
 

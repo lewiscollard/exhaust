@@ -1,12 +1,9 @@
-import os
-
 from bs4 import BeautifulSoup
-from django.core.files.base import File
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from exhaust.common.markdown import markdown_to_html
-from exhaust.posts.models import PostImage
+from exhaust.tests.factories import PostImageFactory
 
 
 class MarkdownTestCase(TestCase):
@@ -65,12 +62,7 @@ class MarkdownTestCase(TestCase):
         # Check with a "real" image. The real tests are already done for
         # render_multiformat_image. We'll only make sure it looks something
         # like what we expect.
-        data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
-        image = os.path.join(data_path, 'small-image.jpg')
-        post_image = PostImage()
-        with open(image, 'rb') as fd:
-            post_image.image.save('small-image.jpg', File(fd))
-        post_image.save()
+        post_image = PostImageFactory(image='small-image.jpg')
 
         url = reverse('posts:image_redirect', kwargs={'pk': post_image.pk})
         rendered = markdown_to_html(f'![]({url})')

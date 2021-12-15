@@ -1,13 +1,12 @@
 from unittest.mock import MagicMock
 
 from bs4 import BeautifulSoup
-from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 
 from exhaust.common.templatetags.markdown import markdown
 from exhaust.common.templatetags.pagination import pagination_url
 from exhaust.common.templatetags.rss import path_to_url, rss_post_body
-from exhaust.posts.models import Post
+from exhaust.tests.factories import PostFactory
 
 
 class TagsTestCase(TestCase):
@@ -48,8 +47,7 @@ class TagsTestCase(TestCase):
     def test_rss_html(self):
         # Ensure that all tags are being converted for use in RSS
         # appropriately.
-        post = Post.objects.create(
-            title='Hello',
+        post = PostFactory.create(
             text='\n'.join([
                 '<img src="/some-image/">',
                 '<picture>',
@@ -59,7 +57,7 @@ class TagsTestCase(TestCase):
                 '<div class="image__padder"></div>',
                 '<div class="image" style="max-width: 100px"></div>'
             ]),
-            author=get_user_model().objects.create(username='lewis', password='lewis')
+            online=True,
         )
         soup = BeautifulSoup(rss_post_body(post), 'html.parser')
         self.assertEqual(soup.find('img')['src'], 'https://example.com/some-image/')

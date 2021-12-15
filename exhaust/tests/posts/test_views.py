@@ -6,15 +6,13 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.timezone import now
 
-from exhaust.posts.models import Category, Post
+from exhaust.posts.models import Post
 from exhaust.posts.urls import urlpatterns as post_urlpatterns
 from exhaust.posts.views import PostViewMixin
+from exhaust.tests.factories import CategoryFactory, PostFactory
 
 
 class PostViewsTestCase(TestCase):
-    def setUp(self):
-        self.author = get_user_model().objects.create(username='admin')
-
     def test_detail_doesnt_raise_exception(self):
         # Ensure that accessing a post that does not exist does a 404, rather
         # than raising an exception.
@@ -22,21 +20,9 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_detail_redirects(self):
-        post_with_slug = Post.objects.create(
-            title='bargle',
-            slug='slug',
-            author=self.author,
-            # the manager replaces seconds & microseconds with 0
-            date=now() - timedelta(minutes=1),
-            online=True,
-        )
+        post_with_slug = PostFactory.create(slug='slug', online=True)
 
-        post_without_slug = Post.objects.create(
-            author=self.author,
-            date=now() - timedelta(minutes=1),
-            text='bargle',
-            online=True,
-        )
+        post_without_slug = PostFactory.create(slug='', online=True)
 
         possibles = [
             # Post with slug called with identifier argument only should redirect.
@@ -54,12 +40,12 @@ class PostViewsTestCase(TestCase):
         self.assertRedirects(response, post_without_slug.get_absolute_url(), status_code=301, target_status_code=200)
 
     def test_category_view(self):
-        category = Category.objects.create(title='Test category', slug='test-category', description='Testing!', meta_description='Test!')
-        post = Post.objects.create(title='Test post', author=self.author, slug='test-post', online=True)
+        category = CategoryFactory.create(meta_description='Test!')
+        post = PostFactory.create(online=True)
         post.categories.add(category)
 
         # create another uncategorised post
-        other_post = Post.objects.create(title='Test post', author=self.author, slug='test-post', online=True)
+        other_post = PostFactory.create(online=True)
 
         response = self.client.get(reverse('posts:post_category_list', kwargs={'category': category.slug}))
         self.assertEqual(response.status_code, 200)
@@ -74,31 +60,13 @@ class PostViewsTestCase(TestCase):
 
     def test_queryset_excludes_when_appropriate(self):
         # Add a draft post...
-        draft_post = Post.objects.create(
-            title='Draft',
-            slug='draft',
-            online=False,
-            date=now() + timedelta(days=2),
-            author=self.author,
-        )
+        draft_post = PostFactory.create(online=False, date=now() + timedelta(days=2))
 
         # ...and a future one...
-        future_post = Post.objects.create(
-            title='Future',
-            slug='flying-cars',
-            online=True,
-            date=now() + timedelta(days=2),
-            author=self.author,
-        )
+        future_post = PostFactory.create(online=True, date=now() + timedelta(days=2))
 
         # ...and one that is live now.
-        published_post = Post.objects.create(
-            title='Published',
-            slug='published',
-            online=True,
-            date=now() - timedelta(minutes=2),
-            author=self.author,
-        )
+        published_post = PostFactory.create(online=True)
 
         # We're not logged in, so we should only see the live post.
         response = self.client.get(reverse('posts:post_list'))
@@ -140,16 +108,16 @@ class PostViewsTestCase(TestCase):
             if view_class.model == Post:
                 self.assertTrue(issubclass(pattern.callback.view_class, PostViewMixin))
 
+    def _rss_response_is_sane(self, response, *, expected_item_count):
+        # In lieu of a full validator, let's just make sure it looks
+        # something like XML (in which case etree will fail to read it) and
+        # looks vaguely like a feed, and has the expected number of items.
+        tree = ElementTree.fromstring(response.content.decode('utf-8'))
+        channel = tree.find('channel')
+        self.assertEqual(len(channel.findall('item')), expected_item_count)
+
     def test_rss_feed(self):
-        for i in range(1, 6):
-            Post.objects.create(
-                title=f'Test post {i}',
-                slug=f'test-post-{i}',
-                text='unimportant',
-                author=self.author,
-                online=True,
-                date=now() - timedelta(minutes=1)
-            )
+        PostFactory.create_batch(5, online=True)
 
         posts_url = reverse('posts:post_feed')
 
@@ -159,13 +127,23 @@ class PostViewsTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'text/plain; charset=utf-8')
-
-        # In lieu of a full validator, let's just make sure it looks
-        # something like XML (in which case etree will fail to read it) and
-        # looks vaguely like a feed.
         response = self.client.get(posts_url)
         self.assertEqual(response.status_code, 200)
+        self._rss_response_is_sane(response, expected_item_count=5)
 
-        tree = ElementTree.fromstring(response.content.decode('utf-8'))
-        channel = tree.find('channel')
-        self.assertEqual(len(channel.findall('item')), 5)
+    def test_category_feed_view(self):
+        category = CategoryFactory.create()
+        post = PostFactory.create(online=True)
+        post.categories.add(category)
+
+        # Check queryset exclusion for other categories...
+        PostFactory.create_batch(2, online=True)
+        # ...and ensure that offline posts are being excluded.
+        offline_post = PostFactory.create(online=False)
+        offline_post.categories.add(category.pk)
+
+        response = self.client.get(reverse('posts:post_category_feed', kwargs={'category': category.slug}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(response.context_data['object_list']), [post])
+        self._rss_response_is_sane(response, expected_item_count=1)

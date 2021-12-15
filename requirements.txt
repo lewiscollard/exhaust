@@ -6,6 +6,7 @@ Django==4.0
 django-cachalot==2.4.5
 django-reversion==4.0.1
 fabric==2.6.0
+factory_boy==3.2.1
 gunicorn==20.1.0
 Pillow==8.4.0
 psycopg2==2.8.6

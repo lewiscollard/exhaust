@@ -1,11 +1,10 @@
-import os
-
 from django.contrib.auth import get_user_model
-from django.core.files.base import File
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from exhaust.posts.models import Attachment, Category, Post
+from exhaust.posts.models import Post
+from exhaust.tests.factories import (AttachmentFactory, CategoryFactory,
+                                     PostFactory)
 
 
 class PostAdminTestCase(TestCase):
@@ -15,7 +14,7 @@ class PostAdminTestCase(TestCase):
             password='123',
             email='nobody@example.invalid',
         )
-        self.client.login(username='admin', password='123')
+        self.client.force_login(self.user)
 
     @override_settings(
         DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
@@ -24,45 +23,27 @@ class PostAdminTestCase(TestCase):
     )
     def test_quality_control_filter(self):
         # Ensure QualityControlListFilter works.
-        cat = Category.objects.create(title='Test cat', slug='test-cat')
+        cat = CategoryFactory.create()
 
-        good_post = Post.objects.create(
-            title='An optimised post',
-            slug='good-post',
-            author=self.user,
-            meta_description='test',
-        )
-        good_post.categories.set([cat])
+        PostFactory.create(meta_description='test', online=True, categories=[cat])
 
-        no_meta_post = Post.objects.create(
-            title='No meta description',
-            slug='no-meta',
-            author=self.user,
-        )
-        no_meta_post.categories.set([cat])
+        no_meta_post = PostFactory.create(online=True, categories=[cat])
 
-        no_categories_post = Post.objects.create(
-            title='No categories',
-            slug='no-categories',
-            author=self.user,
-            meta_description='test',
-        )
+        no_categories_post = PostFactory.create(meta_description='test', online=True)
 
-        no_alt_text_post = Post.objects.create(
+        no_alt_text_post = PostFactory.create(
             title='No alt text',
             slug='no-alt-text',
-            author=self.user,
             meta_description='Description',
+            image='small-image.jpg',
+            online=True,
         )
-        image = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'small-image.jpg'))
-        with open(image, mode='rb') as fd:
-            no_alt_text_post.image.save('small-image.jpg', File(fd, name='test-image.jpg'))
         no_alt_text_post.categories.set([cat])
 
-        no_alt_text_in_body_post = Post.objects.create(
-            author=self.user,
+        no_alt_text_in_body_post = PostFactory.create(
             meta_description='test',
             text='![](/some-image.jpg)',
+            online=True,
         )
         no_alt_text_in_body_post.categories.set([cat])
 
@@ -98,16 +79,10 @@ class PostAdminTestCase(TestCase):
         self.assertEqual(len(response.context_data['cl'].result_list), 5)
 
     def test_prefetching_categories(self):
-        cat = Category.objects.create(title='Test cat', slug='test-cat')
-        cat2 = Category.objects.create(title='Test cat 2', slug='test-cat-2')
+        cat = CategoryFactory.create()
+        cat2 = CategoryFactory.create()
 
-        for i in range(1, 10):
-            post = Post.objects.create(
-                title=f'An optimised post{i}',
-                slug=f'post-{i}',
-                author=self.user,
-            )
-            post.categories.set([cat, cat2])
+        PostFactory.create_batch(10, online=True, categories=[cat, cat2])
 
         # Baseload number of queries for loading the list, with no objects,
         # should be 5. That is getting the current session, getting the
@@ -118,7 +93,7 @@ class PostAdminTestCase(TestCase):
         with self.assertNumQueries(7):
             response = self.client.get(reverse('admin:posts_post_changelist'))
 
-        self.assertEqual(len(response.context_data['cl'].result_list), 9)
+        self.assertEqual(len(response.context_data['cl'].result_list), 10)
 
     def test_saving_post_sets_user(self):
         # Ensure saving the post sets the current user as the author.
@@ -141,10 +116,8 @@ class PostAdminTestCase(TestCase):
     def test_attachment_list_view(self):
         # Simple test of the list, sort-of tests the "link" thing in the
         # list_display, at least the "doesn't explode" part of it
-        attachment = Attachment.objects.create()
-        attachment_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'small-image.jpg'))
-        with open(attachment_path, mode='rb') as fd:
-            attachment.file.save('small-image.jpg', File(fd, name='test-image.jpg'))
+        attachment = AttachmentFactory.create(file='small-image.jpg')
 
         response = self.client.get(reverse('admin:posts_attachment_changelist'))
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(response.context_data['cl'].result_list), [attachment])
