@@ -127,9 +127,7 @@ class ImageRedirectView(LoginRequiredMixin, RedirectView):
     admin because it's quite expensive the first time.
     '''
     def get_redirect_url(self, *args, **kwargs):
-        # The pylint disable is because it can't see the 'image' for unclear
-        # reasons.
-        return PostImage.objects.get(pk=self.kwargs['pk']).image.url  # pylint:disable=no-member
+        return PostImage.objects.get(pk=self.kwargs['pk']).image.url
 
 
 class ImageUploadView(LoginRequiredMixin, FormView):
