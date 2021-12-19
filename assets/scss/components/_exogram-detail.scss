@@ -1,10 +1,26 @@
 .exogram-detail__description,
 .exogram-detail__title,
-.exogram-detail__paginator {
+.exogram-detail__paginator,
+.exogram-detail__commons {
   margin-top: $vr;
 }
 
 .exogram-detail__title {
   font-weight: 700;
   text-align: center;
+}
+
+.exogram-detail__commons-link {
+  align-items: center;
+  justify-content: center;
+
+  display: flex;
+
+  svg {
+    width: $vr;
+    height: $vr;
+    margin-right: 10px;
+
+    fill: currentColor;
+  }
 }

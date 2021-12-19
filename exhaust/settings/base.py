@@ -61,7 +61,11 @@ ROOT_URLCONF = 'exhaust.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            # allow inlining SVGS with {% include 'sample.svg' %}
+            os.path.join(ROOT_DIR, 'assets', 'images'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

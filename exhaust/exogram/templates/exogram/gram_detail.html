@@ -20,6 +20,15 @@
       </div>
     </div>
 
+    {% if object.commons_link %}
+      <p class="exogram-detail__commons">
+        <a href="{{ object.commons_link }}" class="exogram-detail__commons-link" target="_blank" rel="noopener">
+          {% include 'commons.svg' %}
+          This image is on Wikimedia Commons
+        </a>
+      </p>
+    {% endif %}
+
     <div class="exogram-detail__paginator">
       <nav class="paginator">
         {% if object.detail_pagination.newer %}

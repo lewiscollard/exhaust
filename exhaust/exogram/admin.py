@@ -10,12 +10,12 @@ from exhaust.exogram.models import Gram
 
 @admin.register(Gram)
 class GramAdmin(VersionAdmin):
-    list_display = ['get_thumbnail', '__str__', 'date', 'online']
+    list_display = ['get_thumbnail', '__str__', 'date', 'online', 'get_commons_link']
     list_display_links = ['get_thumbnail', '__str__']
 
     fieldsets = [
         ('', {
-            'fields': ['image', 'slug', 'text'],
+            'fields': ['image', 'slug', 'text', 'commons_link'],
         }),
         PUBLICATION_FIELDSET,
     ]
@@ -32,3 +32,9 @@ class GramAdmin(VersionAdmin):
     def get_thumbnail(self, obj):
         thumbnail = get_thumbnail(obj.image, '150x150', crop='center')
         return format_html('<img src="{}" width="150" height="150">', thumbnail.url)
+
+    @display(description='Commons link')
+    def get_commons_link(self, obj):
+        if not obj.commons_link:
+            return '-'
+        return format_html('<a href="{}" target="_blank" rel="noreferrer noopener">Link</a>', obj.commons_link)

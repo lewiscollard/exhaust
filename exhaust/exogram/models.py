@@ -26,6 +26,11 @@ class Gram(PublishedModel):
 
     text = MarkdownxField(null=True, blank=True)
 
+    commons_link = models.URLField(
+        'Wikimedia Commons link',
+        blank=True,
+    )
+
     class Meta:
         ordering = ['-date']
 
