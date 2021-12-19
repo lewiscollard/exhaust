@@ -33,8 +33,8 @@ class Gram(PublishedModel):
         parts = [datetime.strftime(self.date, '%Y-%m-%d')]
 
         if self.text:
-            if len(self.text) > 40:
-                parts.append(self.text[:40] + '...')
+            if len(self.text) > 60:
+                parts.append(self.text[:57] + '...')
             else:
                 parts.append(self.text)
 
