@@ -40,7 +40,7 @@ class PostViewsTestCase(TestCase):
         self.assertRedirects(response, post_without_slug.get_absolute_url(), status_code=301, target_status_code=200)
 
     def test_category_view(self):
-        category = CategoryFactory.create(meta_description='Test!')
+        category = CategoryFactory.create(meta_description='Test!', description='Test')
         post = PostFactory.create(online=True)
         post.categories.add(category)
 
