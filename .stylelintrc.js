@@ -81,7 +81,12 @@ module.exports = {
     "selector-combinator-space-before": "always",
     "selector-descendant-combinator-no-non-space": true,
     "selector-max-id": 0,
-    "selector-max-type": 0,
+    "selector-max-type": [
+      0,
+      {
+        "ignoreTypes": ["svg"]
+      }
+    ],
     "selector-max-universal": 0,
     "selector-no-qualifying-type": true,
     "selector-no-vendor-prefix": true,
