@@ -147,4 +147,9 @@
     font-size: 1.25em;
   }
 }
+
+.markdown--centered {
+  /* Used on gram detail page; it won't play well with lists, probably. */
+  text-align: center;
+}
 /* stylelint-enable */

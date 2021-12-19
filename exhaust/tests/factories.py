@@ -7,6 +7,7 @@ from django.core.files.base import File
 from django.utils.timezone import now
 from factory.django import DjangoModelFactory
 
+from exhaust.exogram.models import Gram
 from exhaust.posts.models import Attachment, Category, Post, PostImage
 
 
@@ -26,6 +27,19 @@ class AttachmentFactory(DjangoModelFactory):
         attachment_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', extracted))
         with open(attachment_path, mode='rb') as fd:
             obj.file.save('small-image.jpg', File(fd, name=extracted))  # pylint:disable=no-member
+
+
+class GramFactory(DjangoModelFactory):
+    date = factory.LazyFunction(lambda: now() - timedelta(minutes=1))
+
+    class Meta:
+        model = Gram
+
+    @factory.post_generation
+    def image(obj, create, extracted, **kwargs):
+        attachment_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', extracted))
+        with open(attachment_path, mode='rb') as fd:
+            obj.image.save(extracted, File(fd, name=extracted))  # pylint:disable=no-member
 
 
 class PostFactory(DjangoModelFactory):

@@ -54,7 +54,7 @@ class Gram(PublishedModel):
         if self.slug:
             return reverse(
                 'exogram:gram_detail',
-                kwargs={'public_id': self.id, 'slug': self.slug}
+                kwargs={'public_id': self.public_id, 'slug': self.slug}
             )
         return reverse('exogram:gram_detail', kwargs={'public_id': self.public_id})
 
@@ -64,5 +64,5 @@ class Gram(PublishedModel):
             try:
                 pagination[key] = getattr(self, attribute)().get_absolute_url()
             except self.DoesNotExist:
-                pass
+                pagination[key] = None
         return pagination

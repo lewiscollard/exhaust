@@ -14,11 +14,13 @@
       {{ object.date|date }}
     </h1>
 
-    <div class="exogram-detail__description">
-      <div class="markdown">
-        {{ object.text|markdown }}
+    {% if object.text %}
+      <div class="exogram-detail__description">
+        <div class="markdown markdown--centered">
+          {{ object.text|markdown }}
+        </div>
       </div>
-    </div>
+    {% endif %}
 
     {% if object.commons_link %}
       <p class="exogram-detail__commons">
