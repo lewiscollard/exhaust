@@ -151,6 +151,12 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(list(response.context_data['object_list']), [post])
         self._rss_response_is_sane(response, expected_item_count=1)
 
+    @override_settings(
+        DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
+        THUMBNAIL_STORAGE='inmemorystorage.InMemoryStorage',
+        INMEMORYSTORAGE_PERSIST=True,
+        MEDIA_URL='/m/',
+    )
     def test_imageredirectview(self):
         image = PostImageFactory(image='large-image.jpg')
         # ensure it doesn't work for unauthenticated users
