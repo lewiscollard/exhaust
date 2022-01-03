@@ -1,4 +1,3 @@
-import os
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
@@ -11,8 +10,6 @@ from exhaust.tests.factories import PostImageFactory
 
 
 class ImagesTestCase(TestCase):
-    TEST_DATA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
-
     def _check_rendered_image_html(self, html):
         # Tests that all the HTML from a rendered multiformat image is
         # sensible.

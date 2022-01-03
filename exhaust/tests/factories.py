@@ -1,4 +1,3 @@
-import os
 from datetime import timedelta
 
 import factory
@@ -9,6 +8,7 @@ from factory.django import DjangoModelFactory
 
 from exhaust.exogram.models import Gram
 from exhaust.posts.models import Attachment, Category, Post, PostImage
+from exhaust.tests.helpers import get_test_file_path
 
 
 class UserFactory(DjangoModelFactory):
@@ -24,7 +24,7 @@ class AttachmentFactory(DjangoModelFactory):
 
     @factory.post_generation
     def file(obj, create, extracted, **kwargs):
-        attachment_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', extracted))
+        attachment_path = get_test_file_path(extracted)
         with open(attachment_path, mode='rb') as fd:
             obj.file.save('small-image.jpg', File(fd, name=extracted))  # pylint:disable=no-member
 
@@ -37,7 +37,7 @@ class GramFactory(DjangoModelFactory):
 
     @factory.post_generation
     def image(obj, create, extracted, **kwargs):
-        attachment_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', extracted))
+        attachment_path = get_test_file_path(extracted)
         with open(attachment_path, mode='rb') as fd:
             obj.image.save(extracted, File(fd, name=extracted))  # pylint:disable=no-member
 
@@ -62,7 +62,7 @@ class PostFactory(DjangoModelFactory):
     def image(obj, create, extracted, **kwargs):
         if extracted is None:
             return
-        attachment_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', extracted))
+        attachment_path = get_test_file_path(extracted)
         with open(attachment_path, mode='rb') as fd:
             obj.image.save('small-image.jpg', File(fd, name=extracted))  # pylint:disable=no-member
 
@@ -76,7 +76,7 @@ class PostFactory(DjangoModelFactory):
 class PostImageFactory(DjangoModelFactory):
     @factory.post_generation
     def image(obj, create, extracted, **kwargs):
-        attachment_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data', extracted))
+        attachment_path = get_test_file_path(extracted)
         with open(attachment_path, mode='rb') as fd:
             obj.image.save('small-image.jpg', File(fd, name=extracted))  # pylint:disable=no-member
 
