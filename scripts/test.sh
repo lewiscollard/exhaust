@@ -9,4 +9,4 @@ coverage run --append --source=exhaust/ ./manage.py test
 flake8 exhaust/
 pylint --rcfile=tox.ini exhaust/
 isort --check-only --diff exhaust/
-coverage report --show-missing
+coverage report --show-missing --fail-under=100
