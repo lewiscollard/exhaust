@@ -7,11 +7,12 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.timezone import now
 
-from exhaust.posts.models import Post
+from exhaust.posts.models import Post, PostImage
 from exhaust.posts.urls import urlpatterns as post_urlpatterns
 from exhaust.posts.views import PostViewMixin
 from exhaust.tests.factories import (CategoryFactory, PostFactory,
                                      PostImageFactory, UserFactory)
+from exhaust.tests.helpers import get_test_file_path
 
 
 class PostViewsTestCase(TestCase):
@@ -163,3 +164,34 @@ class PostViewsTestCase(TestCase):
         response = self.client.get(reverse('posts:image_redirect', args=[image.pk]))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], image.image.url)
+
+    def test_imageuploadview_unauthed(self):
+        with open(get_test_file_path('small-image.jpg'), 'rb') as fd:
+            response = self.client.post(reverse('posts:image_upload'), data={'image': fd})
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response['Location'].startswith(reverse(settings.LOGIN_URL)))
+
+    def test_imageuploadview_with_junk(self):
+        self.client.force_login(UserFactory.create(is_staff=True))
+
+        with open(get_test_file_path('text-file.md'), 'rb') as fd:
+            response = self.client.post(reverse('posts:image_upload'), data={'image': fd})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()['image'], 'Image missing or broken.')
+
+    @override_settings(
+        DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
+        THUMBNAIL_STORAGE='inmemorystorage.InMemoryStorage',
+        INMEMORYSTORAGE_PERSIST=True,
+        MEDIA_URL='/m/'
+    )
+    def test_imageuploadview_happy_path(self):
+        # pollution canary
+        self.assertEqual(PostImage.objects.count(), 0)
+        self.client.force_login(UserFactory.create(is_staff=True))
+
+        with open(get_test_file_path('large-image.jpg'), 'rb') as fd:
+            response = self.client.post(reverse('posts:image_upload'), data={'image': fd})
+        self.assertEqual(response.status_code, 200)
+        image = PostImage.objects.first()
+        self.assertEqual(response.json()['image_code'], f'![]({image.get_absolute_url()})')

@@ -138,7 +138,11 @@ class ImageUploadView(LoginRequiredMixin, FormView):
     form_class = ImageUploadForm
 
     def form_invalid(self, form):
-        return JsonResponse({})
+        response = JsonResponse({
+            'image': 'Image missing or broken.',
+        })
+        response.status_code = 400
+        return response
 
     def form_valid(self, form):
         form.save()
