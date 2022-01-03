@@ -68,7 +68,9 @@ class ExhaustHtmlRenderer(HtmlRenderer):
         if not self.expecting_alt_text:
             super().text(node, entering)
             return
-        self.alt_text += node.literal
+        # Coverage-skipped because it's unclear if that branch can ever be
+        # reached by normal means.
+        self.alt_text += node.literal  # pragma: no cover
 
 
 def markdown_to_html(text):
