@@ -6,6 +6,7 @@ rm -rf node_modules
 python3 -m venv .venv
 # shellcheck disable=1091
 . .venv/bin/activate
+pip install --upgrade pip -c pip.txt
 pip install -r requirements-dev.txt
 # shellcheck disable=1090
 . ~/.nvm/nvm.sh

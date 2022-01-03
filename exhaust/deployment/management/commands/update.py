@@ -19,6 +19,7 @@ class Command(BaseCommand):
         root_path = conf['ROOT_DIR']
         venv_path = posixpath.join(root_path, '.venv')
         requirements_path = posixpath.join(root_path, 'requirements.txt')
+        pip_constraint_file = posixpath.join(root_path, 'pip.txt')
 
         connection = HelpfulConnection(conf['HOST'], user=conf['SUDO_USER'])
         connection.sudo(f'git -C {conf["ROOT_DIR"]} pull', user=conf['USER'])
@@ -26,6 +27,7 @@ class Command(BaseCommand):
         # Nuke venv & rebuild.
         connection.sudo(f'rm -rf {venv_path}', user=conf['USER'])
         connection.sudo(f'virtualenv -p python3.8 {venv_path}', user=conf['USER'])
+        connection.run_in_venv(f'pip install --upgrade pip -c {pip_constraint_file}')
         connection.run_in_venv(f'pip install -r {requirements_path}')
         connection.run_managepy('migrate --noinput')
         connection.run_managepy('remove_stale_contenttypes --noinput')
