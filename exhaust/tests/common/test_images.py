@@ -59,3 +59,25 @@ class ImagesTestCase(TestCase):
         self.assertEqual(len(soup.find_all('figure')), 1)
         self.assertEqual(len(soup.find_all('figcaption')), 1)
         self.assertEqual(soup.find('figcaption').text, 'Testing!')
+
+    @override_settings(
+        DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
+        THUMBNAIL_STORAGE='inmemorystorage.InMemoryStorage',
+        INMEMORYSTORAGE_PERSIST=True,
+        CACHES={
+            'default': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            }
+        },
+        MEDIA_URL='/m/'
+    )
+    def test_render_multiformat_image_cache_branch(self):
+        # Test that specifically ensures the "fetch cached version" branch is
+        # checked, and that the cached version is exactly identical to
+        # the uncached one
+        image = PostImageFactory(image='large-image.jpg')
+        rendered1 = render_multiformat_image(image.image, max_width=720)
+        self._check_rendered_image_html(rendered1)
+
+        rendered2 = render_multiformat_image(image.image, max_width=720)
+        self.assertEqual(rendered1, rendered2)

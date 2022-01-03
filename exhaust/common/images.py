@@ -16,6 +16,8 @@ def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None
     cache_key = f'multiformat_image_{cache_hash.hexdigest()[:6]}'
     cached_version = cache.get(cache_key)
     if cached_version:
+        # CANARY: if this branch ends up uncovered, it means the test in
+        # test_render_multiformat_image_cache_branch is broken
         return cached_version
 
     context = {}
