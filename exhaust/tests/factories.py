@@ -26,7 +26,7 @@ class AttachmentFactory(DjangoModelFactory):
     def file(obj, create, extracted, **kwargs):
         attachment_path = get_test_file_path(extracted)
         with open(attachment_path, mode='rb') as fd:
-            obj.file.save('small-image.jpg', File(fd, name=extracted))  # pylint:disable=no-member
+            obj.file.save(extracted, File(fd, name=extracted))  # pylint:disable=no-member
 
 
 class GramFactory(DjangoModelFactory):
@@ -64,7 +64,7 @@ class PostFactory(DjangoModelFactory):
             return
         attachment_path = get_test_file_path(extracted)
         with open(attachment_path, mode='rb') as fd:
-            obj.image.save('small-image.jpg', File(fd, name=extracted))  # pylint:disable=no-member
+            obj.image.save(extracted, File(fd, name=extracted))  # pylint:disable=no-member
 
     @factory.post_generation
     def categories(obj: Post, create, extracted, **kwargs):
@@ -78,7 +78,7 @@ class PostImageFactory(DjangoModelFactory):
     def image(obj, create, extracted, **kwargs):
         attachment_path = get_test_file_path(extracted)
         with open(attachment_path, mode='rb') as fd:
-            obj.image.save('small-image.jpg', File(fd, name=extracted))  # pylint:disable=no-member
+            obj.image.save(extracted, File(fd, name=extracted))  # pylint:disable=no-member
 
     class Meta:
         model = PostImage
