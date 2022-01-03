@@ -1,6 +1,7 @@
 from datetime import timedelta
 from xml.etree import ElementTree
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -9,7 +10,8 @@ from django.utils.timezone import now
 from exhaust.posts.models import Post
 from exhaust.posts.urls import urlpatterns as post_urlpatterns
 from exhaust.posts.views import PostViewMixin
-from exhaust.tests.factories import CategoryFactory, PostFactory
+from exhaust.tests.factories import (CategoryFactory, PostFactory,
+                                     PostImageFactory, UserFactory)
 
 
 class PostViewsTestCase(TestCase):
@@ -147,3 +149,17 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(list(response.context_data['object_list']), [post])
         self._rss_response_is_sane(response, expected_item_count=1)
+
+    def test_imageredirectview(self):
+        image = PostImageFactory(image='large-image.jpg')
+        # ensure it doesn't work for unauthenticated users
+        response = self.client.get(reverse('posts:image_redirect', args=[image.pk]))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response['Location'].startswith(reverse(settings.LOGIN_URL)))
+
+        user = UserFactory(is_staff=True)
+        self.client.force_login(user)
+
+        response = self.client.get(reverse('posts:image_redirect', args=[image.pk]))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['Location'], image.image.url)
