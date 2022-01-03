@@ -1,6 +1,7 @@
 from datetime import timedelta
 from xml.etree import ElementTree
 
+from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
@@ -41,6 +42,34 @@ class PostViewsTestCase(TestCase):
         # slug redirects.
         response = self.client.get(reverse('posts:post_detail', kwargs={'identifier': post_without_slug.identifier, 'slug': 'anything-at-all'}))
         self.assertRedirects(response, post_without_slug.get_absolute_url(), status_code=301, target_status_code=200)
+
+    @override_settings(
+        DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
+        THUMBNAIL_STORAGE='inmemorystorage.InMemoryStorage',
+        INMEMORYSTORAGE_PERSIST=True,
+        MEDIA_URL='/m/',
+        CACHES={
+            'default': {
+                'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+            }
+        },
+    )
+    def test_post_detail_template_branches(self):
+        # Ensure various branches in the post detail templates are tested.
+        #
+        # Test the "post has an image" branch of post_body.html
+        post = PostFactory.create(image='large-image.jpg', online=True)
+        response = self.client.get(post.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, features='html.parser')
+        self.assertEqual(len(soup.select('.post__image-wrapper')), 1)
+
+        # Test the "has meta description" branch of post_detail.html
+        post = PostFactory.create(meta_description='Meta description', online=True)
+        response = self.client.get(post.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, features='html.parser')
+        self.assertEqual(soup.find('meta', attrs={'name': 'description'})['content'], 'Meta description')
 
     def test_category_view(self):
         category = CategoryFactory.create(meta_description='Test!', description='Test')
