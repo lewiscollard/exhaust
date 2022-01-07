@@ -18,7 +18,6 @@ class Gram(PublishedModel):
 
     slug = models.SlugField(
         blank=True,
-        unique=False,
         help_text='Use this to optimise the URL for search engines.',
     )
 
