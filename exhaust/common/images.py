@@ -32,7 +32,7 @@ def render_multiformat_image(image, *, alt_text=None, title=None, max_width=None
 
     # Stick a bunch of image widths into the context, in both webp and
     # the original format.
-    widths = sorted(list(set([image.width, max_width, 320, 480, 768, 1024, 1280, 1920])))
+    widths = sorted({image.width, max_width, 320, 480, 768, 1024, 1280, 1920})
 
     context['sources'] = {'image/webp': [], 'image/jpeg': []}
 
