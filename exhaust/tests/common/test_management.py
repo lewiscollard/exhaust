@@ -11,10 +11,10 @@ class ManagementCommandsTestCase(TestCase):
             os.unlink(settings.SECRET_KEY_FILE)
 
         # sanity check
-        self.assertFalse(os.path.exists(settings.SECRET_KEY_FILE), False)
+        self.assertFalse(os.path.exists(settings.SECRET_KEY_FILE))
 
         call_command('generate_secret_key')
 
-        self.assertTrue(os.path.exists(settings.SECRET_KEY_FILE), False)
+        self.assertTrue(os.path.exists(settings.SECRET_KEY_FILE))
         with open(settings.SECRET_KEY_FILE) as fd:
             self.assertEqual(len(fd.read().strip()), 50)
