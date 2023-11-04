@@ -97,7 +97,7 @@ CACHES = {
 #
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'exhaust',
         'USER': os.environ.get('DB_USER'),
     },
@@ -232,6 +232,8 @@ BLEACH_CONFIG = {
         'padding-bottom', 'max-width'
     ]
 }
+
+THUMBNAIL_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Settings for deployment & management scripts.
 DEPLOYMENT = {
