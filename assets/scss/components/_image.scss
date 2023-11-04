@@ -1,4 +1,5 @@
 .image {
+  /* for positioning of "open original" link */
   position: relative;
 
   display: block;
@@ -7,12 +8,7 @@
 }
 
 .image__image {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  width: 100%;
-  height: 100%;
+  display: block;
 }
 
 .figure {

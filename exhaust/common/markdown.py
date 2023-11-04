@@ -61,7 +61,7 @@ class ExhaustHtmlRenderer(HtmlRenderer):
         except PostImage.DoesNotExist:
             return self.lit('')
         return self.lit(
-            render_multiformat_image(image.image, alt_text=self.alt_text, title=node.title, max_width=1280)
+            render_multiformat_image(image.image, alt_text=self.alt_text, title=node.title, width=1280)
         )
 
     def text(self, node, entering=None):

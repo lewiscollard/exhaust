@@ -7,7 +7,7 @@
     {% for object in object_list %}
       <li class="image-grid__item">
           <a href="{{ object.get_absolute_url }}">
-            {% render_image object.image max_width=320 %}
+            {% render_image object.image width=320 %}
           </a>
         </a>
       </li>

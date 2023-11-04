@@ -6,20 +6,20 @@
 
 {# abuse the "title" attribute as caption for figure/figcaption #}
 {% if title %}
-  <figure class="figure" style="max-width: {{ max_width }}px">
+  <figure class="figure" style="max-width: {{ original.width }}px">
 {% endif %}
 
-<div class='image' style="max-width: {{ max_width }}px">
-  <div class="image__padder" style="padding-bottom: {{ aspect_padding }}%"></div>
+<div class='image' style="max-width: {{ original.width }}px">
   <picture {% if not alt_text %}aria-hidden="true"{% endif %}>
-    {% for format, widths in sources.items %}
-      <source srcset="{% for width in widths %}{{ width.url|path_to_url }} {{ width.width}}w{% if not forloop.last %}, {% endif %}{% endfor %}" type="{{ format }}">
+    {% for source in sources %}
+      <source src="{{ source.url }}" type="{{ source.mime_type }}">
     {% endfor %}
 
     <img class="image__image"
          loading="lazy"
          src="{{ fallback_image_url|path_to_url }}"
          alt="{{ alt_text }}"
+         style="aspect-ratio: {{ image.width}} / {{ image.height }}"
     >
   </picture>
 

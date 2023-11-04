@@ -16,12 +16,10 @@ class ImagesTestCase(TestCase):
         soup = BeautifulSoup(html, 'html.parser')
         for picture_tag in soup.find_all('picture'):
             for source_tag in picture_tag.find_all('source'):
-                source_bits = source_tag['srcset'].split(', ')
+                url = source_tag['src']
                 # are we deep enough in for loops yet?
-                for source_bit in source_bits:
-                    url, _ = source_bit.split(' ')
-                    path = urlparse(url).path[3:]
-                    self.assertTrue(default_storage.exists(path))
+                path = urlparse(url).path[3:]
+                self.assertTrue(default_storage.exists(path))
 
     @override_settings(
         DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage',
@@ -39,17 +37,17 @@ class ImagesTestCase(TestCase):
     def test_render_multiformat_image(self):
         # Ensure that a large image renders reasonably.
         image = PostImageFactory(image='large-image.jpg')
-        self._check_rendered_image_html(render_multiformat_image(image.image, max_width=720))
+        self._check_rendered_image_html(render_multiformat_image(image.image, width=720))
         # Make sure the template tag works as well.
-        self._check_rendered_image_html(render_image(image.image, max_width=720))
+        self._check_rendered_image_html(render_image(image.image, width=720))
 
         # Ensure the "never upscale" branch is visited.
         image = PostImageFactory(image='small-image.jpg')
-        self._check_rendered_image_html(render_multiformat_image(image.image, max_width=720))
+        self._check_rendered_image_html(render_multiformat_image(image.image, width=720))
 
         # Check the "has a title" branch in the template.
         image = PostImageFactory(image='small-image.jpg')
-        html = render_multiformat_image(image.image, max_width=720, title='Testing!')
+        html = render_multiformat_image(image.image, width=720, title='Testing!')
         self._check_rendered_image_html(html)
 
         soup = BeautifulSoup(html, 'html.parser')
@@ -73,8 +71,8 @@ class ImagesTestCase(TestCase):
         # checked, and that the cached version is exactly identical to
         # the uncached one
         image = PostImageFactory(image='large-image.jpg')
-        rendered1 = render_multiformat_image(image.image, max_width=720)
+        rendered1 = render_multiformat_image(image.image, width=720)
         self._check_rendered_image_html(rendered1)
 
-        rendered2 = render_multiformat_image(image.image, max_width=720)
+        rendered2 = render_multiformat_image(image.image, width=720)
         self.assertEqual(rendered1, rendered2)

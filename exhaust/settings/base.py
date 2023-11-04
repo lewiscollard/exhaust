@@ -212,7 +212,7 @@ BLEACH_CONFIG = {
         'center', 's',
     ],
     'attributes': {
-        'img': ['src', 'alt', 'title', 'loading', 'class'],
+        'img': ['src', 'alt', 'title', 'loading', 'class', 'style'],
         'a': ['href', 'rel', 'target', 'title', 'class'],
         'youtube-video': ['id', 'title'],
         # These feel a bit too blanket, but should be safe.
@@ -227,10 +227,11 @@ BLEACH_CONFIG = {
         'abbr': ['title'],
     },
     'styles': [
+        'max-width',
         # Used by our multiformat image for aspect ratio preservation (must be
         # inline, unfortunately).
-        'padding-bottom', 'max-width'
-    ]
+        'aspect-ratio',
+    ],
 }
 
 THUMBNAIL_STORAGE = 'django.core.files.storage.FileSystemStorage'
