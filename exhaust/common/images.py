@@ -32,16 +32,14 @@ def render_multiformat_image(image, *, width, alt_text=None, title=None):
 
     # Don't upscale an image.
     real_width = min(width, image.width)
-    context['sources'] = [
-        {
-            'mime_type': 'image/webp',
-            'url': get_thumbnail(image.file, str(real_width), format='WEBP').url,
-        },
-        {
-            'mime_type': 'image/jpeg',
-            'url': get_thumbnail(image.file, str(real_width), format='JPEG').url,
-        },
-    ]
+    context['sources'] = []
+    for fmt, mime_type in [('WEBP', 'image/webp'), ('JPEG', 'image/jpeg')]:
+        thumbnail = get_thumbnail(image.file, str(real_width), format=fmt)
+        context['sources'].append({
+            'mime_type': mime_type,
+            'url': thumbnail.url,
+            'width': thumbnail.width,
+        })
 
     # This is necessary because at least one RSS reader (The Old Reader, which
     # I use) strips out picture/source tags.

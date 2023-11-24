@@ -16,7 +16,7 @@ class ImagesTestCase(TestCase):
         soup = BeautifulSoup(html, 'html.parser')
         for picture_tag in soup.find_all('picture'):
             for source_tag in picture_tag.find_all('source'):
-                url = source_tag['src']
+                url = source_tag['srcset'].split()[0]
                 # are we deep enough in for loops yet?
                 path = urlparse(url).path[3:]
                 self.assertTrue(default_storage.exists(path))

@@ -12,7 +12,7 @@
 <div class='image' style="max-width: {{ original.width }}px">
   <picture {% if not alt_text %}aria-hidden="true"{% endif %}>
     {% for source in sources %}
-      <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      <source srcset="{{ source.url }} {{ source.width}}w" type="{{ source.mime_type }}">
     {% endfor %}
 
     <img class="image__image"
