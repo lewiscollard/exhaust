@@ -2,7 +2,7 @@ const path = require('path');
 
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const {VueLoaderPlugin} = require('vue-loader')
 
 const webpack = require('webpack');
 
@@ -11,7 +11,7 @@ const DEV = process.env.NODE_ENV === 'development';
 // about.
 process.env.BROWSERSLIST_IGNORE_OLD_DATA = true
 
-const config = {
+module.exports = {
   stats: 'minimal',
   entry: {
     'main': './assets/js/index.js',
@@ -45,15 +45,6 @@ const config = {
           'sass-loader',
         ]
       },
-      {
-        test: /\.js$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-          }
-        }
-      }
     ]
   },
 
@@ -70,10 +61,9 @@ const config = {
     }
   },
 
-  // https://stackoverflow.com/questions/47332728/you-are-using-the-runtime-only-build-of-vue-where-the-template-compiler-is-not-a
   resolve: {
       alias: {
-          vue: 'vue/dist/vue.js'
+          vue: '@vue/compat',
       },
   },
 
@@ -91,15 +81,6 @@ const config = {
     new MiniCssExtractPlugin({
       filename: '[name].css'
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new VueLoaderPlugin(),
   ]
-}
-
-module.exports = (env, argv) => {
-  if (argv.mode === 'production') {
-    config.resolve.alias.vue = 'vue/dist/vue.min.js'
-  }
-
-  return config
 }
