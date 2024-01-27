@@ -1,3 +1,9 @@
+**Now obsolete. This project migrated to a static site generator will be in another repo shortly. The below is historic information.**
+
+
+---------
+
+
 This is the source code for [Exhaust](https://exhaust.lewiscollard.com/), one of my websites.
 
 It is a trivial Django project for something that looks like a blog, with all of the features I want from one, and with none of the features that I do not need.
